@@ -1,1 +1,618 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>مركز تبليغ ام القري</title>
+<style>
+:root{--bg:#eef3f8;--card:#fff;--text:#1d2630;--muted:#667085;--border:#d9e0e8;--pri:#1560c7;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*{box-sizing:border-box}
+body{margin:0;font-family:Tahoma,Arial,sans-serif;background:linear-gradient(#dcebfa,var(--bg) 320px);color:var(--text);min-height:100vh}
+.hidden{display:none!important}
+header{background:linear-gradient(#2a7fe0,#0b3a7a);color:#fff;padding:16px;text-align:center;box-shadow:0 4px 0 #072a5a}
+.brand{display:flex;align-items:center;gap:12px;justify-content:center}
+.brand img{width:64px;height:64px;border-radius:14px;background:#fff;box-shadow:0 4px 10px rgba(0,0,0,.3)}
+.brand h1{margin:0;font-size:20px}
+.brand small{display:block;opacity:.9;font-size:13px;font-weight:normal;margin-top:3px}
+main{max-width:520px;margin:auto;padding:16px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:16px;margin-bottom:14px;box-shadow:0 4px 12px rgba(0,0,0,.08)}
+.card h3{margin:0 0 6px}
+label{display:block;margin:12px 0 5px;font-size:14px;color:var(--muted)}
+input,select,textarea{width:100%;padding:12px;border:1px solid var(--border);border-radius:10px;font-size:16px;background:#f7f9fc;color:var(--text);font-family:inherit}
+textarea{min-height:70px;resize:vertical}
+.tile,.btn{--c:linear-gradient(#3fa4ff,#1560c7);--s:#0b3a7a;background:var(--c);color:#fff;border:none;border-radius:16px;font-family:inherit;font-weight:bold;cursor:pointer;text-shadow:0 1px 2px rgba(0,0,0,.3);box-shadow:0 7px 0 var(--s),0 12px 20px rgba(0,0,0,.25),inset 0 2px 0 rgba(255,255,255,.4);transform:translateY(0);transition:transform .08s,box-shadow .08s;text-decoration:none;display:block}
+.tile:active,.btn:active{transform:translateY(5px);box-shadow:0 2px 0 var(--s),0 4px 8px rgba(0,0,0,.2),inset 0 2px 0 rgba(255,255,255,.3)}
+.tile{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;min-height:118px;padding:14px 8px;font-size:16px}
+.tile .ic{font-size:32px}
+.tile.full{grid-column:span 2;min-height:96px}
+.btn{width:100%;padding:14px;font-size:17px;margin-top:16px;text-align:center}
+.blue{--c:linear-gradient(#3fa4ff,#1560c7);--s:#0b3a7a}
+.red{--c:linear-gradient(#ff6a5e,#d82a1e);--s:#8e110a}
+.green{--c:linear-gradient(#4cd47a,#1e9a4a);--s:#0f6a31}
+.gold{--c:linear-gradient(#ffe066,#e8ad00);--s:#9a7400;color:#2a2000;text-shadow:none}
+.gray{--c:linear-gradient(#8a96a6,#56627a);--s:#333d4f}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.link{background:none;border:none;color:var(--pri);font-size:15px;cursor:pointer;margin-top:14px;width:100%;font-family:inherit}
+.small{padding:6px 12px;border:1px solid var(--border);border-radius:8px;background:#fff;color:var(--text);cursor:pointer;font-size:13px;font-family:inherit}
+.small.del{color:#c0392b;border-color:#c0392b}
+.rec{border-bottom:1px solid var(--border);padding:12px 0}
+.rec:last-child{border-bottom:none}
+.badge{display:inline-block;padding:2px 8px;border-radius:10px;background:#eef3f8;font-size:12px;color:var(--muted);margin-inline-start:4px}
+.muted{color:var(--muted);font-size:13px;line-height:1.7}
+.stat{display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--border);font-size:16px}
+.stat:last-child{border-bottom:none}
+.empty{text-align:center;color:var(--muted);padding:20px}
+.back{margin-bottom:12px}
+.back .small{padding:8px 14px}
+.note{background:#fff7d6;border-radius:10px;padding:10px;font-size:13px;color:#6b5600;margin-top:12px}
+#toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#222;color:#fff;padding:10px 18px;border-radius:10px;font-size:14px;opacity:0;transition:opacity .3s;pointer-events:none;z-index:10;max-width:90%;text-align:center}
+#toast.show{opacity:1}
 
+body{background:radial-gradient(circle at top right,#cfe6ff,transparent 45%),radial-gradient(circle at bottom left,#d9f5e8,transparent 40%),var(--bg)!important}
+header{border-bottom-left-radius:28px;border-bottom-right-radius:28px}
+.card{border-radius:20px;border:none;box-shadow:0 10px 25px rgba(11,58,122,.12)}
+.tile .ic{filter:drop-shadow(0 2px 3px rgba(0,0,0,.3))}
+.brand small{opacity:1;font-weight:bold;color:#ffe066}
+.states{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.st{padding:14px 6px;border:none;border-radius:14px;background:linear-gradient(#3fa4ff,#1560c7);color:#fff;font-family:inherit;font-weight:bold;font-size:14px;line-height:1.5;box-shadow:0 5px 0 #0b3a7a,0 8px 14px rgba(0,0,0,.2);cursor:pointer;transition:transform .08s,box-shadow .08s}
+.st:active{transform:translateY(4px);box-shadow:0 1px 0 #0b3a7a}
+</style>
+</head>
+<body>
+
+<!-- شاشة الدخول -->
+<div id="auth">
+  <header>
+    <div class="brand">
+      <div class="logo">🩺</div>
+      <div><h1>مركز تبليغ ام القري</h1><small>ولاية الجزيرة</small><small>نظام تسجيل بلاغات الأمراض للموظفين</small></div>
+    </div>
+  </header>
+  <main>
+    <div class="card" id="loginBox">
+      <h3>تسجيل الدخول</h3>
+      <label for="lPhone">رقم التلفون</label>
+      <input id="lPhone" inputmode="tel" placeholder="مثال: 0910211755">
+      <label for="lPass">كلمة السر</label>
+      <input id="lPass" type="password" placeholder="كلمة السر">
+      <button class="btn blue" id="loginBtn">دخول</button>
+      <button class="link" id="showReg">ليس لديك حساب؟ أنشئ حساباً جديداً</button>
+    </div>
+
+    <div class="card hidden" id="regBox">
+      <h3>إنشاء حساب جديد</h3>
+      <label for="rName">الاسم</label>
+      <input id="rName" placeholder="الاسم الكامل">
+      <label for="rPhone">رقم التلفون</label>
+      <input id="rPhone" inputmode="tel" placeholder="رقم التلفون">
+      <label for="rPass">كلمة السر</label>
+      <input id="rPass" type="password" placeholder="4 أحرف أو أكثر">
+      <label for="rPass2">تأكيد كلمة السر</label>
+      <input id="rPass2" type="password" placeholder="أعد كتابة كلمة السر">
+      <button class="btn green" id="regBtn">إنشاء الحساب</button>
+      <button class="link" id="backLogin">لديّ حساب، تسجيل الدخول</button>
+    </div>
+
+    <div class="card">
+      <h3>أرقام المدراء للتواصل</h3>
+      <div class="contacts" data-contacts></div>
+    </div>
+  </main>
+</div>
+
+<!-- التطبيق بعد الدخول -->
+<div id="app" class="hidden">
+  <header>
+    <div class="brand">
+      <div class="logo">🩺</div>
+      <div><h1>مركز تبليغ ام القري</h1><small>ولاية الجزيرة</small><small id="welcome"></small></div>
+    </div>
+    <div style="margin-top:10px"><button class="small" id="logoutBtn">تسجيل خروج</button></div>
+  </header>
+
+  <main>
+    <!-- القائمة الرئيسية -->
+    <div class="grid" data-view="home">
+      <button class="tile red full" data-go="new"><span class="ic">🚨</span>بلاغ جديد</button>
+      <button class="tile gold full" data-go="states"><span class="ic">🗺️</span>الولايات</button>
+      <button class="tile blue" data-go="list"><span class="ic">📋</span>السجل</button>
+      <button class="tile green" data-go="stats"><span class="ic">📊</span>الإحصائيات</button>
+      <button class="tile gray full" data-go="reports"><span class="ic">📤</span>التقارير وواتساب</button>
+      <button class="tile gold full" data-go="contacts"><span class="ic">📞</span>أرقام المدراء</button>
+    </div>
+
+    <!-- بلاغ جديد -->
+    <div class="hidden" data-view="new">
+      <div class="back"><button class="small" data-go="home">← رجوع للقائمة</button></div>
+      <div class="card">
+        <label for="state">الولاية</label>
+        <select id="state">
+          <option value="ولاية الخرطوم">ولاية الخرطوم</option>
+          <option value="ولاية الجزيرة">ولاية الجزيرة</option>
+          <option value="ولاية النيل الأبيض">ولاية النيل الأبيض</option>
+          <option value="ولاية النيل الأزرق">ولاية النيل الأزرق</option>
+          <option value="ولاية سنار">ولاية سنار</option>
+          <option value="ولاية القضارف">ولاية القضارف</option>
+          <option value="ولاية كسلا">ولاية كسلا</option>
+          <option value="ولاية البحر الأحمر">ولاية البحر الأحمر</option>
+          <option value="ولاية نهر النيل">ولاية نهر النيل</option>
+          <option value="الولاية الشمالية">الولاية الشمالية</option>
+          <option value="ولاية شمال كردفان">ولاية شمال كردفان</option>
+          <option value="ولاية جنوب كردفان">ولاية جنوب كردفان</option>
+          <option value="ولاية غرب كردفان">ولاية غرب كردفان</option>
+          <option value="ولاية شمال دارفور">ولاية شمال دارفور</option>
+          <option value="ولاية جنوب دارفور">ولاية جنوب دارفور</option>
+          <option value="ولاية شرق دارفور">ولاية شرق دارفور</option>
+          <option value="ولاية غرب دارفور">ولاية غرب دارفور</option>
+          <option value="ولاية وسط دارفور">ولاية وسط دارفور</option>
+        </select>
+        <label for="locality">المحلية</label>
+        <select id="locality"></select>
+        <label for="unit">الوحدة</label>
+        <select id="unit">
+          <option value="وحدة جنوب">وحدة جنوب</option>
+          <option value="وحدة وسط">وحدة وسط</option>
+          <option value="وحدة شمال">وحدة شمال</option>
+        </select>
+        <label for="empNo">الرقم الوظيفي</label>
+        <input id="empNo" inputmode="numeric" placeholder="مثال: 1024">
+        <label for="empName">اسم الموظف</label>
+        <input id="empName" placeholder="الاسم الكامل">
+        <label for="dept">القسم</label>
+        <input id="dept" placeholder="مثال: المختبر">
+        <label for="disease">المرض</label>
+        <select id="disease">
+          <option value="ملاريا">ملاريا</option>
+          <option value="حمى الضنك">حمى الضنك</option>
+          <option value="أخرى">أخرى</option>
+        </select>
+        <div id="otherWrap" class="hidden">
+          <label for="otherDisease">اسم المرض</label>
+          <input id="otherDisease" placeholder="اكتب اسم المرض">
+        </div>
+        <label for="date">تاريخ التشخيص</label>
+        <input id="date" type="date">
+        <label for="status">الحالة</label>
+        <select id="status">
+          <option value="مشتبه به">مشتبه به</option>
+          <option value="مؤكد">مؤكد</option>
+          <option value="تحت العلاج">تحت العلاج</option>
+          <option value="متعافٍ">متعافٍ</option>
+        </select>
+        <label for="symptoms">الأعراض</label>
+        <textarea id="symptoms" placeholder="مثال: حمى، صداع، آلام في المفاصل"></textarea>
+        <label for="notes">ملاحظات</label>
+        <textarea id="notes" placeholder="أي ملاحظات إضافية"></textarea>
+        <button class="btn red" id="saveBtn">حفظ البلاغ</button>
+      </div>
+    </div>
+
+    <!-- السجل -->
+    <div class="hidden" data-view="list">
+      <div class="back"><button class="small" data-go="home">← رجوع للقائمة</button></div>
+      <div class="card"><input id="search" placeholder="ابحث بالرقم الوظيفي أو الاسم"></div>
+      <div class="card" id="recList"></div>
+    </div>
+
+    <!-- الإحصائيات -->
+    <div class="hidden" data-view="stats">
+      <div class="back"><button class="small" data-go="home">← رجوع للقائمة</button></div>
+      <div class="card" id="statsBox"></div>
+    </div>
+
+    <!-- أرقام المدراء -->
+    <div class="hidden" data-view="contacts">
+      <div class="back"><button class="small" data-go="home">← رجوع للقائمة</button></div>
+      <div class="card">
+        <h3>أرقام المدراء للتواصل</h3>
+        <div class="contacts" data-contacts></div>
+      </div>
+    </div>
+    <!-- التقارير -->
+    <div class="hidden" data-view="reports">
+      <div class="back"><button class="small" data-go="home">← رجوع للقائمة</button></div>
+      <div class="card">
+        <h3>إرسال التقارير عبر واتساب</h3>
+        <p class="muted">تُنشأ صورة للتقرير، ثم تختار واتساب لإرسالها.</p>
+      </div>
+      <div class="grid">
+        <button class="tile blue" data-period="daily"><span class="ic">📅</span>يومي</button>
+        <button class="tile green" data-period="weekly"><span class="ic">🗓️</span>أسبوعي</button>
+        <button class="tile gold" data-period="monthly"><span class="ic">📆</span>شهري</button>
+        <button class="tile red" data-period="semi"><span class="ic">📊</span>نصف سنوي</button>
+        <button class="tile gray full" data-period="annual"><span class="ic">🏆</span>سنوي</button>
+      </div>
+    </div>
+    <div class="hidden" data-view="states">
+      <div class="back"><button class="small" data-go="home">← رجوع للقائمة</button></div>
+      <div class="card">
+        <h3>اختر الولاية</h3>
+        <p class="muted">اضغط الولاية لبدء بلاغ جديد لها.</p>
+        <div class="states">
+        <button class="st" data-state="ولاية الخرطوم">ولاية الخرطوم</button>
+        <button class="st" data-state="ولاية الجزيرة">ولاية الجزيرة</button>
+        <button class="st" data-state="ولاية النيل الأبيض">ولاية النيل الأبيض</button>
+        <button class="st" data-state="ولاية النيل الأزرق">ولاية النيل الأزرق</button>
+        <button class="st" data-state="ولاية سنار">ولاية سنار</button>
+        <button class="st" data-state="ولاية القضارف">ولاية القضارف</button>
+        <button class="st" data-state="ولاية كسلا">ولاية كسلا</button>
+        <button class="st" data-state="ولاية البحر الأحمر">ولاية البحر الأحمر</button>
+        <button class="st" data-state="ولاية نهر النيل">ولاية نهر النيل</button>
+        <button class="st" data-state="الولاية الشمالية">الولاية الشمالية</button>
+        <button class="st" data-state="ولاية شمال كردفان">ولاية شمال كردفان</button>
+        <button class="st" data-state="ولاية جنوب كردفان">ولاية جنوب كردفان</button>
+        <button class="st" data-state="ولاية غرب كردفان">ولاية غرب كردفان</button>
+        <button class="st" data-state="ولاية شمال دارفور">ولاية شمال دارفور</button>
+        <button class="st" data-state="ولاية جنوب دارفور">ولاية جنوب دارفور</button>
+        <button class="st" data-state="ولاية شرق دارفور">ولاية شرق دارفور</button>
+        <button class="st" data-state="ولاية غرب دارفور">ولاية غرب دارفور</button>
+        <button class="st" data-state="ولاية وسط دارفور">ولاية وسط دارفور</button>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<div id="toast"></div>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script>
+const firebaseConfig = {
+  apiKey: "AIzaSyD4Iesxn_85M4cwfDkfrhezBkAFtx45xC0",
+  authDomain: "cq-center-f7775.firebaseapp.com",
+  projectId: "cq-center-f7775",
+  storageBucket: "cq-center-f7775.firebasestorage.app",
+  messagingSenderId: "779273740183",
+  appId: "1:779273740183:web:789956f5c7d0d2ca0aaed2"
+};
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+const db = firebase.firestore();
+
+const MANAGERS = ["0910211755"];
+const $ = id => document.getElementById(id);
+let me = null, reports = [], registering = false;
+
+const normPhone = s => String(s || "").replace(/\D/g, "");
+const emailOf = p => p + "@cq-center.app";
+const ymd = d => new Date(d - d.getTimezoneOffset() * 60000).toISOString().slice(0, 10);
+function esc(s) {
+  return String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+}
+function toast(msg) {
+  const t = $("toast");
+  t.textContent = msg;
+  t.classList.add("show");
+  setTimeout(() => t.classList.remove("show"), 2500);
+}
+
+document.querySelectorAll("[data-contacts]").forEach(el =>
+  el.innerHTML = MANAGERS.map(n => `<a class="btn blue" href="tel:${n}">📞 ${n}</a>`).join(""));
+
+function showReg(on) {
+  $("loginBox").classList.toggle("hidden", on);
+  $("regBox").classList.toggle("hidden", !on);
+}
+$("showReg").onclick = () => showReg(true);
+$("backLogin").onclick = () => showReg(false);
+
+const ERR = {
+  "auth/invalid-credential": "الرقم أو كلمة السر غير صحيحة",
+  "auth/wrong-password": "كلمة السر غير صحيحة",
+  "auth/user-not-found": "هذا الرقم غير مسجل، أنشئ حساباً جديداً",
+  "auth/email-already-in-use": "هذا الرقم مسجل من قبل، سجّل الدخول",
+  "auth/weak-password": "كلمة السر ضعيفة، استخدم 6 أحرف أو أكثر",
+  "auth/too-many-requests": "محاولات كثيرة، انتظر قليلاً"
+};
+const errMsg = e => ERR[e.code] || "حدث خطأ، تأكد من الاتصال بالإنترنت";
+
+// ---------- الدخول والتسجيل ----------
+$("loginBtn").onclick = async () => {
+  const p = normPhone($("lPhone").value);
+  if (p.length < 9) return toast("رقم التلفون غير صحيح");
+  try { await auth.signInWithEmailAndPassword(emailOf(p), $("lPass").value); }
+  catch (e) { toast(errMsg(e)); }
+};
+
+$("regBtn").onclick = async () => {
+  const name = $("rName").value.trim();
+  const p = normPhone($("rPhone").value);
+  const pw = $("rPass").value;
+  if (!name) return toast("اكتب الاسم");
+  if (p.length < 9) return toast("رقم التلفون غير صحيح");
+  if (pw !== $("rPass2").value) return toast("كلمتا السر غير متطابقتين");
+  registering = true;
+  try {
+    const cred = await auth.createUserWithEmailAndPassword(emailOf(p), pw);
+    await db.collection("users").doc(cred.user.uid).set({ name, phone: p, isManager: false });
+    registering = false;
+    await enter(cred.user.uid);
+  } catch (e) {
+    registering = false;
+    toast(errMsg(e));
+  }
+};
+
+$("logoutBtn").onclick = () => auth.signOut();
+
+auth.onAuthStateChanged(async user => {
+  if (registering) return;
+  if (!user) {
+    me = null;
+    $("app").classList.add("hidden");
+    $("auth").classList.remove("hidden");
+    return;
+  }
+  await enter(user.uid);
+});
+
+async function enter(uid) {
+  const snap = await db.collection("users").doc(uid).get();
+  if (!snap.exists) { toast("الحساب غير مكتمل"); return auth.signOut(); }
+  me = { uid, ...snap.data() };
+  $("auth").classList.add("hidden");
+  $("app").classList.remove("hidden");
+  $("welcome").textContent = "مرحباً " + me.name + (me.isManager ? " — مدير" : "");
+  await loadReports();
+  go("home");
+}
+
+async function loadReports() {
+  const q = me.isManager
+    ? db.collection("reports")
+    : db.collection("reports").where("owner", "==", me.uid);
+  const snap = await q.get();
+  reports = snap.docs
+    .map(d => ({ id: d.id, ...d.data() }))
+    .sort((a, b) => (b.created || 0) - (a.created || 0));
+}
+
+// ---------- التنقل ----------
+function go(v) {
+  document.querySelectorAll("[data-view]").forEach(el =>
+    el.classList.toggle("hidden", el.dataset.view !== v));
+  if (v === "new") fillDate();
+  if (v === "list") renderList();
+  if (v === "stats") renderStats();
+  window.scrollTo(0, 0);
+}
+document.querySelectorAll("[data-go]").forEach(b => b.onclick = () => go(b.dataset.go));
+
+// ---------- بلاغ جديد ----------
+function fillDate() {
+  if (!$("date").value) $("date").value = ymd(new Date());
+}
+$("empNo").addEventListener("change", async () => {
+  const no = $("empNo").value.trim();
+  if (!no) return;
+  try {
+    const s = await db.collection("emps").doc(no).get();
+    if (s.exists) { $("empName").value = s.data().name; $("dept").value = s.data().dept || ""; }
+  } catch (e) {}
+});
+$("disease").addEventListener("change", () => {
+  $("otherWrap").classList.toggle("hidden", $("disease").value !== "أخرى");
+});
+
+$("saveBtn").onclick = async () => {
+  const no = $("empNo").value.trim();
+  const name = $("empName").value.trim();
+  const dept = $("dept").value.trim();
+  let dz = $("disease").value;
+  if (dz === "أخرى") dz = $("otherDisease").value.trim();
+  if (!no) return toast("أدخل الرقم الوظيفي");
+  if (!dz) return toast("أدخل اسم المرض");
+
+  $("saveBtn").disabled = true;
+  try {
+    if (name) await db.collection("emps").doc(no).set({ name, dept });
+    await db.collection("reports").add({
+      owner: me.uid, by: me.name, state: $("state").value, locality: $("locality").value, unit: $("state").value === "ولاية الجزيرة" ? $("unit").value : "", no, name, dept, disease: dz,
+      date: $("date").value, status: $("status").value,
+      symptoms: $("symptoms").value.trim(), notes: $("notes").value.trim(),
+      created: Date.now()
+    });
+    await loadReports();
+    resetForm();
+    toast("تم حفظ البلاغ ✓");
+  } catch (e) {
+    toast("تعذّر الحفظ، تأكد من الإنترنت");
+  }
+  $("saveBtn").disabled = false;
+};
+
+function resetForm() {
+  ["empNo", "empName", "dept", "otherDisease", "symptoms", "notes"].forEach(id => $(id).value = "");
+  $("disease").value = "ملاريا";
+  $("otherWrap").classList.add("hidden");
+  $("status").value = "مشتبه به";
+  $("date").value = ymd(new Date());
+}
+
+// ---------- السجل ----------
+$("search").addEventListener("input", renderList);
+function renderList() {
+  const q = $("search").value.trim();
+  const list = reports.filter(r =>
+    !q || String(r.no).includes(q) || (r.name || "").includes(q));
+  if (!list.length) { $("recList").innerHTML = '<div class="empty">لا توجد بلاغات</div>'; return; }
+  $("recList").innerHTML = list.map(r => `
+    <div class="rec">
+      <div><strong>${esc(r.name || "بدون اسم")}</strong> <span class="badge">${esc(r.no)}</span>${r.state ? ` <span class="badge">${esc(r.state)}</span>` : ""}${r.locality ? ` <span class="badge">${esc(r.locality)}</span>` : ""}${r.unit ? ` <span class="badge">${esc(r.unit)}</span>` : ""}</div>
+      <div class="muted">${esc(r.dept)}${r.dept ? " — " : ""}${esc(r.disease)} <span class="badge">${esc(r.status)}</span></div>
+      <div class="muted">التاريخ: ${esc(r.date)} · سجّله: ${esc(r.by)}</div>
+      ${r.symptoms ? `<div class="muted">الأعراض: ${esc(r.symptoms)}</div>` : ""}
+      ${r.notes ? `<div class="muted">ملاحظات: ${esc(r.notes)}</div>` : ""}
+      <div style="margin-top:8px"><button class="small del" onclick="delReport('${r.id}')">حذف</button></div>
+    </div>`).join("");
+}
+
+async function delReport(id) {
+  if (!confirm("هل تريد حذف هذا البلاغ؟")) return;
+  try {
+    await db.collection("reports").doc(id).delete();
+    await loadReports();
+    renderList();
+    toast("تم الحذف");
+  } catch (e) {
+    toast("لا تملك صلاحية حذف هذا البلاغ");
+  }
+}
+
+// ---------- الإحصائيات ----------
+function renderStats() {
+  const emp = new Set(reports.map(r => r.no)).size;
+  const byD = {}, byS = {};
+  reports.forEach(r => {
+    byD[r.disease] = (byD[r.disease] || 0) + 1;
+    byS[r.status] = (byS[r.status] || 0) + 1;
+  });
+  const row = (l, v) => `<div class="stat"><span>${esc(l)}</span><strong>${v}</strong></div>`;
+  const block = obj => Object.keys(obj).length
+    ? Object.entries(obj).map(([k, v]) => row(k, v)).join("")
+    : '<div class="empty">لا توجد بيانات بعد</div>';
+  $("statsBox").innerHTML =
+    `<h3>ملخص عام</h3>` + row("إجمالي البلاغات", reports.length) + row("عدد الموظفين", emp) +
+    `<h3 style="margin-top:16px">حسب المرض</h3>` + block(byD) +
+    `<h3 style="margin-top:16px">حسب الحالة</h3>` + block(byS);
+}
+
+// ---------- التقارير وإرسالها عبر واتساب ----------
+const PERIODS = {
+  daily:   { title: "التقرير اليومي",      days: 1 },
+  weekly:  { title: "التقرير الأسبوعي",    days: 7 },
+  monthly: { title: "التقرير الشهري",      days: 30 },
+  semi:    { title: "التقرير النصف سنوي",  days: 182 },
+  annual:  { title: "التقرير السنوي",      days: 365 }
+};
+
+function makeReportImage(key) {
+  const P = PERIODS[key];
+  const today = new Date();
+  const end = ymd(today);
+  const start = ymd(new Date(today - (P.days - 1) * 864e5));
+  const list = reports.filter(r => r.date >= start && r.date <= end);
+
+  const byD = {}, byS = {};
+  list.forEach(r => {
+    byD[r.disease] = (byD[r.disease] || 0) + 1;
+    byS[r.status] = (byS[r.status] || 0) + 1;
+  });
+  const emp = new Set(list.map(r => r.no)).size;
+  const rows = list.slice(0, 15);
+  const H = 300 + Object.keys(byD).length * 36 + Object.keys(byS).length * 36 + rows.length * 36 + 120;
+
+  const c = document.createElement("canvas");
+  c.width = 800;
+  c.height = H;
+  const x = c.getContext("2d");
+  const R = 780;
+
+  x.fillStyle = "#ffffff";
+  x.fillRect(0, 0, 800, H);
+
+  const grad = x.createLinearGradient(0, 0, 0, 130);
+  grad.addColorStop(0, "#2a7fe0");
+  grad.addColorStop(1, "#0b3a7a");
+  x.fillStyle = grad;
+  x.fillRect(0, 0, 800, 130);
+
+  const logo = document.querySelector("#app header img");
+  if (logo && logo.complete) x.drawImage(logo, 20, 20, 90, 90);
+
+  x.direction = "rtl";
+  x.textAlign = "right";
+  x.fillStyle = "#fff";
+  x.font = "bold 30px Tahoma";
+  x.fillText("مركز تبليغ ام القري", R, 55);
+  x.font = "22px Tahoma";
+  x.fillText(P.title, R, 90);
+  x.font = "18px Tahoma";
+  x.fillText(`من ${start} إلى ${end}`, R, 118);
+
+  let y = 170;
+  const line = (label, val) => {
+    x.fillStyle = "#1d2630";
+    x.font = "20px Tahoma";
+    x.fillText(label, R, y);
+    x.font = "bold 20px Tahoma";
+    x.textAlign = "left";
+    x.fillText(String(val), 40, y);
+    x.textAlign = "right";
+    y += 36;
+  };
+  const section = title => {
+    y += 8;
+    x.fillStyle = "#0b3a7a";
+    x.font = "bold 22px Tahoma";
+    x.fillText(title, R, y);
+    y += 34;
+  };
+
+  section("ملخص عام");
+  line("إجمالي البلاغات", list.length);
+  line("عدد الموظفين المصابين", emp);
+
+  section("حسب المرض");
+  Object.keys(byD).length ? Object.entries(byD).forEach(([k, v]) => line(k, v)) : line("لا توجد بيانات", "-");
+
+  section("حسب الحالة");
+  Object.keys(byS).length ? Object.entries(byS).forEach(([k, v]) => line(k, v)) : line("لا توجد بيانات", "-");
+
+  section("آخر البلاغات");
+  if (!rows.length) line("لا توجد بلاغات في هذه الفترة", "-");
+  rows.forEach(r => line(`${r.name || "بدون اسم"} (${r.no}) - ${r.disease}`, r.status));
+
+  return c;
+}
+
+async function sendReport(key) {
+  const P = PERIODS[key];
+  const canvas = makeReportImage(key);
+  canvas.toBlob(async blob => {
+    const file = new File([blob], `${key}-report.png`, { type: "image/png" });
+    const caption = `${P.title} - مركز تبليغ ام القري`;
+    if (navigator.canShare && navigator.canShare({ files: [file] })) {
+      try {
+        await navigator.share({ files: [file], title: caption, text: caption });
+        return;
+      } catch (e) {
+        if (e.name === "AbortError") return;
+      }
+    }
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = file.name;
+    a.click();
+    window.open("https://wa.me/?text=" + encodeURIComponent(caption), "_blank");
+    toast("أرسل الصورة المحفوظة من واتساب");
+  }, "image/png");
+}
+
+document.querySelectorAll("[data-period]").forEach(b =>
+  b.onclick = () => sendReport(b.dataset.period));
+
+const LOCALITIES = {"ولاية الخرطوم": ["الخرطوم", "أم درمان", "الخرطوم بحري", "شرق النيل", "جبل أولياء", "أم بدة", "كرري"], "ولاية الجزيرة": ["مدني الكبرى", "جنوب الجزيرة", "الحصاحيصا", "الكاملين", "شرق الجزيرة", "المناقل", "أم القرى", "24 القرشي"], "ولاية النيل الأبيض": ["ربك", "كوستي", "الدويم", "القطينة", "الجبلين", "تندلتي", "السلام", "أم رمتة", "قولي"], "ولاية النيل الأزرق": ["الدمازين", "الروصيرص", "الكرمك", "قيسان", "باو", "التضامن"], "ولاية سنار": ["سنجة", "سنار", "أبو حجار", "السوكي", "الدندر", "شرق سنار", "الدالي والمزموم"], "ولاية القضارف": ["بلدية القضارف", "وسط القضارف", "الرهد", "الفاو", "الفشقة", "البطانة", "قلع النحل", "المفازة", "باسندة", "القريشة", "القلابات الشرقية", "القلابات الغربية"], "ولاية كسلا": ["كسلا", "ريفي كسلا", "ريفي غرب كسلا", "حلفا الجديدة", "نهر عطبرة", "خشم القربة", "ود الحليو", "شمال الدلتا", "همشكوريب", "تلكوك", "أروما"], "ولاية البحر الأحمر": ["بورتسودان", "سواكن", "القنب والأوليب", "سنكات", "هيا", "درديب", "طوكر", "جبيت المعادن", "عقيق", "حلايب"], "ولاية نهر النيل": ["الدامر", "عطبرة", "شندي", "المتمة", "بربر", "أبو حمد", "البحيرة"], "الولاية الشمالية": ["دنقلا", "دلقو", "حلفا", "مروي", "الدبة", "البرقيق", "القولد"], "ولاية شمال كردفان": ["شيكان", "جبرة الشيخ", "سودري", "بارا", "غرب بارا", "أم روابة", "أم دم حاج أحمد", "الرهد أبو دكنة"], "ولاية جنوب كردفان": ["كادوقلي", "الدلنج", "رشاد", "أبو جبيهة", "العباسية", "تلودي", "أم دورين", "البرام", "القوز", "هيبان", "الريف الشرقي", "هبيلا", "أبو كرشولا", "لامي", "التضامن", "الليري", "قدير"], "ولاية غرب كردفان": ["أبو زبد", "غبيش", "الخوي", "الأضية", "أبيي", "لقاوة", "ود بندة", "السنوط", "الميرم", "كيلك", "بابنوسة", "الدبب", "السلام", "النهود"], "ولاية شمال دارفور": ["الفاشر", "الواحة", "اللعيت جار النبي", "دار السلام", "كتم", "كبكابية", "المالحة", "سرف عمرة", "أم كدادة", "أمبرو", "مليط", "كرنوي", "الطينة", "السريف", "الكومة", "كلمندو", "طويلة"], "ولاية جنوب دارفور": ["بلدية نيالا", "نيالا شمال", "السلام", "كاس", "عد الفرسان", "بليل", "رهيد البردي", "تلس", "قريضة", "برام", "نتيقة", "مرشنج", "شرق الجبل", "السنطة", "كتيلة", "أم دافوق", "الوحدة", "الردوم", "دمسو", "شطاية", "كيم"], "ولاية شرق دارفور": ["الضعين", "بحر العرب", "ياسين", "أبو كارنكا", "عديلة", "أبو جابرة", "عسلاية", "الفردوس", "شعيرية"], "ولاية غرب دارفور": ["الجنينة", "فور برنقا", "بيضة", "كرينك", "هبيلا", "سربا", "كلبس", "جبل مون"], "ولاية وسط دارفور": ["زالنجي", "وادي صالح", "نيرتتي", "مكجر", "أزوم", "أم دخن", "روكرو", "بندسي"]};
+function fillLocalities() {
+  const list = LOCALITIES[$("state").value] || [];
+  $("locality").innerHTML = list.map(l => `<option value="${l}">${l}</option>`).join("");
+  const isGezira = $("state").value === "ولاية الجزيرة";
+  $("unit").classList.toggle("hidden", !isGezira);
+  document.querySelector('label[for="unit"]').classList.toggle("hidden", !isGezira);
+}
+$("state").addEventListener("change", fillLocalities);
+fillLocalities();
+
+document.querySelectorAll("[data-state]").forEach(b => b.onclick = () => {
+  $("state").value = b.dataset.state; fillLocalities();
+  go("new");
+});
+
+fillDate();
+</script>
+
+</body>
+</html>
