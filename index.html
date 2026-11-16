@@ -334,6 +334,20 @@ $("regBtn").onclick = async () => {
     registering = false;
     await enter(cred.user.uid);
   } catch (e) {
+    if (e.code === "auth/email-already-in-use") {
+      try {
+        const cred = await auth.signInWithEmailAndPassword(emailOf(p), pw);
+        const ref = db.collection("users").doc(cred.user.uid);
+        const s = await ref.get();
+        if (!s.exists) await ref.set({ name, phone: p, isManager: false });
+        registering = false;
+        await enter(cred.user.uid);
+        return;
+      } catch (e2) {
+        registering = false;
+        return toast("هذا الرقم مسجل بكلمة سر مختلفة، سجّل الدخول بها");
+      }
+    }
     registering = false;
     toast(errMsg(e));
   }
@@ -354,7 +368,12 @@ auth.onAuthStateChanged(async user => {
 
 async function enter(uid) {
   const snap = await db.collection("users").doc(uid).get();
-  if (!snap.exists) { toast("الحساب غير مكتمل"); return auth.signOut(); }
+  if (!snap.exists) {
+    const name = prompt("اكتب اسمك لإكمال الحساب") || "مستخدم";
+    const phone = normPhone(auth.currentUser.email.split("@")[0]);
+    await db.collection("users").doc(uid).set({ name, phone, isManager: false });
+    return enter(uid);
+  }
   me = { uid, ...snap.data() };
   $("auth").classList.add("hidden");
   $("app").classList.remove("hidden");
