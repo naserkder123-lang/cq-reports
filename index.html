@@ -1,0 +1,1818 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>إدارة الطوارئ الصحية ومكافحة الأوبئة</title>
+<style>
+:root{--bg:#eef3f8;--card:#fff;--text:#1d2630;--muted:#667085;--border:#d9e0e8;--pri:#1560c7;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*{box-sizing:border-box}
+body{margin:0;font-family:Tahoma,Arial,sans-serif;background:linear-gradient(#dcebfa,var(--bg) 320px);color:var(--text);min-height:100vh}
+.hidden{display:none!important}
+header{background:linear-gradient(#2a7fe0,#0b3a7a);color:#fff;padding:16px;text-align:center;box-shadow:0 4px 0 #072a5a}
+.brand{display:flex;align-items:center;gap:12px;justify-content:center}
+.brand img{width:64px;height:64px;border-radius:14px;background:#fff;box-shadow:0 4px 10px rgba(0,0,0,.3)}
+.brand h1{margin:0;font-size:20px}
+.brand small{display:block;opacity:.9;font-size:13px;font-weight:normal;margin-top:3px}
+main{max-width:520px;margin:auto;padding:16px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:16px;margin-bottom:14px;box-shadow:0 4px 12px rgba(0,0,0,.08)}
+.card h3{margin:0 0 6px}
+label{display:block;margin:12px 0 5px;font-size:14px;color:var(--muted)}
+input,select,textarea{width:100%;padding:12px;border:1px solid var(--border);border-radius:10px;font-size:16px;background:#f7f9fc;color:var(--text);font-family:inherit}
+textarea{min-height:70px;resize:vertical}
+.tile,.btn{--c:linear-gradient(#3fa4ff,#1560c7);--s:#0b3a7a;background:var(--c);color:#fff;border:none;border-radius:16px;font-family:inherit;font-weight:bold;cursor:pointer;text-shadow:0 1px 2px rgba(0,0,0,.3);box-shadow:0 7px 0 var(--s),0 12px 20px rgba(0,0,0,.25),inset 0 2px 0 rgba(255,255,255,.4);transform:translateY(0);transition:transform .08s,box-shadow .08s;text-decoration:none;display:block}
+.tile:active,.btn:active{transform:translateY(5px);box-shadow:0 2px 0 var(--s),0 4px 8px rgba(0,0,0,.2),inset 0 2px 0 rgba(255,255,255,.3)}
+.tile{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;min-height:118px;padding:14px 8px;font-size:16px}
+.tile .ic{font-size:32px}
+.tile.full{grid-column:span 2;min-height:96px}
+.btn{width:100%;padding:14px;font-size:17px;margin-top:16px;text-align:center}
+.blue{--c:linear-gradient(#3fa4ff,#1560c7);--s:#0b3a7a}
+.red{--c:linear-gradient(#ff6a5e,#d82a1e);--s:#8e110a}
+.green{--c:linear-gradient(#4cd47a,#1e9a4a);--s:#0f6a31}
+.gold{--c:linear-gradient(#ffe066,#e8ad00);--s:#9a7400;color:#2a2000;text-shadow:none}
+.gray{--c:linear-gradient(#8a96a6,#56627a);--s:#333d4f}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.link{background:none;border:none;color:var(--pri);font-size:15px;cursor:pointer;margin-top:14px;width:100%;font-family:inherit}
+.small{padding:6px 12px;border:1px solid var(--border);border-radius:8px;background:#fff;color:var(--text);cursor:pointer;font-size:13px;font-family:inherit}
+.small.del{color:#c0392b;border-color:#c0392b}
+.rec{border-bottom:1px solid var(--border);padding:12px 0}
+.rec:last-child{border-bottom:none}
+.badge{display:inline-block;padding:2px 8px;border-radius:10px;background:#eef3f8;font-size:12px;color:var(--muted);margin-inline-start:4px}
+.muted{color:var(--muted);font-size:13px;line-height:1.7}
+.stat{display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--border);font-size:16px}
+.stat:last-child{border-bottom:none}
+.empty{text-align:center;color:var(--muted);padding:20px}
+.back{margin-bottom:12px}
+.back .small{padding:8px 14px}
+.note{background:#fff7d6;border-radius:10px;padding:10px;font-size:13px;color:#6b5600;margin-top:12px}
+#toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#222;color:#fff;padding:10px 18px;border-radius:10px;font-size:14px;opacity:0;transition:opacity .3s;pointer-events:none;z-index:10;max-width:90%;text-align:center}
+#toast.show{opacity:1}
+body{background:radial-gradient(circle at top right,#cfe6ff,transparent 45%),radial-gradient(circle at bottom left,#d9f5e8,transparent 40%),var(--bg)!important}
+header{border-bottom-left-radius:28px;border-bottom-right-radius:28px}
+.card{border-radius:20px;border:none;box-shadow:0 10px 25px rgba(11,58,122,.12)}
+.tile .ic{filter:drop-shadow(0 2px 3px rgba(0,0,0,.3))}
+.brand small{opacity:1;font-weight:bold;color:#ffe066}
+.states{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.st{padding:14px 6px;border:none;border-radius:14px;background:linear-gradient(#3fa4ff,#1560c7);color:#fff;font-family:inherit;font-weight:bold;font-size:14px;line-height:1.5;box-shadow:0 5px 0 #0b3a7a,0 8px 14px rgba(0,0,0,.2);cursor:pointer;transition:transform .08s,box-shadow .08s}
+.st:active{transform:translateY(4px);box-shadow:0 1px 0 #0b3a7a}
+.foot{text-align:center;color:var(--muted);font-size:12px;line-height:1.8;padding:18px 12px 28px}
+#fState{margin-top:4px}
+.back .small{padding:8px 14px;border:none;border-radius:12px;background:linear-gradient(#3fa4ff,#1560c7);color:#fff;font-weight:bold;font-family:inherit;font-size:13px;box-shadow:0 4px 0 #0b3a7a,0 6px 10px rgba(0,0,0,.2);cursor:pointer;transition:transform .08s,box-shadow .08s}
+.back .small:active{transform:translateY(3px);box-shadow:0 1px 0 #0b3a7a}
+.tools{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:12px}
+.pill{padding:8px 12px;border:none;border-radius:999px;background:linear-gradient(#2a6fd6,#0b3a7a);color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.35);font-weight:bold;font-family:inherit;font-size:13px;box-shadow:0 3px 0 #06234d,0 5px 10px rgba(0,0,0,.25),inset 0 1px 0 rgba(255,255,255,.35);cursor:pointer;transition:transform .08s,box-shadow .08s}
+.pill:active{transform:translateY(2px);box-shadow:0 1px 0 #06234d}
+:root[data-theme="dark"]{--bg:#15191e;--card:#1f252c;--text:#e8edf2;--muted:#9aa5b1;--border:#333c46}
+:root[data-theme="dark"] body{background:var(--bg)!important}
+:root[data-theme="dark"] input,:root[data-theme="dark"] select,:root[data-theme="dark"] textarea{background:#11151a!important;color:var(--text)!important;border-color:var(--border)!important}
+:root[data-theme="dark"] .pill{background:linear-gradient(#2f6fcf,#123f86);color:#fff;box-shadow:0 3px 0 #061a38,0 5px 10px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.3)}
+:root[data-theme="dark"] .card{box-shadow:0 10px 25px rgba(0,0,0,.4)}
+:root[data-theme="dark"] .badge{background:#11151a}
+:root[data-theme="dark"] .gold{color:#2a2000}
+header{position:relative;margin:8px 8px 0;padding:20px 18px 16px;border-radius:22px;border:3px double rgba(255,255,255,.92);box-shadow:0 6px 0 #072a5a,0 10px 18px rgba(0,0,0,.25),inset 0 2px 0 rgba(255,255,255,.3)}
+header::before{content:"";position:absolute;inset:6px;border:1px solid rgba(255,224,102,.95);border-radius:16px;pointer-events:none}
+.hdr-orn{position:absolute;font-size:15px;line-height:1;color:#ffe066;text-shadow:0 1px 2px rgba(0,0,0,.45);pointer-events:none}
+.hdr-orn.tl{top:11px;left:15px}.hdr-orn.tr{top:11px;right:15px}.hdr-orn.bl{bottom:11px;left:15px}.hdr-orn.br{bottom:11px;right:15px}
+.brand h1{font-size:clamp(14px,4.6vw,21px);font-weight:900;line-height:1.5;margin-top:7px;padding-top:7px;border-top:1px solid rgba(255,224,102,.65);color:#fff;text-shadow:0 2px 3px rgba(0,0,0,.45);white-space:nowrap}
+.brand .t2{font-size:clamp(14px,4.2vw,18px);font-weight:bold;color:#ffe066;margin-top:1px;text-shadow:0 1px 2px rgba(0,0,0,.35)}
+.brand .t3{font-size:13px;font-weight:bold;color:#cfe3ff}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:16px}
+.grid3 .tile{min-height:92px;font-size:14px;padding:10px 4px}
+.grid3 .tile .ic{font-size:26px}
+.sec-t{margin:18px 4px 0;font-weight:bold;color:var(--pri)}
+.epi-actions{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0;align-items:center}
+.ebtn{display:inline-block;border:none;border-radius:12px;padding:9px 14px;font-weight:bold;font-family:inherit;font-size:13px;color:#fff;text-decoration:none;cursor:pointer;text-shadow:0 1px 2px rgba(0,0,0,.3);background:linear-gradient(#3fa4ff,#1560c7);box-shadow:0 4px 0 #0b3a7a,0 6px 10px rgba(0,0,0,.2),inset 0 2px 0 rgba(255,255,255,.35)}
+.ebtn:active{transform:translateY(3px);box-shadow:0 1px 0 #0b3a7a}
+.ebtn.green{background:linear-gradient(#4cd47a,#1e9a4a);box-shadow:0 4px 0 #0f6a31,0 6px 10px rgba(0,0,0,.2),inset 0 2px 0 rgba(255,255,255,.35)}
+.ebtn.red{background:linear-gradient(#ff6a5e,#d82a1e);box-shadow:0 4px 0 #8e110a,0 6px 10px rgba(0,0,0,.2),inset 0 2px 0 rgba(255,255,255,.35)}
+.ebtn.gray{background:linear-gradient(#8a96a6,#56627a);box-shadow:0 4px 0 #333d4f,0 6px 10px rgba(0,0,0,.2),inset 0 2px 0 rgba(255,255,255,.35)}
+.ebtn.gold{background:linear-gradient(#ffe066,#e8ad00);color:#2a2000;text-shadow:none;box-shadow:0 4px 0 #9a7400,0 6px 10px rgba(0,0,0,.2),inset 0 2px 0 rgba(255,255,255,.5)}
+.epiAlert{padding:9px 12px;border-radius:12px;background:linear-gradient(#fff1f0,#ffe0dd);border:1px solid #f1a9a2;color:#a11d12;font-weight:bold;font-size:14px;margin:6px 0 10px}
+.epiCase{border:1px solid var(--border);border-radius:14px;padding:10px;margin:8px 0;background:var(--card)}
+.epiCase .hist{margin-top:8px;padding:8px;border-radius:10px;background:rgba(21,96,199,.07);font-size:12.5px;line-height:1.8}
+.badge.red{background:#ffe0dd;color:#a11d12}
+.epiT{width:100%;border-collapse:separate;border-spacing:0;font-size:12.5px;background:var(--card)}
+.epiT th,.epiT td{border-bottom:1px solid var(--border);border-left:1px solid var(--border);padding:6px 5px;text-align:center}
+.epiT th{background:#eef3f8;color:#0b3a7a}
+.epiT td.label{text-align:right;font-weight:bold;white-space:nowrap}
+.epiT tr.ct td{border-top:2px solid #1560c7;background:#e8f1fc;font-weight:bold;color:#0b3a7a}
+:root[data-theme="dark"] .epiT th{background:#2a3441;color:#e8edf2}
+:root[data-theme="dark"] .epiT tr.ct td{background:#223049;color:#cfe3ff}
+.xs{overflow-x:auto;margin-bottom:10px;border-radius:10px;border:1px solid var(--border)}
+.epiH{margin:14px 0 6px;color:#0b3a7a}
+:root[data-theme="dark"] .epiH{color:#9cc4ff}
+.row2{display:flex;gap:10px;align-items:flex-end}
+.row2>*{flex:1;min-width:0}
+.epi-modal{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:60;display:flex;align-items:center;justify-content:center;padding:16px}
+.epi-box{background:var(--card);color:var(--text);border-radius:18px;padding:18px;max-width:420px;width:100%;box-shadow:0 12px 30px rgba(0,0,0,.4);border-top:6px solid #d82a1e}
+.print-only{display:none}
+.phead{text-align:center;border:3px double #0b3a7a;border-radius:10px;padding:8px 6px;margin-bottom:12px}
+.phead .o{font-weight:bold;font-size:15px;color:#0b3a7a}.phead .t{font-size:19px;font-weight:bold;color:#0b3a7a;margin:3px 0 6px;padding-bottom:6px;border-bottom:1px solid #999}.phead .rt{font-size:16px;font-weight:bold;margin:2px 0}.phead .p,.phead .d{font-size:12px}
+.pfoot{display:none;justify-content:space-between;margin-top:28px;font-size:12px}
+.notesP{white-space:pre-wrap;border:1px solid #999;min-height:40px;padding:6px;font-size:12px}
+@media print{
+  #app>header,.foot,.back,.noprint,#auth,#toast,.epi-modal{display:none!important}
+  .print-only{display:block!important}.pfoot{display:flex!important}
+  body{background:#fff!important;color:#000!important;zoom:1!important}
+  main{padding:0!important;max-width:none!important}
+  .card{box-shadow:none!important;border:none!important;padding:0!important;background:#fff!important}
+  .xs{overflow:visible!important;border:none!important}
+  .epiT{font-size:10.5px}.epiT th{background:#eee!important;color:#000!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .epiT tr.ct td{background:#e4e4e4!important;color:#000!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .epiCase{break-inside:avoid;box-shadow:none!important}
+  table{break-inside:auto}tr{break-inside:avoid}
+  @page{size:A4;margin:10mm}
+  @page wide{size:A4 landscape;margin:10mm}
+  [data-view="rpt-nine"],[data-view="rpt-annual"]{page:wide}
+}
+</style>
+</head>
+<body>
+
+<div id="auth">
+  <header>
+    <span class="hdr-orn tl">❖</span><span class="hdr-orn tr">❖</span><span class="hdr-orn bl">❖</span><span class="hdr-orn br">❖</span>
+    <div class="brand">
+      <div class="logo">🩺</div>
+      <div><div class="t2">إدارة الشؤون الصحية محلية أم القرى</div><h1>إدارة الطوارئ الصحية ومكافحة الأوبئة</h1></div>
+    </div>
+  </header>
+  <main>
+    <div class="card" id="loginBox">
+      <h3>تسجيل الدخول</h3>
+      <label for="lPhone">رقم التلفون</label>
+      <input id="lPhone" inputmode="tel" placeholder="مثال: 0910211755">
+      <label for="lPass">كلمة السر</label>
+      <input id="lPass" type="password" placeholder="كلمة السر">
+      <button class="btn blue" id="loginBtn">دخول</button>
+      <button class="link" id="showReg">أنشئ حساباً جديداً</button>
+    </div>
+
+    <div class="card hidden" id="regBox">
+      <h3>إنشاء حساب جديد</h3>
+      <label for="rName">الاسم</label>
+      <input id="rName" placeholder="الاسم الكامل">
+      <label for="rPhone">رقم التلفون</label>
+      <input id="rPhone" inputmode="tel" placeholder="رقم التلفون">
+      <label for="rPass">كلمة السر</label>
+      <input id="rPass" type="password" placeholder="4 أحرف أو أكثر">
+      <label for="rPass2">تأكيد كلمة السر</label>
+      <input id="rPass2" type="password" placeholder="أعد كتابة كلمة السر">
+      <button class="btn green" id="regBtn">إنشاء الحساب</button>
+      <button class="link" id="backLogin">لديّ حساب، تسجيل الدخول</button>
+    </div>
+
+    <div class="card">
+      <h3>أرقام المدراء للتواصل</h3>
+      <div class="contacts" data-contacts></div>
+    </div>
+  </main>
+</div>
+
+<div id="app" class="hidden">
+  <header>
+    <span class="hdr-orn tl">❖</span><span class="hdr-orn tr">❖</span><span class="hdr-orn bl">❖</span><span class="hdr-orn br">❖</span>
+    <div class="brand">
+      <div class="logo">🩺</div>
+      <div><div class="t2">إدارة الشؤون الصحية محلية أم القرى</div><h1>إدارة الطوارئ الصحية ومكافحة الأوبئة</h1><small id="welcome"></small></div>
+    </div>
+    <div style="margin-top:10px"><button class="small" id="logoutBtn">تسجيل خروج</button></div>
+  </header>
+
+  <main>
+    <div class="grid" data-view="home">
+      <button class="tile red full" data-go="new"><span class="ic">🚨</span>بلاغ جديد</button>
+      <button class="tile gold full" data-go="states"><span class="ic">🗺️</span>الولايات</button>
+      <button class="tile blue" data-go="list"><span class="ic">📋</span>السجل</button>
+      <button class="tile green" data-go="stats"><span class="ic">📊</span>الإحصائيات</button>
+      <button class="tile gray full" data-go="reports"><span class="ic">📤</span>التقارير وواتساب</button>
+      <button class="tile gold full" data-go="contacts"><span class="ic">📞</span>أرقام المدراء</button>
+    </div>
+
+    <div class="hidden" data-view="new">
+      <div class="back"><button class="small" data-go="home">← رجوع للقائمة</button></div>
+      <div class="card">
+        <label for="state">الولاية</label>
+        <select id="state">
+          <option value="ولاية الخرطوم">ولاية الخرطوم</option>
+          <option value="ولاية الجزيرة">ولاية الجزيرة</option>
+          <option value="ولاية النيل الأبيض">ولاية النيل الأبيض</option>
+          <option value="ولاية النيل الأزرق">ولاية النيل الأزرق</option>
+          <option value="ولاية سنار">ولاية سنار</option>
+          <option value="ولاية القضارف">ولاية القضارف</option>
+          <option value="ولاية كسلا">ولاية كسلا</option>
+          <option value="ولاية البحر الأحمر">ولاية البحر الأحمر</option>
+          <option value="ولاية نهر النيل">ولاية نهر النيل</option>
+          <option value="الولاية الشمالية">الولاية الشمالية</option>
+          <option value="ولاية شمال كردفان">ولاية شمال كردفان</option>
+          <option value="ولاية جنوب كردفان">ولاية جنوب كردفان</option>
+          <option value="ولاية غرب كردفان">ولاية غرب كردفان</option>
+          <option value="ولاية شمال دارفور">ولاية شمال دارفور</option>
+          <option value="ولاية جنوب دارفور">ولاية جنوب دارفور</option>
+          <option value="ولاية شرق دارفور">ولاية شرق دارفور</option>
+          <option value="ولاية غرب دارفور">ولاية غرب دارفور</option>
+          <option value="ولاية وسط دارفور">ولاية وسط دارفور</option>
+        </select>
+        <label for="locality">المحلية</label>
+        <select id="locality"></select>
+        <label for="unit">الوحدة</label>
+        <select id="unit">
+          <option value="وحدة جنوب">وحدة جنوب</option>
+          <option value="وحدة وسط">وحدة وسط</option>
+          <option value="وحدة شمال">وحدة شمال</option>
+        </select>
+        <label for="empNo">الرقم الوظيفي</label>
+        <input id="empNo" inputmode="numeric" placeholder="مثال: 1024">
+        <label for="empName">اسم الموظف</label>
+        <input id="empName" placeholder="الاسم الكامل">
+        <label for="dept">القسم</label>
+        <input id="dept" placeholder="مثال: المختبر">
+        <label for="disease">المرض</label>
+        <select id="disease">
+          <option value="ملاريا">ملاريا</option>
+          <option value="حمى الضنك">حمى الضنك</option>
+          <option value="أخرى">أخرى</option>
+        </select>
+        <div id="otherWrap" class="hidden">
+          <label for="otherDisease">اسم المرض</label>
+          <input id="otherDisease" placeholder="اكتب اسم المرض">
+        </div>
+        <label for="date">تاريخ التشخيص</label>
+        <input id="date" type="date">
+        <label for="status">الحالة</label>
+        <select id="status">
+          <option value="مشتبه به">مشتبه به</option>
+          <option value="مؤكد">مؤكد</option>
+          <option value="تحت العلاج">تحت العلاج</option>
+          <option value="متعافٍ">متعافٍ</option>
+        </select>
+        <label for="symptoms">الأعراض</label>
+        <textarea id="symptoms" placeholder="مثال: حمى، صداع، آلام في المفاصل"></textarea>
+        <label for="notes">ملاحظات</label>
+        <textarea id="notes" placeholder="أي ملاحظات إضافية"></textarea>
+        <button class="btn red" id="saveBtn">حفظ البلاغ</button>
+      </div>
+    </div>
+
+    <div class="hidden" data-view="list">
+      <div class="back"><button class="small" data-go="home">← رجوع للقائمة</button></div>
+      <div class="card"><input id="search" placeholder="ابحث بالرقم الوظيفي أو الاسم" style="margin-bottom:10px"><select id="fState"><option value="">كل الولايات</option><option value="ولاية الخرطوم">ولاية الخرطوم</option><option value="ولاية الجزيرة">ولاية الجزيرة</option><option value="ولاية النيل الأبيض">ولاية النيل الأبيض</option><option value="ولاية النيل الأزرق">ولاية النيل الأزرق</option><option value="ولاية سنار">ولاية سنار</option><option value="ولاية القضارف">ولاية القضارف</option><option value="ولاية كسلا">ولاية كسلا</option><option value="ولاية البحر الأحمر">ولاية البحر الأحمر</option><option value="ولاية نهر النيل">ولاية نهر النيل</option><option value="الولاية الشمالية">الولاية الشمالية</option><option value="ولاية شمال كردفان">ولاية شمال كردفان</option><option value="ولاية جنوب كردفان">ولاية جنوب كردفان</option><option value="ولاية غرب كردفان">ولاية غرب كردفان</option><option value="ولاية شمال دارفور">ولاية شمال دارفور</option><option value="ولاية جنوب دارفور">ولاية جنوب دارفور</option><option value="ولاية شرق دارفور">ولاية شرق دارفور</option><option value="ولاية غرب دارفور">ولاية غرب دارفور</option><option value="ولاية وسط دارفور">ولاية وسط دارفور</option></select></div>
+      <div class="card" id="recList"></div>
+    </div>
+
+    <div class="hidden" data-view="stats">
+      <div class="back"><button class="small" data-go="home">← رجوع للقائمة</button></div>
+      <div class="card" id="statsBox"></div>
+    </div>
+
+    <div class="hidden" data-view="contacts">
+      <div class="back"><button class="small" data-go="home">← رجوع للقائمة</button></div>
+      <div class="card">
+        <h3>أرقام المدراء للتواصل</h3>
+        <div class="contacts" data-contacts></div>
+      </div>
+    </div>
+
+    <div class="hidden" data-view="reports">
+      <div class="back"><button class="small" data-go="home">← رجوع للقائمة</button></div>
+      <div class="card">
+        <h3>إرسال التقارير عبر واتساب</h3>
+        <p class="muted">تُنشأ صورة للتقرير، ثم تختار واتساب لإرسالها.</p>
+      </div>
+      <div class="grid">
+        <button class="tile blue" data-period="daily"><span class="ic">📅</span>يومي</button>
+        <button class="tile green" data-period="weekly"><span class="ic">🗓️</span>أسبوعي</button>
+        <button class="tile gold" data-period="monthly"><span class="ic">📆</span>شهري</button>
+        <button class="tile red" data-period="semi"><span class="ic">📊</span>نصف سنوي</button>
+        <button class="tile gray full" data-period="annual"><span class="ic">🏆</span>سنوي</button>
+      </div>
+    </div>
+    
+    <div class="hidden" data-view="states">
+      <div class="back"><button class="small" data-go="home">← رجوع للقائمة</button></div>
+      <div class="card">
+        <h3>اختر الولاية</h3>
+        <p class="muted">اضغط الولاية لبدء بلاغ جديد لها.</p>
+        <div class="states">
+        <button class="st" data-state="ولاية الخرطوم">ولاية الخرطوم</button>
+        <button class="st" data-state="ولاية الجزيرة">ولاية الجزيرة</button>
+        <button class="st" data-state="ولاية النيل الأبيض">ولاية النيل الأبيض</button>
+        <button class="st" data-state="ولاية النيل الأزرق">ولاية النيل الأزرق</button>
+        <button class="st" data-state="ولاية سنار">ولاية سنار</button>
+        <button class="st" data-state="ولاية القضارف">ولاية القضارف</button>
+        <button class="st" data-state="ولاية كسلا">ولاية كسلا</button>
+        <button class="st" data-state="ولاية البحر الأحمر">ولاية البحر الأحمر</button>
+        <button class="st" data-state="ولاية نهر النيل">ولاية نهر النيل</button>
+        <button class="st" data-state="الولاية الشمالية">الولاية الشمالية</button>
+        <button class="st" data-state="ولاية شمال كردفان">ولاية شمال كردفان</button>
+        <button class="st" data-state="ولاية جنوب كردفان">ولاية جنوب كردفان</button>
+        <button class="st" data-state="ولاية غرب كردفان">ولاية غرب كردفان</button>
+        <button class="st" data-state="ولاية شمال دارفور">ولاية شمال دارفور</button>
+        <button class="st" data-state="ولاية جنوب دارفور">ولاية جنوب دارفور</button>
+        <button class="st" data-state="ولاية شرق دارفور">ولاية شرق دارفور</button>
+        <button class="st" data-state="ولاية غرب دارفور">ولاية غرب دارفور</button>
+        <button class="st" data-state="ولاية وسط دارفور">ولاية وسط دارفور</button>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<footer class="foot">
+  <div class="tools">
+    <button class="pill" id="fMinus">A−</button>
+    <button class="pill" id="fPlus">A+</button>
+    <button class="pill" id="nightBtn">🌙 ليلي</button>
+    <button class="pill" id="shareBtn">🔗 مشاركة الرابط</button>
+    <button class="pill" id="visits">👁 الزوار</button>
+  </div>
+  إدارة الشؤون الصحية محلية أم القرى · إدارة الطوارئ الصحية ومكافحة الأوبئة<br>البيانات محمية ولا تُعرض إلا للمستخدم أو المدير
+</footer>
+<div id="toast"></div>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script>
+const firebaseConfig = {
+  apiKey: "AIzaSyD4Iesxn_85M4cwfDkfrhezBkAFtx45xC0",
+  authDomain: "cq-center-f7775.firebaseapp.com",
+  projectId: "cq-center-f7775",
+  storageBucket: "cq-center-f7775.firebasestorage.app",
+  messagingSenderId: "779273740183",
+  appId: "1:779273740183:web:789956f5c7d0d2ca0aaed2"
+};
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+const db = firebase.firestore();
+
+const MANAGERS = ["0910211755"];
+const ORG = { line1: "إدارة الشؤون الصحية محلية أم القرى", line2: "إدارة الطوارئ الصحية ومكافحة الأوبئة" };
+const $ = id => document.getElementById(id);
+let me = null, reports = [], registering = false;
+
+const normPhone = s => String(s || "").replace(/\D/g, "");
+const emailOf = p => p + "@cq-center.app";
+const ymd = d => new Date(d - d.getTimezoneOffset() * 60000).toISOString().slice(0, 10);
+function esc(s) {
+  return String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+}
+function toast(msg) {
+  const t = $("toast");
+  t.textContent = msg;
+  t.classList.add("show");
+  setTimeout(() => t.classList.remove("show"), 5000);
+}
+
+document.querySelectorAll("[data-contacts]").forEach(el =>
+  el.innerHTML = MANAGERS.map(n => `<a class="btn blue" href="tel:${n}">📞 ${n}</a>`).join(""));
+
+function showReg(on) {
+  $("loginBox").classList.toggle("hidden", on);
+  $("regBox").classList.toggle("hidden", !on);
+}
+$("showReg").onclick = () => showReg(true);
+$("backLogin").onclick = () => showReg(false);
+
+const ERR = {
+  "auth/invalid-credential": "الرقم أو كلمة السر غير صحيحة",
+  "auth/wrong-password": "كلمة السر غير صحيحة",
+  "auth/user-not-found": "هذا الرقم غير مسجل، أنشئ حساباً جديداً",
+  "auth/email-already-in-use": "هذا الرقم مسجل من قبل، سجّل الدخول",
+  "auth/weak-password": "كلمة السر ضعيفة، استخدم 6 أحرف أو أكثر",
+  "auth/too-many-requests": "محاولات كثيرة، انتظر قليلاً"
+};
+const errMsg = e => ERR[e.code] || "حدث خطأ، تأكد من الاتصال بالإنترنت";
+
+$("loginBtn").onclick = async () => {
+  const p = normPhone($("lPhone").value);
+  if (p.length < 9) return toast("رقم التلفون غير صحيح");
+  try { await auth.signInWithEmailAndPassword(emailOf(p), $("lPass").value); }
+  catch (e) { toast(errMsg(e)); }
+};
+
+$("regBtn").onclick = async () => {
+  const name = $("rName").value.trim();
+  const p = normPhone($("rPhone").value);
+  const pw = $("rPass").value;
+  if (!name) return toast("اكتب الاسم");
+  if (p.length < 9) return toast("رقم التلفون غير صحيح");
+  if (pw !== $("rPass2").value) return toast("كلمتا السر غير متطابقتين");
+  registering = true;
+  try {
+    const cred = await auth.createUserWithEmailAndPassword(emailOf(p), pw);
+    await db.collection("users").doc(cred.user.uid).set({ name, phone: p, isManager: false });
+    registering = false;
+    await enter(cred.user.uid);
+  } catch (e) {
+    if (e.code === "auth/email-already-in-use") {
+      try {
+        const cred = await auth.signInWithEmailAndPassword(emailOf(p), pw);
+        const ref = db.collection("users").doc(cred.user.uid);
+        const s = await ref.get();
+        if (!s.exists) await ref.set({ name, phone: p, isManager: false });
+        registering = false;
+        await enter(cred.user.uid);
+        return;
+      } catch (e2) {
+        registering = false;
+        return toast("هذا الرقم مسجل بكلمة سر مختلفة، سجّل الدخول بها");
+      }
+    }
+    registering = false;
+    toast(errMsg(e));
+  }
+};
+
+$("logoutBtn").onclick = () => auth.signOut();
+
+auth.onAuthStateChanged(async user => {
+  if (registering) return;
+  if (!user) {
+    me = null;
+    $("app").classList.add("hidden");
+    $("auth").classList.remove("hidden");
+    return;
+  }
+  await enter(user.uid);
+});
+
+async function enter(uid) {
+  const snap = await db.collection("users").doc(uid).get();
+  if (!snap.exists) {
+    const name = prompt("اكتب اسمك لإكمال الحساب") || "مستخدم";
+    const phone = normPhone(auth.currentUser.email.split("@")[0]);
+    await db.collection("users").doc(uid).set({ name, phone, isManager: false });
+    return enter(uid);
+  }
+  me = { uid, ...snap.data() };
+  $("auth").classList.add("hidden");
+  $("app").classList.remove("hidden");
+  $("welcome").textContent = "مرحباً " + me.name + (me.isManager ? " — مدير" : "");
+  await loadReports();
+  go("home");
+}
+
+async function loadReports() {
+  const q = me.isManager
+    ? db.collection("reports")
+    : db.collection("reports").where("owner", "==", me.uid);
+  const snap = await q.get();
+  reports = snap.docs
+    .map(d => ({ id: d.id, ...d.data() }))
+    .sort((a, b) => (b.created || 0) - (a.created || 0));
+}
+
+function go(v) {
+  document.querySelectorAll("[data-view]").forEach(el =>
+    el.classList.toggle("hidden", el.dataset.view !== v));
+  if (v === "new") fillDate();
+  if (v === "list") renderList();
+  if (v === "stats") renderStats();
+  window.scrollTo(0, 0);
+}
+document.querySelectorAll("[data-go]").forEach(b => b.onclick = () => go(b.dataset.go));
+
+function fillDate() {
+  if (!$("date").value) $("date").value = ymd(new Date());
+}
+$("empNo").addEventListener("change", async () => {
+  const no = $("empNo").value.trim();
+  if (!no) return;
+  try {
+    const s = await db.collection("emps").doc(no).get();
+    if (s.exists) { $("empName").value = s.data().name; $("dept").value = s.data().dept || ""; }
+  } catch (e) {}
+});
+$("disease").addEventListener("change", () => {
+  $("otherWrap").classList.toggle("hidden", $("disease").value !== "أخرى");
+});
+
+$("saveBtn").onclick = async () => {
+  const no = $("empNo").value.trim();
+  const name = $("empName").value.trim();
+  const dept = $("dept").value.trim();
+  let dz = $("disease").value;
+  if (dz === "أخرى") dz = $("otherDisease").value.trim();
+  if (!no) return toast("أدخل الرقم الوظيفي");
+  if (!/^\d+$/.test(no)) return toast("الرقم الوظيفي أرقام فقط");
+  if (!dz) return toast("أدخل اسم المرض");
+
+  $("saveBtn").disabled = true;
+  try {
+    if (name) await db.collection("emps").doc(no).set({ name, dept });
+    await db.collection("reports").add({
+      owner: me.uid, by: me.name, state: $("state").value, locality: $("locality").value, unit: $("state").value === "ولاية الجزيرة" ? $("unit").value : "", no, name, dept, disease: dz,
+      date: $("date").value, status: $("status").value,
+      symptoms: $("symptoms").value.trim(), notes: $("notes").value.trim(),
+      created: Date.now()
+    });
+    await loadReports();
+    resetForm();
+    toast("تم حفظ البلاغ ✓");
+  } catch (e) {
+    toast("تعذّر الحفظ، تأكد من الإنترنت");
+  }
+  $("saveBtn").disabled = false;
+};
+
+function resetForm() {
+  ["empNo", "empName", "dept", "otherDisease", "symptoms", "notes"].forEach(id => $(id).value = "");
+  $("disease").value = "ملاريا";
+  $("otherWrap").classList.add("hidden");
+  $("status").value = "مشتبه به";
+  $("date").value = ymd(new Date());
+}
+
+$("search").addEventListener("input", renderList);
+$("fState").addEventListener("change", renderList);
+function renderList() {
+  const q = $("search").value.trim();
+  const list = reports.filter(r =>
+    (!q || String(r.no).includes(q) || (r.name || "").includes(q)) && (!$("fState").value || r.state === $("fState").value));
+  if (!list.length) { $("recList").innerHTML = '<div class="empty">لا توجد بلاغات</div>'; return; }
+  $("recList").innerHTML = list.map(r => `
+    <div class="rec">
+      <div><strong>${esc(r.name || "بدون اسم")}</strong> <span class="badge">${esc(r.no)}</span>${r.state ? ` <span class="badge">${esc(r.state)}</span>` : ""}${r.locality ? ` <span class="badge">${esc(r.locality)}</span>` : ""}${r.unit ? ` <span class="badge">${esc(r.unit)}</span>` : ""}</div>
+      <div class="muted">${esc(r.dept)}${r.dept ? " — " : ""}${esc(r.disease)} <span class="badge">${esc(r.status)}</span></div>
+      <div class="muted">التاريخ: ${esc(r.date)} · سجّله: ${esc(r.by)}</div>
+      ${r.symptoms ? `<div class="muted">الأعراض: ${esc(r.symptoms)}</div>` : ""}
+      ${r.notes ? `<div class="muted">ملاحظات: ${esc(r.notes)}</div>` : ""}
+      <div style="margin-top:8px"><button class="small del" onclick="delReport('${r.id}')">حذف</button></div>
+    </div>`).join("");
+}
+
+async function delReport(id) {
+  if (!confirm("هل تريد حذف هذا البلاغ؟")) return;
+  try {
+    await db.collection("reports").doc(id).delete();
+    await loadReports();
+    renderList();
+    toast("تم الحذف");
+  } catch (e) {
+    toast("لا تملك صلاحية حذف هذا البلاغ");
+  }
+}
+
+function renderStats() {
+  const emp = new Set(reports.map(r => r.no)).size;
+  const byD = {}, byS = {};
+  reports.forEach(r => {
+    byD[r.disease] = (byD[r.disease] || 0) + 1;
+    byS[r.status] = (byS[r.status] || 0) + 1;
+  });
+  const row = (l, v) => `<div class="stat"><span>${esc(l)}</span><strong>${v}</strong></div>`;
+  const block = obj => Object.keys(obj).length
+    ? Object.entries(obj).map(([k, v]) => row(k, v)).join("")
+    : '<div class="empty">لا توجد بيانات بعد</div>';
+  $("statsBox").innerHTML =
+    `<h3>ملخص عام</h3>` + row("إجمالي البلاغات", reports.length) + row("عدد الموظفين", emp) +
+    `<h3 style="margin-top:16px">حسب المرض</h3>` + block(byD) +
+    `<h3 style="margin-top:16px">حسب الحالة</h3>` + block(byS);
+}
+
+const PERIODS = {
+  daily:   { title: "التقرير اليومي",      days: 1 },
+  weekly:  { title: "التقرير الأسبوعي",    days: 7 },
+  monthly: { title: "التقرير الشهري",      days: 30 },
+  semi:    { title: "التقرير النصف سنوي",  days: 182 },
+  annual:  { title: "التقرير السنوي",      days: 365 }
+};
+
+function makeReportImage(key) {
+  const P = PERIODS[key];
+  const today = new Date();
+  const end = ymd(today);
+  const start = ymd(new Date(today - (P.days - 1) * 864e5));
+  const list = reports.filter(r => r.date >= start && r.date <= end);
+
+  const byD = {}, byS = {};
+  list.forEach(r => {
+    byD[r.disease] = (byD[r.disease] || 0) + 1;
+    byS[r.status] = (byS[r.status] || 0) + 1;
+  });
+  const emp = new Set(list.map(r => r.no)).size;
+  const rows = list.slice(0, 15);
+  const byST = {};
+  list.forEach(r => { if (r.state) byST[r.state] = (byST[r.state] || 0) + 1; });
+  const H = 300 + (Object.keys(byD).length + Object.keys(byS).length + Object.keys(byST).length + rows.length) * 36 + 160;
+
+  const c = document.createElement("canvas");
+  c.width = 800;
+  c.height = H;
+  const x = c.getContext("2d");
+  const R = 780;
+
+  x.fillStyle = "#ffffff";
+  x.fillRect(0, 0, 800, H);
+
+  const grad = x.createLinearGradient(0, 0, 0, 150);
+  grad.addColorStop(0, "#2a7fe0");
+  grad.addColorStop(1, "#0b3a7a");
+  x.fillStyle = grad;
+  x.fillRect(0, 0, 800, 150);
+
+  const logo = document.querySelector("#app header img");
+  if (logo && logo.complete) x.drawImage(logo, 20, 20, 90, 90);
+
+  x.direction = "rtl";
+  x.textAlign = "right";
+  x.fillStyle = "#fff";
+  x.font = "bold 24px Tahoma";
+  x.fillText(ORG.line1, R, 38);
+  x.font = "bold 30px Tahoma";
+  x.fillStyle = "#ffe066";
+  x.fillText(ORG.line2, R, 76);
+  x.fillStyle = "#fff";
+  x.font = "22px Tahoma";
+  x.fillText(P.title, R, 108);
+  x.font = "18px Tahoma";
+  x.fillText(`من ${start} إلى ${end}`, R, 134);
+
+  let y = 190;
+  const line = (label, val) => {
+    x.fillStyle = "#1d2630";
+    x.font = "20px Tahoma";
+    x.fillText(label, R, y);
+    x.font = "bold 20px Tahoma";
+    x.textAlign = "left";
+    x.fillText(String(val), 40, y);
+    x.textAlign = "right";
+    y += 36;
+  };
+  const section = title => {
+    y += 8;
+    x.fillStyle = "#0b3a7a";
+    x.font = "bold 22px Tahoma";
+    x.fillText(title, R, y);
+    y += 34;
+  };
+
+  section("ملخص عام");
+  line("إجمالي البلاغات", list.length);
+  line("عدد الموظفين المصابين", emp);
+
+  section("حسب المرض");
+  Object.keys(byD).length ? Object.entries(byD).forEach(([k, v]) => line(k, v)) : line("لا توجد بيانات", "-");
+
+  section("حسب الحالة");
+  Object.keys(byS).length ? Object.entries(byS).forEach(([k, v]) => line(k, v)) : line("لا توجد بيانات", "-");
+
+  section("حسب الولاية");
+  Object.keys(byST).length ? Object.entries(byST).forEach(([k, v]) => line(k, v)) : line("لا توجد بيانات", "-");
+  section("آخر البلاغات");
+  if (!rows.length) line("لا توجد بلاغات في هذه الفترة", "-");
+  rows.forEach(r => line(`${r.name || "بدون اسم"} (${r.no}) - ${r.disease}`, r.status));
+
+  return c;
+}
+
+async function sendReport(key) {
+  const P = PERIODS[key];
+  const canvas = makeReportImage(key);
+  canvas.toBlob(async blob => {
+    const file = new File([blob], `${key}-report.png`, { type: "image/png" });
+    const caption = `${P.title} - ${ORG.line1}`;
+    if (navigator.canShare && navigator.canShare({ files: [file] })) {
+      try {
+        await navigator.share({ files: [file], title: caption, text: caption });
+        return;
+      } catch (e) {
+        if (e.name === "AbortError") return;
+      }
+    }
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = file.name;
+    a.click();
+    window.open("https://wa.me/?text=" + encodeURIComponent(caption), "_blank", "noopener");
+    toast("أرسل الصورة المحفوظة من واتساب");
+  }, "image/png");
+}
+
+document.querySelectorAll("[data-period]").forEach(b =>
+  b.onclick = () => sendReport(b.dataset.period));
+
+const LOCALITIES = {"ولاية الخرطوم": ["الخرطوم", "أم درمان", "الخرطوم بحري", "شرق النيل", "جبل أولياء", "أم بدة", "كرري"], "ولاية الجزيرة": ["مدني الكبرى", "جنوب الجزيرة", "الحصاحيصا", "الكاملين", "شرق الجزيرة", "المناقل", "أم القرى", "24 القرشي"], "ولاية النيل الأبيض": ["ربك", "كوستي", "الدويم", "القطينة", "الجبلين", "تندلتي", "السلام", "أم رمتة", "قولي"], "ولاية النيل الأزرق": ["الدمازين", "الروصيرص", "الكرمك", "قيسان", "باو", "التضامن"], "ولاية سنار": ["سنجة", "سنار", "أبو حجار", "السوكي", "الدندر", "شرق سنار", "الدالي والمزموم"], "ولاية القضارف": ["بلدية القضارف", "وسط القضارف", "الرهد", "الفاو", "الفشقة", "البطانة", "قلع النحل", "المفازة", "باسندة", "القريشة", "القلابات الشرقية", "القلابات الغربية"], "ولاية كسلا": ["كسلا", "ريفي كسلا", "ريفي غرب كسلا", "حلفا الجديدة", "نهر عطبرة", "خشم القربة", "ود الحليو", "شمال الدلتا", "همشكوريب", "تلكوك", "أروما"], "ولاية البحر الأحمر": ["بورتسودان", "سواكن", "القنب والأوليب", "سنكات", "هيا", "درديب", "طوكر", "جبيت المعادن", "عقيق", "حلايب"], "ولاية نهر النيل": ["الدامر", "عطبرة", "شندي", "المتمة", "بربر", "أبو حمد", "البحيرة"], "الولاية الشمالية": ["دنقلا", "دلقو", "حلفا", "مروي", "الدبة", "البرقيق", "القولد"], "ولاية شمال كردفان": ["شيكان", "جبرة الشيخ", "سودري", "بارا", "غرب بارا", "أم روابة", "أم دم حاج أحمد", "الرهد أبو دكنة"], "ولاية جنوب كردفان": ["كادوقلي", "الدلنج", "رشاد", "أبو جبيهة", "العباسية", "تلودي", "أم دورين", "البرام", "القوز", "هيبان", "الريف الشرقي", "هبيلا", "أبو كرشولا", "لامي", "التضامن", "الليري", "قدير"], "ولاية غرب كردفان": ["أبو زبد", "غبيش", "الخوي", "الأضية", "أبيي", "لقاوة", "ود بندة", "السنوط", "الميرم", "كيلك", "بابنوسة", "الدبب", "السلام", "النهود"], "ولاية شمال دارفور": ["الفاشر", "الواحة", "اللعيت جار النبي", "دار السلام", "كتم", "كبكابية", "المالحة", "سرف عمرة", "أم كدادة", "أمبرو", "مليط", "كرنوي", "الطينة", "السريف", "الكومة", "كلمندو", "طويلة"], "ولاية جنوب دارفور": ["بلدية نيالا", "نيالا شمال", "السلام", "كاس", "عد الفرسان", "بليل", "رهيد البردي", "تلس", "قريضة", "برام", "نتيجة", "مرشنج", "شرق الجبل", "السنطة", "كتيلة", "أم دافوق", "الوحدة", "الردوم", "دمسو", "شطاية", "كيم"], "ولاية شرق دارفور": ["الضعين", "بحر العرب", "ياسين", "أبو كارنكا", "عديلة", "أبو جابرة", "عسلاية", "الفردوس", "شعيرية"], "ولاية غرب دارفور": ["الجنينة", "فور برنقا", "بيضة", "كرينك", "هبيلا", "سربا", "كلبس", "جبل مون"], "ولاية وسط دارفور": ["زالنجي", "وادي صالح", "نيرتتي", "مكجر", "أزوم", "أم دخن", "روكرو", "بندسي"]};
+function fillLocalities() {
+  const list = LOCALITIES[$("state").value] || [];
+  $("locality").innerHTML = list.map(l => `<option value="${l}">${l}</option>`).join("");
+  const isGezira = $("state").value === "ولاية الجزيرة";
+  $("unit").classList.toggle("hidden", !isGezira);
+  document.querySelector('label[for="unit"]').classList.toggle("hidden", !isGezira);
+}
+$("state").addEventListener("change", fillLocalities);
+fillLocalities();
+
+document.querySelectorAll("[data-state]").forEach(b => b.onclick = () => {
+  $("state").value = b.dataset.state; fillLocalities();
+  go("new");
+});
+
+const SCALES = [0.9, 1, 1.1, 1.2, 1.3];
+let scaleIdx = Math.min(SCALES.length - 1, Math.max(0, +(localStorage.getItem("fIdx") || 1)));
+function applyScale() {
+  document.body.style.zoom = SCALES[scaleIdx];
+  localStorage.setItem("fIdx", scaleIdx);
+}
+$("fMinus").onclick = () => { if (scaleIdx > 0) { scaleIdx--; applyScale(); } };
+$("fPlus").onclick = () => { if (scaleIdx < SCALES.length - 1) { scaleIdx++; applyScale(); } };
+
+function applyNight(on) {
+  document.documentElement.dataset.theme = on ? "dark" : "light";
+  localStorage.setItem("night", on ? "1" : "0");
+}
+applyNight(localStorage.getItem("night") === "1");
+$("nightBtn").onclick = () => applyNight(document.documentElement.dataset.theme !== "dark");
+
+$("shareBtn").onclick = async () => {
+  const url = location.href.split("?")[0];
+  try {
+    if (navigator.share) await navigator.share({ title: ORG.line2, text: "رابط تطبيق التبليغ", url });
+    else { await navigator.clipboard.writeText(url); toast("تم نسخ الرابط"); }
+  } catch (e) { if (e.name !== "AbortError") toast("تعذّرت المشاركة"); }
+};
+
+async function countVisit() {
+  const ref = db.collection("stats").doc("site");
+  try {
+    if (!sessionStorage.getItem("visited")) {
+      sessionStorage.setItem("visited", "1");
+      const s = await ref.get();
+      if (!s.exists) await ref.set({ count: 1 });
+      else await ref.update({ count: firebase.firestore.FieldValue.increment(1) });
+    }
+    const s2 = await ref.get();
+    $("visits").textContent = "👁 الزوار: " + (s2.exists ? s2.data().count : 0);
+  } catch (e) { $("visits").textContent = "👁 الزوار"; }
+}
+$("visits").onclick = countVisit;
+
+applyScale();
+countVisit();
+fillDate();
+
+(function () {
+  'use strict';
+  if (typeof db === 'undefined' || typeof go === 'undefined') return;
+
+  const ORG_H = (typeof ORG !== 'undefined') ? ORG : { line1: 'إدارة الشؤون الصحية محلية أم القرى', line2: 'إدارة الطوارئ الصحية ومكافحة الأوبئة' };
+  const MONTHS = ['يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];
+  const OTHER = 'أمراض وبائية أخرى';
+  const DEFAULT_A = [
+    'الإسهال المائي الحاد (الاشتباه بالكوليرا)', 'الحميات النزفية', 'الحمى الصفراء', 'حمى الضنك',
+    'الطاعون البشري الوبائي', 'الشلل الرخو الحاد', 'الحصبة', 'التهاب الكبد الوبائي',
+    'التيفوس الوبائي', 'التيتانوس', 'تيتانوس حديثي الولادة', OTHER
+  ];
+  const UNITS = ['وحدة جنوب', 'وحدة وسط', 'وحدة شمال'];
+  const OUTCOMES = ['بانتظار النتيجة', 'موجب (مؤكد)', 'سالب (مستبعد)', 'متعافٍ', 'وفاة', 'محال للمستشفى'];
+  const AGE_GROUPS = ['أقل من سنة', '1–4 سنوات', '5–14 سنة', '15–44 سنة', '45 سنة فأكثر', 'غير محدد'];
+  const FIELD_LABELS = {
+    disease: 'المرض', diseaseOther: 'اسم المرض الآخر', patientName: 'اسم المريض', age: 'العمر', ageUnit: 'وحدة العمر',
+    sex: 'النوع', onsetDate: 'تاريخ ظهور الأعراض', illnessDate: 'تاريخ الشعور بالمرض', reportDate: 'تاريخ التبليغ',
+    symptoms: 'الأعراض', village: 'القرية', unit: 'الوحدة الإدارية', facility: 'جهة التبليغ', reporter: 'اسم المبلّغ',
+    outcome: 'النتيجة/الحالة النهائية', repeat: 'تكرار المرض', notes: 'ملاحظات'
+  };
+  const LISTS = {
+    A: { title: 'أمراض القائمة (أ)', ready: true },
+    B: { title: 'القائمة الثانية', ready: false, diseases: [] },
+    C: { title: 'القائمة الثالثة', ready: false, diseases: [] }
+  };
+
+  const nowY = new Date().getFullYear();
+  const S = {
+    uid: null, loaded: false, error: null, cases: [],
+    A: { diseases: DEFAULT_A.slice(), directorPhone: '' },
+    daily: { date: '' },
+    quarter: { year: nowY, q: Math.floor(new Date().getMonth() / 3) + 1 },
+    semi: { year: nowY, half: new Date().getMonth() < 6 ? 1 : 2 },
+    nine: { year: nowY },
+    annual: { year: nowY },
+    filt: { from: '', to: '', disease: '', village: '', unit: '', sex: '', outcome: '' },
+    editing: null, formDisease: '', users: []
+  };
+
+  const $q = (s, r) => (r || document).querySelector(s);
+  const $$ = (s, r) => Array.from((r || document).querySelectorAll(s));
+  const byId = id => document.getElementById(id);
+  const mk = html => { const t = document.createElement('template'); t.innerHTML = html.trim(); return t.content.firstElementChild; };
+  const pad = n => String(n).padStart(2, '0');
+  const sum = a => a.reduce((x, y) => x + y, 0);
+  const ROLE_LABELS = { sysadmin: 'مدير النظام', locality: 'إدارة المحلية', unit: 'الوحدة الإدارية', center: 'المركز الصحي', entry: 'مدخل بيانات', viewer: 'مستخدم اطلاع وتقارير' };
+  const LOW_ROLES = ['unit', 'center', 'entry', 'viewer'];
+  function roleOf(u) {
+    u = u || me || {};
+    let r = u.role;
+    if (r === 'admin') r = 'sysadmin'; else if (r === 'manager') r = 'locality';
+    if (r === 'sysadmin') return 'sysadmin';
+    if (r === 'locality' || u.isManager === true) return 'locality';
+    return LOW_ROLES.indexOf(r) >= 0 ? r : 'entry';
+  }
+  const isSys = () => !!me && roleOf() === 'sysadmin';
+  const isMgr = () => !!me && (roleOf() === 'sysadmin' || roleOf() === 'locality');
+  const roleLabel = () => ROLE_LABELS[roleOf()] || '';
+  const canWrite = () => !!me && roleOf() !== 'viewer';
+  function scopeQuery() {
+    const r = roleOf(), u = me || {};
+    if (r === 'sysadmin' || r === 'locality') return { mode: 'all' };
+    if (r === 'unit') return u.unit ? { mode: 'field', field: 'unit', value: u.unit } : { mode: 'none' };
+    if (r === 'center') return u.center ? { mode: 'field', field: 'facility', value: u.center } : { mode: 'none' };
+    if (r === 'viewer') {
+      if (u.viewAll === true) return { mode: 'all' };
+      if (u.unit) return { mode: 'field', field: 'unit', value: u.unit };
+      if (u.center) return { mode: 'field', field: 'facility', value: u.center };
+      return { mode: 'none' };
+    }
+    return { mode: 'field', field: 'owner', value: u.uid };
+  }
+  const canRegister = () => canWrite() && scopeQuery().mode !== 'none';
+  function inScopeClient(c) {
+    if (isMgr() || c.owner === me.uid) return true;
+    const sc = scopeQuery();
+    return sc.mode === 'all' || (sc.mode === 'field' && c[sc.field] === sc.value);
+  }
+  const todayStr = () => ymd(new Date());
+  const LRM = '\u200E';
+  const pct = (n, t) => t > 0 ? LRM + (n / t * 100).toFixed(1) + '%' : '—';
+  function chgTxt(cur, prev) {
+    if (!prev) return cur > 0 ? 'جديد' : '—';
+    const v = (cur - prev) / prev * 100;
+    return LRM + (v > 0 ? '+' : '') + v.toFixed(1) + '%';
+  }
+  const normAr = s => String(s || '').replace(/[\u064B-\u0652\u0640]/g, '').replace(/[أإآ]/g, 'ا')
+    .replace(/ى/g, 'ي').replace(/ة/g, 'ه').replace(/\s+/g, ' ').trim().toLowerCase();
+  const uniqSorted = arr => Array.from(new Set(arr)).sort((a, b) => a.localeCompare(b, 'ar'));
+  const dateOf = c => c.reportDate || c.onsetDate || '';
+  const yearOf = c => +dateOf(c).slice(0, 4);
+  const monthOf = c => +dateOf(c).slice(5, 7) - 1;
+  const isDeath = c => c.outcome === 'وفاة';
+  function ageYears(c) {
+    if (c.age == null || c.age === '' || isNaN(c.age)) return null;
+    const a = +c.age;
+    return c.ageUnit === 'شهر' ? a / 12 : c.ageUnit === 'يوم' ? a / 365 : a;
+  }
+  function ageGroup(c) {
+    const y = ageYears(c);
+    if (y === null) return AGE_GROUPS[5];
+    if (y < 1) return AGE_GROUPS[0];
+    if (y < 5) return AGE_GROUPS[1];
+    if (y < 15) return AGE_GROUPS[2];
+    if (y < 45) return AGE_GROUPS[3];
+    return AGE_GROUPS[4];
+  }
+  const ageText = c => (c.age == null || c.age === '') ? '—' : c.age + ' ' + (c.ageUnit || 'سنة');
+  const visible = () => S.cases.filter(c => c.list === 'A');
+  function diseaseKeys(extra) {
+    const base = S.A.diseases.slice();
+    (extra || []).forEach(c => { if (c.disease && !base.includes(c.disease)) base.push(c.disease); });
+    return base;
+  }
+  const dispName = c => (c.disease === OTHER && c.diseaseOther) ? OTHER + ': ' + c.diseaseOther : c.disease;
+  const directorPhone = () => S.A.directorPhone || (typeof MANAGERS !== 'undefined' && MANAGERS[0]) || '';
+  function waNum(p) {
+    let d = String(p || '').replace(/\D/g, '');
+    if (d.startsWith('00')) d = d.slice(2);
+    if (d.startsWith('0')) d = '249' + d.slice(1);
+    return d;
+  }
+  const waUrl = (p, text) => 'https://wa.me/' + waNum(p) + '?text=' + encodeURIComponent(text);
+
+  function hash53(str) {
+    let h1 = 0xdeadbeef, h2 = 0x41c6ce57;
+    for (let i = 0, ch; i < str.length; i++) {
+      ch = str.charCodeAt(i);
+      h1 = Math.imul(h1 ^ ch, 2654435761);
+      h2 = Math.imul(h2 ^ ch, 1597334677);
+    }
+    h1 = Math.imul(h1 ^ (h1 >>> 16), 2246822507) ^ Math.imul(h2 ^ (h2 >>> 13), 3266489909);
+    h2 = Math.imul(h2 ^ (h2 >>> 16), 2246822507) ^ Math.imul(h1 ^ (h1 >>> 13), 3266489909);
+    return (4294967296 * (2097151 & h2) + (h1 >>> 0)).toString(36);
+  }
+  const dupKey = c => 'k' + hash53([c.disease, normAr(c.patientName), c.age, c.ageUnit, c.sex, c.onsetDate].join('|'));
+
+  function caseText(c) {
+    return [
+      '🚨 بلاغ فوري', ORG_H.line1, ORG_H.line2,
+      'المرض المشتبه به: ' + dispName(c),
+      'المريض: ' + c.patientName + ' | العمر: ' + ageText(c) + ' | النوع: ' + c.sex,
+      'القرية: ' + (c.village || '-') + ' | الوحدة الإدارية: ' + (c.unit || '-'),
+      'تاريخ ظهور الأعراض: ' + (c.onsetDate || '-') + ' | تاريخ التبليغ: ' + c.reportDate,
+      c.symptoms ? 'الأعراض: ' + c.symptoms : null,
+      'جهة التبليغ: ' + (c.facility || '-') + ' | المبلّغ: ' + (c.reporter || '-'),
+      'الحالة/النتيجة: ' + (c.outcome || '-')
+    ].filter(Boolean).join('\n');
+  }
+
+  async function loadSettings() {
+    try {
+      const s = await db.collection('settings').doc('listA').get();
+      if (s.exists) {
+        const d = s.data();
+        if (Array.isArray(d.diseases) && d.diseases.length) S.A.diseases = d.diseases;
+        if (d.directorPhone) S.A.directorPhone = d.directorPhone;
+      }
+    } catch (e) { }
+  }
+  async function loadCases() {
+    const col = db.collection('cases'), sc = scopeQuery();
+    if (sc.mode === 'none') { S.cases = []; return; }
+    const q = sc.mode === 'all' ? col : col.where(sc.field, '==', sc.value);
+    const snap = await q.get();
+    S.cases = snap.docs.map(d => Object.assign({ id: d.id }, d.data()));
+  }
+  async function ensureData(force) {
+    if (!me) return false;
+    if (S.uid !== me.uid) {
+      S.uid = me.uid; S.loaded = false; S.cases = [];
+      S.A = { diseases: DEFAULT_A.slice(), directorPhone: '' };
+    }
+    if (S.loaded && !force) return true;
+    try {
+      await loadSettings();
+      await loadCases();
+      S.loaded = true; S.error = null;
+      return true;
+    } catch (e) { S.error = e; return false; }
+  }
+  function errHtml(e) {
+    const pd = e && (e.code === 'permission-denied' || /permission/i.test(e.message || ''));
+    return '<div class="card epiAlert">⚠ ' + (pd
+      ? 'لا توجد صلاحية للوصول إلى بيانات القائمة (أ). يجب نشر قواعد Firestore الجديدة ثم إعادة المحاولة.'
+      : 'تعذّر تحميل البيانات، تأكد من الاتصال بالإنترنت.') + '</div>';
+  }
+  function showErr() { $$('.epiErr').forEach(x => x.innerHTML = S.error ? errHtml(S.error) : ''); }
+
+  const css = document.createElement('style');
+  css.textContent = `
+.epi-actions{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0;align-items:center}
+.ebtn{display:inline-block;border:none;border-radius:12px;padding:9px 14px;font-weight:bold;font-family:inherit;font-size:13px;color:#fff;text-decoration:none;cursor:pointer;text-shadow:0 1px 2px rgba(0,0,0,.3);background:linear-gradient(#3fa4ff,#1560c7);box-shadow:0 4px 0 #0b3a7a,0 6px 10px rgba(0,0,0,.2),inset 0 2px 0 rgba(255,255,255,.35)}
+.ebtn:active{transform:translateY(3px);box-shadow:0 1px 0 #0b3a7a}
+.ebtn.green{background:linear-gradient(#4cd47a,#1e9a4a);box-shadow:0 4px 0 #0f6a31,0 6px 10px rgba(0,0,0,.2),inset 0 2px 0 rgba(255,255,255,.35)}
+.ebtn.red{background:linear-gradient(#ff6a5e,#d82a1e);box-shadow:0 4px 0 #8e110a,0 6px 10px rgba(0,0,0,.2),inset 0 2px 0 rgba(255,255,255,.35)}
+.ebtn.gray{background:linear-gradient(#8a96a6,#56627a);box-shadow:0 4px 0 #333d4f,0 6px 10px rgba(0,0,0,.2),inset 0 2px 0 rgba(255,255,255,.35)}
+.ebtn.gold{background:linear-gradient(#ffe066,#e8ad00);color:#2a2000;text-shadow:none;box-shadow:0 4px 0 #9a7400,0 6px 10px rgba(0,0,0,.2),inset 0 2px 0 rgba(255,255,255,.5)}
+.epiAlert{padding:9px 12px;border-radius:12px;background:linear-gradient(#fff1f0,#ffe0dd);border:1px solid #f1a9a2;color:#a11d12;font-weight:bold;font-size:14px;margin:6px 0 10px}
+.epiCase{border:1px solid var(--border);border-radius:14px;padding:10px;margin:8px 0;background:var(--card)}
+.epiCase .hist{margin-top:8px;padding:8px;border-radius:10px;background:rgba(21,96,199,.07);font-size:12.5px;line-height:1.8}
+.badge.red{background:#ffe0dd;color:#a11d12}
+.epiT{width:100%;border-collapse:separate;border-spacing:0;font-size:12.5px;background:var(--card)}
+.epiT th,.epiT td{border-bottom:1px solid var(--border);border-left:1px solid var(--border);padding:6px 5px;text-align:center}
+.epiT th{background:#eef3f8;color:#0b3a7a}
+.epiT td.label{text-align:right;font-weight:bold;white-space:nowrap}
+.epiT tr.ct td{border-top:2px solid #1560c7;background:#e8f1fc;font-weight:bold;color:#0b3a7a}
+:root[data-theme="dark"] .epiT th{background:#2a3441;color:#e8edf2}
+:root[data-theme="dark"] .epiT tr.ct td{background:#223049;color:#cfe3ff}
+.xs{overflow-x:auto;margin-bottom:10px;border-radius:10px;border:1px solid var(--border)}
+.epiH{margin:14px 0 6px;color:#0b3a7a}
+:root[data-theme="dark"] .epiH{color:#9cc4ff}
+.row2{display:flex;gap:10px;align-items:flex-end}
+.row2>*{flex:1;min-width:0}
+.epi-modal{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:60;display:flex;align-items:center;justify-content:center;padding:16px}
+.epi-box{background:var(--card);color:var(--text);border-radius:18px;padding:18px;max-width:420px;width:100%;box-shadow:0 12px 30px rgba(0,0,0,.4);border-top:6px solid #d82a1e}
+.print-only{display:none}
+.phead{text-align:center;border:3px double #0b3a7a;border-radius:10px;padding:8px 6px;margin-bottom:12px}
+.phead .o{font-weight:bold;font-size:15px;color:#0b3a7a}.phead .t{font-size:19px;font-weight:bold;color:#0b3a7a;margin:3px 0 6px;padding-bottom:6px;border-bottom:1px solid #999}.phead .rt{font-size:16px;font-weight:bold;margin:2px 0}.phead .p,.phead .d{font-size:12px}
+.pfoot{display:none;justify-content:space-between;margin-top:28px;font-size:12px}
+.notesP{white-space:pre-wrap;border:1px solid #999;min-height:40px;padding:6px;font-size:12px}
+@media print{
+  #app>header,.foot,.back,.noprint,#auth,#toast,.epi-modal{display:none!important}
+  .print-only{display:block!important}.pfoot{display:flex!important}
+  body{background:#fff!important;color:#000!important;zoom:1!important}
+  main{padding:0!important;max-width:none!important}
+  .card{box-shadow:none!important;border:none!important;padding:0!important;background:#fff!important}
+  .xs{overflow:visible!important;border:none!important}
+  .epiT{font-size:10.5px}.epiT th{background:#eee!important;color:#000!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .epiT tr.ct td{background:#e4e4e4!important;color:#000!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .epiCase{break-inside:avoid;box-shadow:none!important}
+  table{break-inside:auto}tr{break-inside:avoid}
+  @page{size:A4;margin:10mm}
+  @page wide{size:A4 landscape;margin:10mm}
+  [data-view="rpt-nine"],[data-view="rpt-annual"]{page:wide}
+}`;
+  document.head.appendChild(css);
+
+  const cellH = v => (typeof v === 'string' && v.charAt(0) === '<') ? v : esc(v);
+  function T(title, heads, rows, total) {
+    const th = heads.map(h => '<th>' + esc(h) + '</th>').join('');
+    const row = r => r.map((v, i) => i === 0 ? '<td class="label">' + esc(v) + '</td>' : '<td>' + cellH(v) + '</td>').join('');
+    const body = rows.map(r => '<tr>' + row(r) + '</tr>').join('');
+    const tt = total ? '<tr class="ct">' + row(total) + '</tr>' : '';
+    return '<h4 class="epiH">' + esc(title) + '</h4><div class="xs"><table class="epiT xl" data-title="' + esc(title) + '"><tr>' + th + '</tr>' + body + tt + '</table></div>';
+  }
+  function dist(title, cases, keyFn, keys, first) {
+    const rows = keys.map(k => {
+      const g = cases.filter(c => keyFn(c) === k);
+      return [k, g.filter(c => c.sex === 'ذكر').length, g.filter(c => c.sex === 'أنثى').length, g.length, pct(g.length, cases.length), g.filter(isDeath).length];
+    });
+    const tot = ['الإجمالي', sum(rows.map(r => r[1])), sum(rows.map(r => r[2])), cases.length, cases.length ? LRM + '100%' : '—', sum(rows.map(r => r[5]))];
+    return T(title, [first, 'ذكور', 'إناث', 'الإجمالي', 'النسبة %', 'وفيات'], rows, tot);
+  }
+  function diseaseMonth(title, cases, prevCases, months) {
+    const ds = diseaseKeys(cases.concat(prevCases));
+    const grid = {}; ds.forEach(d => grid[d] = months.map(() => 0));
+    cases.forEach(c => { const j = months.indexOf(monthOf(c)); if (j >= 0 && grid[c.disease]) grid[c.disease][j]++; });
+    const prevTot = {}; prevCases.forEach(c => prevTot[c.disease] = (prevTot[c.disease] || 0) + 1);
+    const grand = cases.length;
+    const heads = ['المرض'].concat(months.map(m => MONTHS[m]), ['الإجمالي', 'النسبة %', 'الفترة السابقة', 'التغير']);
+    const rows = ds.map(d => {
+      const tot = sum(grid[d]), pv = prevTot[d] || 0;
+      return [d].concat(grid[d], [tot, pct(tot, grand), pv, chgTxt(tot, pv)]);
+    });
+    const colT = months.map((m, j) => sum(ds.map(d => grid[d][j])));
+    const total = ['الإجمالي'].concat(colT, [grand, grand ? LRM + '100%' : '—', prevCases.length, chgTxt(grand, prevCases.length)]);
+    return T(title, heads, rows, total);
+  }
+  function crossBy(title, cases, rowKeys, rowFn, colKeys, colFn, rowLabel) {
+    const rows = rowKeys.map(r => {
+      const cnt = colKeys.map(k => cases.filter(c => rowFn(c) === r && colFn(c) === k).length);
+      const tot = sum(cnt);
+      return [r].concat(cnt, [tot, pct(tot, cases.length)]);
+    });
+    const colT = colKeys.map(k => cases.filter(c => colFn(c) === k).length);
+    const total = ['الإجمالي'].concat(colT, [cases.length, cases.length ? LRM + '100%' : '—']);
+    const heads = [rowLabel].concat(colKeys.map(k => typeof k === 'number' ? MONTHS[k] : k), ['الإجمالي', 'النسبة %']);
+    return T(title, heads, rows, total);
+  }
+  function summaryRows(cases, monthsIdx) {
+    const n = cases.length, dth = cases.filter(isDeath).length;
+    const m = cases.filter(c => c.sex === 'ذكر').length, f = cases.filter(c => c.sex === 'أنثى').length;
+    const dc = {}; cases.forEach(c => dc[c.disease] = (dc[c.disease] || 0) + 1);
+    const top = Object.entries(dc).sort((a, b) => b[1] - a[1])[0];
+    const mc = monthsIdx.map(mi => cases.filter(c => monthOf(c) === mi).length);
+    const pm = Math.max.apply(null, mc);
+    const uc = {}; cases.forEach(c => { const u = c.unit || 'غير محدد'; uc[u] = (uc[u] || 0) + 1; });
+    const tu = Object.entries(uc).sort((a, b) => b[1] - a[1])[0];
+    return [
+      ['إجمالي الحالات', n], ['الوفيات', dth + ' (' + pct(dth, n) + ')'],
+      ['الذكور', m + ' (' + pct(m, n) + ')'], ['الإناث', f + ' (' + pct(f, n) + ')'],
+      ['أكثر الأمراض', top ? top[0] + ' (' + top[1] + ')' : '—'],
+      ['أعلى شهر', n && pm > 0 ? MONTHS[monthsIdx[mc.indexOf(pm)]] + ' (' + pm + ')' : '—'],
+      ['أكثر الوحدات إصابة', tu ? tu[0] + ' (' + tu[1] + ')' : '—']
+    ];
+  }
+  const summaryT = (cases, months) => T('ملخص إحصائي', ['المؤشر', 'القيمة'], summaryRows(cases, months), null);
+  const phead = (title, period) => '<div class="phead print-only"><div class="o">' + esc(ORG_H.line1) + '</div><div class="t">' + esc(ORG_H.line2) + '</div><div class="rt">' + esc(title) + '</div><div class="p">' + esc(period) + '</div><div class="d">تاريخ الطباعة: ' + todayStr() + '</div></div>';
+  const pfoot = '<div class="pfoot print-only"><span>أعدّه: ..................</span><span>المراجعة: ..................</span><span>مدير الصحة: ..................</span></div>';
+  function scopeText() {
+    const sc = scopeQuery();
+    if (sc.mode === 'all') return '';
+    if (sc.mode === 'none') return 'لم يُحدَّد نطاق صلاحياتك بعد، راجع مدير المحلية.';
+    if (sc.field === 'unit') return 'يعرض هذا التقرير بيانات وحدتك الإدارية (' + sc.value + ') فقط.';
+    if (sc.field === 'facility') return 'يعرض هذا التقرير بيانات مركزك الصحي (' + sc.value + ') فقط.';
+    return 'يعرض هذا التقرير الحالات التي سجّلتها أنت فقط.';
+  }
+  const scopeNote = () => scopeText() ? '<div class="muted noprint" style="margin:6px 0">' + scopeText() + '</div>' : '';
+
+  function canEdit(c) { return canWrite() && inScopeClient(c); }
+  function caseCard(c) {
+    const ph = directorPhone();
+    return '<div class="epiCase" data-id="' + esc(c.id) + '">' +
+      '<div><strong>' + esc(c.patientName) + '</strong> <span class="badge">' + esc(dispName(c)) + '</span> ' + (c.immediate ? '<span class="badge red">🔔 فوري</span>' : '') + '</div>' +
+      '<div class="muted">العمر: ' + esc(ageText(c)) + ' · النوع: ' + esc(c.sex) + ' · القرية: ' + esc(c.village || '—') + ' · الوحدة: ' + esc(c.unit || '—') + '</div>' +
+      '<div class="muted">ظهور الأعراض: ' + esc(c.onsetDate || '—') + ' · التبليغ: ' + esc(c.reportDate) + ' · الحالة: ' + esc(c.outcome || '—') + '</div>' +
+      '<div class="muted">جهة التبليغ: ' + esc(c.facility || '—') + ' · المبلّغ: ' + esc(c.reporter || '—') + '</div>' +
+      '<div class="epi-actions noprint">' +
+      '<button class="ebtn green" data-act="wa" data-id="' + esc(c.id) + '">📲 واتساب</button>' +
+      '<a class="ebtn blue" href="tel:' + esc(ph) + '">📞 اتصال</a>' +
+      (canEdit(c) ? '<button class="ebtn gold" data-act="edit" data-id="' + esc(c.id) + '">✏️ تعديل</button>' : '') +
+      '<button class="ebtn gray" data-act="hist" data-id="' + esc(c.id) + '">📜 السجل</button>' +
+      (isMgr() ? '<button class="ebtn red" data-act="del" data-id="' + esc(c.id) + '">🗑 حذف</button>' : '') +
+      '</div><div class="hist hidden"></div></div>';
+  }
+  function histHtml(c) {
+    const h = Array.isArray(c.history) ? c.history : [];
+    if (!h.length) return 'لا يوجد سجل تعديلات.';
+    return h.slice().reverse().map(x => {
+      const when = new Date(x.at).toLocaleString('ar-EG');
+      const ch = typeof x.ch === 'string' ? esc(x.ch) : (x.ch || []).map(d => esc(d.f) + ': «' + esc(d.from || '—') + '» ← «' + esc(d.to || '—') + '»').join('<br>');
+      return '<div>🕒 ' + esc(when) + ' — ' + esc(x.by || '') + '<br>' + ch + '</div>';
+    }).join('<hr>');
+  }
+
+  const main = $q('#app main');
+  if (!main) return;
+  const exBar = id => '<div class="epi-actions noprint"><button class="ebtn blue" data-ex="print" data-t="' + id + '">🖨 طباعة</button><button class="ebtn blue" data-ex="pdf" data-t="' + id + '">📄 PDF</button><button class="ebtn green" data-ex="xls" data-t="' + id + '">📊 Excel</button></div>';
+  const yearSel = id => '<label for="' + id + '">السنة</label><select id="' + id + '"></select>';
+  const backBtn = (to, label) => '<div class="back noprint"><button class="small" data-epi-go="' + to + '">← ' + label + '</button></div>';
+
+  const dzOpts = () => '<option value="">اختر</option>' + diseaseKeys().map(d => '<option>' + esc(d) + '</option>').join('');
+  const VIEW_HTML = {
+    listA: backBtn('reports', 'رجوع للتقارير') + '<div class="epiErr"></div>' +
+      '<div class="card"><h3>أمراض القائمة (أ)</h3><div class="epiAlert">⚡ التقرير فوري ويومي</div><div id="epiRoleNote" class="muted"></div></div>' +
+      '<div class="grid">' +
+      '<button class="tile red full" data-epi-go="rpt-daily"><span class="ic">🚨</span>التقرير الفوري واليومي</button>' +
+      '<button class="tile green full" data-epi-go="rpt-quarter"><span class="ic">📊</span>التقرير الربع سنوي</button>' +
+      '<button class="tile blue full" data-epi-go="rpt-semi"><span class="ic">📅</span>التقرير النصف سنوي</button>' +
+      '<button class="tile gold full" data-epi-go="rpt-nine"><span class="ic">🗓️</span>تقرير الثلاثة أرباع</button>' +
+      '<button class="tile gray full" data-epi-go="rpt-annual"><span class="ic">🏆</span>التقرير السنوي</button>' +
+      '<button class="tile gray full" data-epi-go="records"><span class="ic">🔎</span>السجلات والإحصائيات والفلاتر</button>' +
+      '<button class="tile blue full hidden" id="epiAdminBtn" data-epi-go="admin"><span class="ic">⚙️</span>إدارة قائمة الأمراض</button>' +
+      '<button class="tile blue full hidden" id="epiUsersBtn" data-epi-go="users"><span class="ic">👥</span>المستخدمون والصلاحيات</button>' +
+      '</div><div class="card" id="epiRegCard" style="margin-top:14px"><h3>تسجيل حالة جديدة</h3><p class="muted">اختر المرض لفتح نموذجه.</p><div class="states" id="epiDiseaseBtns"></div></div>',
+
+    caseForm: backBtn('listA', 'رجوع') + '<div class="card"><h3 id="cfTitle">تسجيل حالة</h3>' +
+      '<div class="epiAlert">🔔 يجب التبليغ فوراً عن حالات أمراض القائمة (أ)</div>' +
+      '<label for="cf_disease">المرض المشتبه به</label><select id="cf_disease"></select>' +
+      '<div id="cf_otherWrap" class="hidden"><label for="cf_other">اسم المرض</label><input id="cf_other"></div>' +
+      '<label for="cf_name">اسم المريض</label><input id="cf_name" autocomplete="off">' +
+      '<div class="row2"><div><label for="cf_age">العمر</label><input id="cf_age" type="number" min="0" inputmode="numeric"></div>' +
+      '<div><label for="cf_ageu">الوحدة</label><select id="cf_ageu"><option>سنة</option><option>شهر</option><option>يوم</option></select></div></div>' +
+      '<label for="cf_sex">النوع</label><select id="cf_sex"><option value="">اختر</option><option>ذكر</option><option>أنثى</option></select>' +
+      '<label for="cf_onset">تاريخ ظهور الأعراض</label><input id="cf_onset" type="date">' +
+      '<label for="cf_ill">تاريخ الشعور بالمرض / بداية الأعراض</label><input id="cf_ill" type="date">' +
+      '<label for="cf_rep">تاريخ التبليغ</label><input id="cf_rep" type="date">' +
+      '<label for="cf_sym">الأعراض والعلامات</label><textarea id="cf_sym"></textarea>' +
+      '<label for="cf_vil">القرية</label><input id="cf_vil" list="epiVil">' +
+      '<label for="cf_unit">الوحدة الإدارية</label><input id="cf_unit" list="epiUnits">' +
+      '<label for="cf_fac">المركز الصحي أو جهة التبليغ</label><input id="cf_fac" list="epiFac">' +
+      '<label for="cf_rpt">اسم المبلّغ</label><input id="cf_rpt">' +
+      '<label for="cf_out">نتيجة الفحص أو الحالة النهائية</label><select id="cf_out"><option value="">اختر</option>' + OUTCOMES.map(o => '<option>' + o + '</option>').join('') + '</select>' +
+      '<label for="cf_repeat">هل سبق تكرار المرض؟</label><select id="cf_repeat"><option>لا</option><option>نعم</option></select>' +
+      '<label for="cf_notes">ملاحظات إضافية</label><textarea id="cf_notes"></textarea>' +
+      '<div class="epi-actions"><button class="ebtn green" data-act="save">💾 حفظ</button><button class="ebtn blue" data-act="saveAdd" id="cf_addBtn">➕ حفظ وإضافة حالة أخرى</button><button class="ebtn gray" data-epi-go="listA">إلغاء</button></div>' +
+      '</div><datalist id="epiVil"></datalist><datalist id="epiUnits"></datalist><datalist id="epiFac"></datalist>',
+
+    'rpt-daily': backBtn('listA', 'رجوع لقائمة (أ)') + '<div class="epiErr"></div>' +
+      '<div class="card noprint"><h3>التقرير الفوري واليومي</h3><div class="epiAlert">⚡ التقرير فوري ويومي</div>' +
+      '<label for="d_date">تاريخ التقرير</label><div class="row2"><input type="date" id="d_date"><button class="ebtn gray" data-act="dPrev">◀</button><button class="ebtn gray" data-act="dNext">▶</button></div>' +
+      '<div class="epi-actions"><button class="ebtn red" data-act="dAdd">➕ تسجيل حالة</button><button class="ebtn green" data-act="dWa">📲 إرسال بلاغ نصي</button><a class="ebtn blue" id="d_call">📞 اتصال بمدير الصحة</a></div>' +
+      exBar('rpt-daily') + '</div>' +
+      '<div class="card noprint"><h3>💾 تصدير ومشاركة التقرير</h3>' +
+      '<div class="epi-actions">' +
+      '<button class="ebtn gold" data-act="dImg">📸 حفظ كصورة</button>' +
+      '<button class="ebtn blue" data-act="dPdf">📄 حفظ PDF</button>' +
+      '<button class="ebtn green" data-act="dWaImg">📲 إرسال كصورة واتساب</button>' +
+      '</div></div><div id="d_body"></div>',
+
+    'rpt-quarter': backBtn('listA', 'رجوع لقائمة (أ)') + '<div class="epiErr"></div>' +
+      '<div class="card noprint"><h3>التقرير الربع سنوي</h3><div class="row2"><div>' + yearSel('q_year') + '</div><div><label for="q_num">الربع</label><select id="q_num"><option value="1">الأول (يناير-مارس)</option><option value="2">الثاني (أبريل-يونيو)</option><option value="3">الثالث (يوليو-سبتمبر)</option><option value="4">الرابع (أكتوبر-ديسمبر)</option></select></div></div>' + exBar('rpt-quarter') + '</div><div id="q_body"></div>',
+
+    'rpt-semi': backBtn('listA', 'رجوع لقائمة (أ)') + '<div class="epiErr"></div>' +
+      '<div class="card noprint"><h3>التقرير النصف سنوي</h3><div class="row2"><div>' + yearSel('s_year') + '</div><div><label for="s_half">النصف</label><select id="s_half"><option value="1">الأول (يناير–يونيو)</option><option value="2">الثاني (يوليو–ديسمبر)</option></select></div></div>' + exBar('rpt-semi') + '</div><div id="s_body"></div>',
+
+    'rpt-nine': backBtn('listA', 'رجوع لقائمة (أ)') + '<div class="epiErr"></div>' +
+      '<div class="card noprint"><h3>تقرير الثلاثة أرباع (تسعة أشهر)</h3>' + yearSel('n_year') + exBar('rpt-nine') + '</div><div id="n_body"></div>',
+
+    'rpt-annual': backBtn('listA', 'رجوع لقائمة (أ)') + '<div class="epiErr"></div>' +
+      '<div class="card noprint"><h3>التقرير السنوي</h3>' + yearSel('a_year') + exBar('rpt-annual') + '</div><div id="a_body"></div>',
+
+    records: backBtn('listA', 'رجوع لقائمة (أ)') + '<div class="epiErr"></div>' +
+      '<div class="card noprint"><h3>السجلات والإحصائيات والفلاتر</h3>' +
+      '<div class="row2"><div><label for="f_from">من تاريخ</label><input type="date" id="f_from"></div><div><label for="f_to">إلى تاريخ</label><input type="date" id="f_to"></div></div>' +
+      '<label for="f_dz">المرض</label><select id="f_dz"></select>' +
+      '<div class="row2"><div><label for="f_vil">القرية</label><select id="f_vil"></select></div><div><label for="f_unit">الوحدة</label><select id="f_unit"></select></div></div>' +
+      '<div class="row2"><div><label for="f_sex">النوع</label><select id="f_sex"><option value="">الكل</option><option>ذكر</option><option>أنثى</option></select></div><div><label for="f_out">الحالة</label><select id="f_out"><option value="">الكل</option>' + OUTCOMES.map(o => '<option>' + o + '</option>').join('') + '</select></div></div>' +
+      '<div class="epi-actions"><button class="ebtn gray" data-act="fReset">إعادة ضبط الفلاتر</button></div>' + exBar('records') + '</div><div id="f_body"></div>',
+
+    admin: backBtn('listA', 'رجوع لقائمة (أ)') + '<div class="epiErr"></div>' +
+      '<div class="card"><h3>إدارة قائمة الأمراض (للمدير)</h3>' +
+      '<p class="muted">اكتب كل مرض في سطر مستقل. تعديل الاسم أو حذفه لا يغيّر السجلات القديمة المحفوظة.</p>' +
+      '<label for="a_list">الأمراض</label><textarea id="a_list" style="min-height:220px"></textarea>' +
+      '<label for="a_phone">رقم مدير الصحة (للواتساب والاتصال)</label><input id="a_phone" inputmode="tel">' +
+      '<div class="epi-actions"><button class="ebtn green" data-act="aSave">💾 حفظ الإعدادات</button></div></div>',
+
+    users: backBtn('listA', 'رجوع لقائمة (أ)') + '<div class="epiErr"></div>' +
+      '<div class="card"><h3>المستخدمون والصلاحيات</h3><p class="muted">حدّد دور كل مستخدم ونطاقه.</p>' +
+      '<label for="u_q">بحث</label><input id="u_q" placeholder="الاسم أو رقم التلفون"></div><div id="u_list"></div>' +
+      '<datalist id="epiUnitsU">' + UNITS.map(u => '<option value="' + u + '">').join('') + '</datalist>',
+
+    listB: backBtn('reports', 'رجوع للتقارير') + '<div class="card"><h3>' + LISTS.B.title + '</h3><p class="muted">لا توجد أمراض مضافة بعد. القائمة مجهّزة للإضافة لاحقاً.</p></div>',
+    listC: backBtn('reports', 'رجوع للتقارير') + '<div class="card"><h3>' + LISTS.C.title + '</h3><p class="muted">القائمة فارغة، بانتظار التعليمات.</p></div>'
+  };
+  Object.keys(VIEW_HTML).forEach(id => {
+    if ($q('[data-view="' + id + '"]')) return;
+    const v = mk('<div class="hidden" data-view="' + id + '">' + VIEW_HTML[id] + '</div>');
+    main.appendChild(v);
+  });
+
+  (function () {
+    const home = $q('#app [data-view="home"]');
+    if (!home || byId('epiUnitsBox')) return;
+    const box = mk('<div class="hidden" data-view="home" id="epiUnitsBox"><div class="sec-t">الوحدات الإدارية</div><div class="grid3">' +
+      UNITS.map((u, i) => '<button class="tile blue" data-unit-go="' + i + '"><span class="ic">🏥</span>' + u + '</button>').join('') +
+      '</div></div>');
+    home.insertAdjacentElement('afterend', box);
+    box.classList.toggle('hidden', home.classList.contains('hidden'));
+    box.addEventListener('click', ev => {
+      const b = ev.target.closest('[data-unit-go]');
+      if (!b) return;
+      S.filt = { from: '', to: '', disease: '', village: '', unit: UNITS[+b.dataset.unitGo], sex: '', outcome: '' };
+      go('records');
+    });
+  })();
+
+  (function () {
+    const v = $q('[data-view="reports"]');
+    if (!v || byId('epiMenu')) return;
+    const card = mk('<div class="card" id="epiMenu"><h3>تقارير الرصد الوبائي</h3><div class="grid">' +
+      '<button class="tile red full" data-epi-go="listA"><span class="ic">⚡</span>' + LISTS.A.title + '<small>التقرير فوري ويومي</small></button>' +
+      '<button class="tile gray" data-epi-go="listB"><span class="ic">📂</span>' + LISTS.B.title + '</button>' +
+      '<button class="tile gray" data-epi-go="listC"><span class="ic">📂</span>' + LISTS.C.title + '</button></div></div>');
+    v.insertBefore(card, v.children[1] || null);
+  })();
+
+  function fillYears(id, cur) {
+    const ys = new Set([nowY, cur]);
+    for (let i = 1; i <= 6; i++) ys.add(nowY - i);
+    visible().forEach(c => { const y = yearOf(c); if (y) ys.add(y); });
+    const arr = Array.from(ys).sort((a, b) => b - a);
+    byId(id).innerHTML = arr.map(y => '<option value="' + y + '">' + y + '</option>').join('');
+    byId(id).value = cur;
+  }
+  function fillDatalists() {
+    byId('epiVil').innerHTML = uniqSorted(visible().map(c => c.village).filter(Boolean)).map(v => '<option value="' + esc(v) + '">').join('');
+    byId('epiUnits').innerHTML = uniqSorted(UNITS.concat(visible().map(c => c.unit).filter(Boolean))).map(v => '<option value="' + esc(v) + '">').join('');
+    byId('epiFac').innerHTML = uniqSorted(visible().map(c => c.facility).filter(Boolean)).map(v => '<option value="' + esc(v) + '">').join('');
+  }
+  function renderHub() {
+    showErr();
+    byId('epiAdminBtn').classList.toggle('hidden', !isMgr());
+    byId('epiUsersBtn').classList.toggle('hidden', !isMgr());
+    byId('epiRegCard').classList.toggle('hidden', !canRegister());
+    byId('epiRoleNote').textContent = 'دورك: ' + roleLabel() + (scopeText() ? ' — ' + scopeText().replace('يعرض هذا التقرير ', '') : ' — نطاقك: كل المحلية');
+    const box = byId('epiDiseaseBtns');
+    const ds = diseaseKeys();
+    const cnt = {}; visible().forEach(c => cnt[c.disease] = (cnt[c.disease] || 0) + 1);
+    box.innerHTML = ds.map((d, i) => '<button class="st" data-dzi="' + i + '">' + esc(d) + (cnt[d] ? '<br><small>(' + cnt[d] + ' حالة)</small>' : '') + '</button>').join('');
+  }
+
+  function renderDaily() {
+    showErr();
+    if (!S.daily.date) S.daily.date = todayStr();
+    byId('d_date').value = S.daily.date;
+    byId('d_call').href = 'tel:' + directorPhone();
+    $q('[data-act="dAdd"]').classList.toggle('hidden', !canRegister());
+    const d = S.daily.date;
+    const list = visible().filter(c => c.reportDate === d);
+    const ds = diseaseKeys(list);
+    const rows = ds.map(k => {
+      const g = list.filter(c => c.disease === k);
+      return [k, g.length, g.filter(c => c.sex === 'ذكر').length, g.filter(c => c.sex === 'أنثى').length, g.filter(isDeath).length];
+    });
+    const tot = ['الإجمالي', list.length, sum(rows.map(r => r[2])), sum(rows.map(r => r[3])), sum(rows.map(r => r[4]))];
+    byId('d_body').innerHTML = phead('التقرير الفوري واليومي — أمراض القائمة (أ)', 'التاريخ: ' + d) + scopeNote() +
+      T('الإجمالي اليومي حسب المرض', ['المرض', 'عدد الحالات', 'ذكور', 'إناث', 'وفيات'], rows, tot) +
+      '<h4 class="epiH">حالات اليوم (' + list.length + ')</h4>' +
+      (list.length ? list.map(caseCard).join('') : '<div class="muted">لا توجد حالات مسجلة في هذا التاريخ.</div>') + pfoot;
+  }
+  function dailyText() {
+    const d = S.daily.date, list = visible().filter(c => c.reportDate === d);
+    const lines = diseaseKeys(list).map(k => [k, list.filter(c => c.disease === k).length]).filter(x => x[1] > 0).map(x => '• ' + x[0] + ': ' + x[1]);
+    return ['📋 التقرير اليومي — أمراض القائمة (أ)', ORG_H.line1, ORG_H.line2, 'التاريخ: ' + d, lines.length ? lines.join('\n') : 'لا توجد حالات مسجلة', 'إجمالي الحالات: ' + list.length].join('\n');
+  }
+
+  const noteKey = p => p === 'quarter' ? 'quarter_' + S.quarter.year + '_' + S.quarter.q : p === 'semi' ? 'semi_' + S.semi.year + '_' + S.semi.half : p === 'nine' ? 'nine_' + S.nine.year : 'annual_' + S.annual.year;
+  async function loadNote(key) { try { const s = await db.collection('reportNotes').doc(key).get(); return s.exists ? (s.data().notes || '') : ''; } catch (e) { return ''; } }
+  const notesBlock = p => '<h4 class="epiH">ملاحظات</h4><textarea id="' + p + '_notes" class="noprint" ' + (isMgr() ? '' : 'readonly') + ' placeholder="ملاحظات التقرير"></textarea><div class="notesP print-only" id="' + p + '_notesP"></div>' +
+    (isMgr() ? '<div class="epi-actions noprint"><button class="ebtn green" data-act="saveNote" data-p="' + p + '">💾 حفظ الملاحظات</button></div>' : '');
+  function fillNote(p) {
+    loadNote(noteKey(p)).then(t => { const a = byId(p + '_notes'), b = byId(p + '_notesP'); if (a) a.value = t; if (b) b.textContent = t; });
+  }
+  const casesIn = (y, months) => visible().filter(c => yearOf(c) === y && months.indexOf(monthOf(c)) >= 0);
+  const countMonth = (y, mi) => mi < 0 ? casesIn(y - 1, [11]).length : casesIn(y, [mi]).length;
+
+  function renderQuarter() {
+    showErr();
+    fillYears('q_year', S.quarter.year); byId('q_num').value = S.quarter.q;
+    const y = S.quarter.year, q = +S.quarter.q;
+    const m0 = (q - 1) * 3;
+    const months = [m0, m0 + 1, m0 + 2];
+    const cur = casesIn(y, months);
+    const prev = casesIn(y, [m0 - 3, m0 - 2, m0 - 1]);
+    const mt = months.map(m => cur.filter(c => monthOf(c) === m).length);
+    const chg = months.map((m, i) => chgTxt(mt[i], i === 0 ? countMonth(y, m - 1) : mt[i - 1]));
+    const title = 'التقرير الربع سنوي — أمراض القائمة (أ)';
+    const period = 'الربع ' + q + ' من عام ' + y + ' (' + MONTHS[months[0]] + ' – ' + MONTHS[months[2]] + ')';
+    byId('q_body').innerHTML = phead(title, period) + scopeNote() +
+      diseaseMonth('إجمالي الحالات حسب المرض والشهر', cur, prev, months) +
+      T('مقارنة الأشهر', ['المؤشر'].concat(months.map(m => MONTHS[m])), [['عدد الحالات'].concat(mt), ['التغير عن الشهر السابق'].concat(chg)], null) +
+      summaryT(cur, months) + notesBlock('quarter') + pfoot;
+    fillNote('quarter');
+  }
+
+  function renderSemi() {
+    showErr();
+    fillYears('s_year', S.semi.year); byId('s_half').value = S.semi.half;
+    const y = S.semi.year, h = S.semi.half, m0 = h === 1 ? 0 : 6;
+    const months = [0, 1, 2, 3, 4, 5].map(i => m0 + i);
+    const cur = casesIn(y, months);
+    const prev = h === 1 ? casesIn(y - 1, [6, 7, 8, 9, 10, 11]) : casesIn(y, [0, 1, 2, 3, 4, 5]);
+    const mt = months.map(m => cur.filter(c => monthOf(c) === m).length);
+    const chg = months.map((m, i) => chgTxt(mt[i], i === 0 ? countMonth(y, m - 1) : mt[i - 1]));
+    const title = 'التقرير النصف سنوي — أمراض القائمة (أ)';
+    const period = (h === 1 ? 'النصف الأول' : 'النصف الثاني') + ' من عام ' + y + ' (' + MONTHS[months[0]] + ' – ' + MONTHS[months[5]] + ')';
+    byId('s_body').innerHTML = phead(title, period) + scopeNote() +
+      diseaseMonth('إجمالي الحالات حسب المرض والشهر', cur, prev, months) +
+      T('مقارنة الأشهر', ['المؤشر'].concat(months.map(m => MONTHS[m])), [['عدد الحالات'].concat(mt), ['التغير عن الشهر السابق'].concat(chg)], null) +
+      summaryT(cur, months) + notesBlock('semi') + pfoot;
+    fillNote('semi');
+  }
+
+  function renderNine() {
+    showErr();
+    fillYears('n_year', S.nine.year);
+    const y = S.nine.year, months = [0, 1, 2, 3, 4, 5, 6, 7, 8];
+    const cur = casesIn(y, months), prev = casesIn(y - 1, months);
+    const units = uniqSorted(cur.map(c => c.unit || 'غير محدد'));
+    const uf = c => c.unit || 'غير محدد';
+    byId('n_body').innerHTML = phead('تقرير الثلاثة أرباع — أمراض القائمة (أ)', 'من يناير إلى سبتمبر ' + y) + scopeNote() +
+      diseaseMonth('توزيع الحالات حسب المرض والشهر', cur, prev, months) +
+      crossBy('توزيع الحالات حسب المرض والوحدة الإدارية', cur, diseaseKeys(cur), c => c.disease, units, uf, 'المرض') +
+      crossBy('توزيع الحالات حسب الوحدة الإدارية والشهر', cur, units, uf, months, monthOf, 'الوحدة الإدارية') +
+      summaryT(cur, months) + notesBlock('nine') + pfoot;
+    fillNote('nine');
+  }
+
+  function renderAnnual() {
+    showErr();
+    fillYears('a_year', S.annual.year);
+    const y = S.annual.year, months = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
+    const cur = casesIn(y, months), prev = casesIn(y - 1, months);
+    const units = uniqSorted(cur.map(c => c.unit || 'غير محدد'));
+    const mt = months.map(m => cur.filter(c => monthOf(c) === m).length);
+    const mp = months.map(m => prev.filter(c => monthOf(c) === m).length);
+    byId('a_body').innerHTML = phead('التقرير السنوي — أمراض القائمة (أ)', 'عام ' + y) + scopeNote() +
+      summaryT(cur, months) +
+      diseaseMonth('إجمالي الإصابات حسب المرض والشهر (ومقارنة بالعام السابق)', cur, prev, months) +
+      T('مقارنة الأداء الوبائي الشهري', ['المؤشر'].concat(months.map(m => MONTHS[m])),
+        [['عام ' + y].concat(mt), ['عام ' + (y - 1)].concat(mp), ['التغير'].concat(months.map((m, i) => chgTxt(mt[i], mp[i])))], null) +
+      dist('توزيع الحالات حسب الفئة العمرية والنوع', cur, ageGroup, AGE_GROUPS, 'الفئة العمرية') +
+      dist('توزيع الحالات حسب المرض والنوع', cur, c => c.disease, diseaseKeys(cur), 'المرض') +
+      dist('توزيع الحالات حسب الوحدة الإدارية', cur, c => c.unit || 'غير محدد', units, 'الوحدة الإدارية') +
+      notesBlock('annual') + pfoot;
+    fillNote('annual');
+  }
+
+  function filtered() {
+    const f = S.filt;
+    return visible().filter(c => (!f.from || c.reportDate >= f.from) && (!f.to || c.reportDate <= f.to) &&
+      (!f.disease || c.disease === f.disease) && (!f.village || normAr(c.village) === normAr(f.village)) &&
+      (!f.unit || normAr(c.unit) === normAr(f.unit)) && (!f.sex || c.sex === f.sex) && (!f.outcome || c.outcome === f.outcome));
+  }
+  function renderRecords() {
+    showErr();
+    const f = S.filt, all = visible();
+    byId('f_from').value = f.from; byId('f_to').value = f.to;
+    const opt = (arr, cur, allLabel) => '<option value="">' + allLabel + '</option>' + arr.map(x => '<option' + (x === cur ? ' selected' : '') + '>' + esc(x) + '</option>').join('');
+    byId('f_dz').innerHTML = opt(diseaseKeys(all), f.disease, 'كل الأمراض');
+    byId('f_vil').innerHTML = opt(uniqSorted(all.map(c => c.village).filter(Boolean)), f.village, 'كل القرى');
+    byId('f_unit').innerHTML = opt(uniqSorted(UNITS.concat(all.map(c => c.unit).filter(Boolean))), f.unit, 'كل الوحدات');
+    byId('f_sex').value = f.sex; byId('f_out').value = f.outcome;
+    const list = filtered().sort((a, b) => (dateOf(b) > dateOf(a) ? 1 : -1));
+    const period = (f.from || f.to) ? 'الفترة: ' + (f.from || '…') + ' إلى ' + (f.to || '…') : 'كل الفترات';
+    const keys = uniqSorted(list.map(c => c.village || 'غير محدد'));
+    byId('f_body').innerHTML = phead('السجلات والإحصائيات — أمراض القائمة (أ)', period) + scopeNote() +
+      T('ملخص عام', ['المؤشر', 'القيمة'], summaryRows(list, [0,1,2,3,4,5,6,7,8,9,10,11]).slice(0, 4), null) +
+      dist('الحالات حسب المرض', list, c => c.disease, diseaseKeys(list), 'المرض') +
+      dist('الحالات حسب الفئة العمرية', list, ageGroup, AGE_GROUPS, 'الفئة العمرية') +
+      dist('الحالات حسب الوحدة الإدارية', list, c => c.unit || 'غير محدد', uniqSorted(list.map(c => c.unit || 'غير محدد')), 'الوحدة الإدارية') +
+      dist('الحالات حسب القرية', list, c => c.village || 'غير محدد', keys, 'القرية') +
+      '<h4 class="epiH">السجلات (' + list.length + ')</h4>' +
+      (list.length ? list.slice(0, 300).map(caseCard).join('') + (list.length > 300 ? '<div class="muted">عُرض أحدث 300 سجل، ضيّق الفلاتر لرؤية الباقي.</div>' : '') : '<div class="muted">لا توجد سجلات مطابقة.</div>') + pfoot;
+  }
+
+  function renderAdmin() {
+    showErr();
+    byId('a_list').value = S.A.diseases.join('\n');
+    byId('a_phone').value = S.A.directorPhone || directorPhone();
+  }
+
+  const SHOW = {
+    listA: renderHub, 'rpt-daily': renderDaily, 'rpt-quarter': renderQuarter, 'rpt-semi': renderSemi, 'rpt-nine': renderNine,
+    'rpt-annual': renderAnnual, records: renderRecords, admin: renderAdmin, users: showUsers
+  };
+  const origGo = go;
+  go = function (v) {
+    origGo(v);
+    const wl = byId('welcome'); if (wl && me) wl.textContent = 'مرحباً ' + me.name + ' — ' + roleLabel();
+    if (SHOW[v]) {
+      ensureData().then(() => { if (S.loaded || S.error) SHOW[v](); });
+    }
+  };
+
+  function setForm(c) {
+    const set = (id, v) => { byId('cf_' + id).value = v == null ? '' : v; };
+    byId('cf_disease').innerHTML = dzOpts();
+    set('disease', c.disease); set('other', c.diseaseOther); set('name', c.patientName); set('age', c.age);
+    set('ageu', c.ageUnit || 'سنة'); set('sex', c.sex); set('onset', c.onsetDate); set('ill', c.illnessDate);
+    set('rep', c.reportDate || todayStr()); set('sym', c.symptoms); set('vil', c.village); set('unit', c.unit);
+    set('fac', c.facility); set('rpt', c.reporter != null ? c.reporter : me.name); set('out', c.outcome);
+    set('repeat', c.repeat || 'لا'); set('notes', c.notes);
+    byId('cf_otherWrap').classList.toggle('hidden', c.disease !== OTHER);
+    fillDatalists();
+    const rr = roleOf();
+    byId('cf_unit').readOnly = rr === 'unit'; byId('cf_fac').readOnly = rr === 'center';
+    if (rr === 'unit') byId('cf_unit').value = me.unit || '';
+    if (rr === 'center') byId('cf_fac').value = me.center || '';
+  }
+  function openForm(disease, existing) {
+    if (!canRegister()) return toast('ليست لديك صلاحية تسجيل الحالات أو لم يُحدَّد نطاقك');
+    S.editing = existing ? existing.id : null;
+    S.formDisease = disease;
+    byId('cfTitle').textContent = existing ? 'تعديل بلاغ: ' + existing.patientName : 'نموذج: ' + disease;
+    byId('cf_addBtn').classList.toggle('hidden', !!existing);
+    setForm(existing || { disease: disease });
+    origGo('caseForm');
+    window.scrollTo(0, 0);
+  }
+  function readForm() {
+    const g = id => (byId('cf_' + id).value || '').trim();
+    return {
+      list: 'A', disease: g('disease'), diseaseOther: g('other'), patientName: g('name'),
+      age: g('age') === '' ? null : +g('age'), ageUnit: g('ageu'), sex: g('sex'), onsetDate: g('onset'),
+      illnessDate: g('ill'), reportDate: g('rep'), symptoms: g('sym'), village: g('vil'), unit: g('unit'),
+      facility: g('fac'), reporter: g('rpt'), outcome: g('out'), repeat: g('repeat'), notes: g('notes')
+    };
+  }
+  function validate(c) {
+    if (!c.disease) return 'اختر المرض';
+    if (c.disease === OTHER && !c.diseaseOther) return 'اكتب اسم المرض';
+    if (!c.patientName) return 'اكتب اسم المريض';
+    if (c.age === null || isNaN(c.age) || c.age < 0) return 'أدخل عمراً صحيحاً';
+    if (!c.sex) return 'اختر النوع';
+    if (!c.reportDate) return 'أدخل تاريخ التبليغ';
+    if (c.onsetDate && c.onsetDate > c.reportDate) return 'تاريخ ظهور الأعراض لا يمكن أن يكون بعد تاريخ التبليغ';
+    if (c.illnessDate && c.illnessDate > c.reportDate) return 'تاريخ الشعور بالمرض لا يمكن أن يكون بعد تاريخ التبليغ';
+    return '';
+  }
+  function showAlert(c) {
+    const ph = directorPhone();
+    const m = mk('<div class="epi-modal" id="epiModal"><div class="epi-box"><h3>🔔 تنبيه: بلاغ فوري</h3>' +
+      '<p><b>' + esc(dispName(c)) + '</b> من أمراض القائمة (أ) — يجب التبليغ عنها فوراً.</p>' +
+      '<div class="epi-actions"><a class="ebtn green" target="_blank" rel="noopener" href="' + esc(waUrl(ph, caseText(c))) + '">📲 إرسال بلاغ عبر واتساب</a>' +
+      '<a class="ebtn blue" href="tel:' + esc(ph) + '">📞 اتصال بمدير الصحة</a></div>' +
+      '<button class="ebtn gray" data-act="closeModal">إغلاق</button></div></div>');
+    document.body.appendChild(m);
+  }
+    async function saveCase(addAnother) {
+    if (!canRegister()) return toast('ليست لديك صلاحية تسجيل الحالات');
+    const c = readForm(), rr = roleOf();
+    if (rr === 'unit') c.unit = me.unit;
+    if (rr === 'center') c.facility = me.center;
+    const err = validate(c);
+    if (err) return toast(err);
+    const btns = $$('[data-act="save"],[data-act="saveAdd"]'); btns.forEach(b => b.disabled = true);
+    try {
+      const now = Date.now(), key = dupKey(c);
+      if (S.editing) {
+        const old = S.cases.find(x => x.id === S.editing);
+        if (!old) throw new Error('missing');
+        const diff = [];
+        Object.keys(FIELD_LABELS).forEach(k => {
+          const a = old[k] == null ? '' : String(old[k]), b = c[k] == null ? '' : String(c[k]);
+          if (a !== b) diff.push({ f: FIELD_LABELS[k], from: a, to: b });
+        });
+        if (!diff.length) { toast('لا توجد تغييرات للحفظ'); return; }
+        if (key !== old.dupKey) {
+          let ex = null; try { ex = await db.collection('caseKeys').doc(key).get(); } catch (e) {}
+          if (ex && ex.exists && ex.data().caseId !== old.id && !confirm('⚠ توجد حالة مطابقة مسجلة مسبقاً. هل تريد الحفظ رغم ذلك؟')) return;
+        }
+        const history = (old.history || []).concat([{ at: now, by: me.name, uid: me.uid, ch: diff }]);
+        const upd = Object.assign({}, c, { dupKey: key, updatedAt: now, history: history });
+        await db.collection('cases').doc(old.id).update(upd);
+        if (key !== old.dupKey) {
+          try { await db.collection('caseKeys').doc(key).set({ owner: old.owner, caseId: old.id, at: now }); } catch (e) {}
+          try { if (old.dupKey) await db.collection('caseKeys').doc(old.dupKey).delete(); } catch (e) {}
+        }
+        Object.assign(old, upd);
+        toast('تم حفظ التعديل ✓');
+        S.editing = null;
+        S.daily.date = c.reportDate;
+        go('rpt-daily');
+        return;
+      }
+      let dup = false;
+      try { dup = (await db.collection('caseKeys').doc(key).get()).exists; } catch (e) {}
+      if (dup && !confirm('⚠ توجد حالة مطابقة مسجلة مسبقاً.\nهل تريد تسجيلها رغم ذلك؟')) return;
+      const doc = Object.assign({}, c, {
+        owner: me.uid, ownerName: me.name, immediate: true, dupKey: key, createdAt: now, updatedAt: now,
+        history: [{ at: now, by: me.name, uid: me.uid, ch: 'إنشاء السجل' }]
+      });
+      const ref = await db.collection('cases').add(doc);
+      if (!dup) { try { await db.collection('caseKeys').doc(key).set({ owner: me.uid, caseId: ref.id, at: now }); } catch (e) {} }
+      const saved = Object.assign({ id: ref.id }, doc);
+      S.cases.push(saved);
+      toast('تم حفظ الحالة ✓');
+      showAlert(saved);
+      if (addAnother) {
+        const keep = { disease: c.disease, reportDate: c.reportDate, facility: c.facility, reporter: c.reporter, village: c.village, unit: c.unit };
+        setForm(keep); window.scrollTo(0, 0);
+      } else {
+        S.daily.date = c.reportDate;
+        go('rpt-daily');
+      }
+    } catch (e) {
+      toast(e && e.code === 'permission-denied' ? 'لا توجد صلاحية للحفظ — انشر قواعد Firestore الجديدة' : 'تعذّر الحفظ، تأكد من الإنترنت');
+    } finally { btns.forEach(b => b.disabled = false); }
+  }
+  async function deleteCase(id) {
+    const c = S.cases.find(x => x.id === id);
+    if (!c || !isMgr()) return;
+    if (!confirm('هل تريد حذف سجل «' + c.patientName + '» نهائياً؟')) return;
+    try {
+      await db.collection('cases').doc(id).delete();
+      try { if (c.dupKey) await db.collection('caseKeys').doc(c.dupKey).delete(); } catch (e) {}
+      S.cases = S.cases.filter(x => x.id !== id);
+      toast('تم الحذف');
+      const cur = $$('[data-view]').find(v => !v.classList.contains('hidden'));
+      if (cur && SHOW[cur.dataset.view]) SHOW[cur.dataset.view]();
+    } catch (e) { toast('لا تملك صلاحية الحذف'); }
+  }
+
+  function dl(blob, name) {
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob); a.download = name;
+    document.body.appendChild(a); a.click();
+    setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 1500);
+  }
+  const FILE_NAMES = { 'rpt-daily': 'التقرير-اليومي', 'rpt-quarter': 'التقرير-الربع-سنوي', 'rpt-semi': 'التقرير-النصف-سنوي', 'rpt-nine': 'تقرير-التسعة-أشهر', 'rpt-annual': 'التقرير-السنوي', records: 'السجلات-والإحصائيات' };
+  function doPrint(id, asPdf) {
+    const old = document.title; document.title = FILE_NAMES[id] + '-' + todayStr();
+    const back = () => { document.title = old; window.removeEventListener('afterprint', back); };
+    window.addEventListener('afterprint', back);
+    if (asPdf) toast('اختر «حفظ بتنسيق PDF» من نافذة الطباعة');
+    setTimeout(() => window.print(), asPdf ? 600 : 0);
+  }
+  const clean = t => String(t).replace(/[\u200E\u200F]/g, '').trim();
+  function tablesOf(root) { return $$('table.xl', root); }
+  function loadXLSX() {
+    if (window.XLSX) return Promise.resolve(window.XLSX);
+    const urls = ['https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js', 'https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js'];
+    const tryLoad = i => new Promise((res, rej) => {
+      if (i >= urls.length) return rej(new Error('xlsx'));
+      const s = document.createElement('script'); s.src = urls[i];
+      const t = setTimeout(() => { s.remove(); tryLoad(i + 1).then(res, rej); }, 12000);
+      s.onload = () => { clearTimeout(t); window.XLSX ? res(window.XLSX) : tryLoad(i + 1).then(res, rej); };
+      s.onerror = () => { clearTimeout(t); tryLoad(i + 1).then(res, rej); };
+      document.head.appendChild(s);
+    });
+    return tryLoad(0);
+  }
+  function csvOf(root) {
+    const q = v => '"' + clean(v).replace(/"/g, '""') + '"';
+    const out = [];
+    const ph = $q('.phead', root);
+    if (ph) $$('div', ph).forEach(d => out.push(q(d.textContent)));
+    tablesOf(root).forEach(t => {
+      out.push(''); out.push(q(t.dataset.title));
+      $$('tr', t).forEach(tr => out.push($$('th,td', tr).map(c => q(c.textContent)).join(',')));
+    });
+    return '\uFEFF' + out.join('\r\n');
+  }
+  async function exportXls(id) {
+    const root = $q('[data-view="' + id + '"]');
+    if (!tablesOf(root).length) return toast('لا توجد جداول للتصدير');
+    let X = null;
+    try { X = await loadXLSX(); } catch (e) { X = null; }
+    const base = FILE_NAMES[id] + '-' + todayStr();
+    if (!X) {
+      dl(new Blob([csvOf(root)], { type: 'text/csv;charset=utf-8' }), base + '.csv');
+      return toast('تعذّر تحميل مكتبة Excel، صُدّر الملف بصيغة CSV يفتح في Excel');
+    }
+    const wb = X.utils.book_new();
+    const ph = $q('.phead', root);
+    const meta = ph ? $$('div', ph).map(d => [clean(d.textContent)]) : [[ORG_H.line1], [ORG_H.line2]];
+    const ws0 = X.utils.aoa_to_sheet(meta); ws0['!cols'] = [{ wch: 70 }];
+    X.utils.book_append_sheet(wb, ws0, 'بيانات التقرير');
+    const used = {};
+    tablesOf(root).forEach((t, i) => {
+      const rows = $$('tr', t).map(tr => $$('th,td', tr).map(c => { const v = clean(c.textContent); return (v !== '' && !isNaN(v) && !/^0\d/.test(v)) ? +v : v; }));
+      const ws = X.utils.aoa_to_sheet(rows);
+      ws['!cols'] = rows[0].map((_, j) => ({ wch: j === 0 ? 28 : 12 }));
+      let nm = clean(t.dataset.title).replace(/[\\\/\?\*\[\]:]/g, ' ').slice(0, 28) || 'جدول';
+      if (used[nm]) nm = nm.slice(0, 25) + ' ' + (i + 1);
+      used[nm] = 1;
+      X.utils.book_append_sheet(wb, ws, nm);
+    });
+    wb.Workbook = { Views: [{ RTL: true }] };
+    X.writeFile(wb, base + '.xlsx');
+    toast('تم تصدير ملف Excel ✓');
+  }
+
+  async function loadUsers() {
+    const snap = await db.collection('users').get();
+    S.users = snap.docs.map(d => Object.assign({ uid: d.id }, d.data()));
+  }
+  function userEditable(u) {
+    if (!isMgr() || u.uid === me.uid) return false;
+    if (isSys()) return true;
+    return LOW_ROLES.indexOf(roleOf(u)) >= 0;
+  }
+  const roleOptions = () => (isSys() ? ['sysadmin', 'locality'] : []).concat(LOW_ROLES);
+  function userCard(u) {
+    const r = roleOf(u), ed = userEditable(u);
+    const head = '<div><strong>' + esc(u.name || '—') + '</strong> <span class="badge">' + esc(u.phone || '') + '</span> <span class="badge">' + esc(ROLE_LABELS[r]) + '</span></div>' +
+      '<div class="muted">الوحدة: ' + esc(u.unit || '—') + ' · المركز: ' + esc(u.center || '—') + (r === 'viewer' && u.viewAll ? ' · يرى كل المحلية' : '') + '</div>';
+    if (!ed) return '<div class="epiCase">' + head + '<div class="muted">' + (u.uid === me.uid ? 'حسابك — لا يمكنك تعديل صلاحياتك بنفسك.' : 'لا تملك صلاحية تعديل هذا الحساب.') + '</div></div>';
+    return '<div class="epiCase" data-uid="' + esc(u.uid) + '">' + head +
+      '<label>الدور</label><select class="u_role">' + roleOptions().map(o => '<option value="' + o + '"' + (o === r ? ' selected' : '') + '>' + ROLE_LABELS[o] + '</option>').join('') + '</select>' +
+      '<label>الوحدة الإدارية</label><input class="u_unit" list="epiUnitsU" value="' + esc(u.unit || '') + '">' +
+      '<label>المركز الصحي</label><input class="u_center" value="' + esc(u.center || '') + '">' +
+      '<label>مستخدم الاطلاع: هل يرى كل المحلية؟</label><select class="u_all"><option value="no">لا</option><option value="yes"' + (u.viewAll ? ' selected' : '') + '>نعم</option></select>' +
+      '<div class="epi-actions"><button class="ebtn green" data-act="uSave" data-uid="' + esc(u.uid) + '">💾 حفظ</button></div></div>';
+  }
+  function renderUsers() {
+    showErr();
+    const q = normAr((byId('u_q') && byId('u_q').value) || '');
+    const list = S.users.filter(u => !q || normAr(u.name).indexOf(q) >= 0 || String(u.phone || '').indexOf(q) >= 0)
+      .sort((a, b) => String(a.name || '').localeCompare(String(b.name || ''), 'ar'));
+    byId('u_list').innerHTML = list.length ? list.map(userCard).join('') : '<div class="muted">لا يوجد مستخدمون مطابقون.</div>';
+  }
+  function showUsers() {
+    if (!isMgr()) { byId('u_list').innerHTML = '<div class="muted">هذه الصفحة للإدارة فقط.</div>'; return; }
+    loadUsers().then(renderUsers).catch(err => { S.error = err; showErr(); });
+  }
+
+  const ACT = {
+    save: () => saveCase(false),
+    saveAdd: () => saveCase(true),
+    dImg: () => saveDailyImage(),
+    dPdf: () => saveDailyPDF(),
+    dWaImg: () => sendDailyWhatsApp(),
+    closeModal: () => { const m = byId('epiModal'); if (m) m.remove(); },
+    dPrev: () => { const d = new Date(S.daily.date + 'T00:00:00'); d.setDate(d.getDate() - 1); S.daily.date = ymd(d); renderDaily(); },
+    dNext: () => { const d = new Date(S.daily.date + 'T00:00:00'); d.setDate(d.getDate() + 1); S.daily.date = ymd(d); renderDaily(); },
+    dAdd: () => go('listA'),
+    dWa: () => window.open(waUrl(directorPhone(), dailyText()), '_blank', 'noopener'),
+    fReset: () => { S.filt = { from: '', to: '', disease: '', village: '', unit: '', sex: '', outcome: '' }; renderRecords(); },
+    wa: (b) => { const c = S.cases.find(x => x.id === b.dataset.id); if (c) window.open(waUrl(directorPhone(), caseText(c)), '_blank', 'noopener'); },
+    edit: (b) => { const c = S.cases.find(x => x.id === b.dataset.id); if (c && canEdit(c)) openForm(c.disease, c); },
+    hist: (b) => {
+      const card = b.closest('.epiCase'), box = $q('.hist', card), c = S.cases.find(x => x.id === b.dataset.id);
+      if (!box || !c) return;
+      if (box.classList.contains('hidden')) { box.innerHTML = histHtml(c); box.classList.remove('hidden'); } else box.classList.add('hidden');
+    },
+    del: (b) => deleteCase(b.dataset.id),
+    saveNote: async (b) => {
+      const p = b.dataset.p;
+      try { await db.collection('reportNotes').doc(noteKey(p)).set({ notes: byId(p + '_notes').value, by: me.name, at: Date.now() }); toast('تم حفظ الملاحظات ✓'); }
+      catch (e) { toast('لا تملك صلاحية حفظ الملاحظات'); }
+    },
+    aSave: async () => {
+      if (!isMgr()) return toast('هذه الصفحة للمدير فقط');
+      const list = uniqSorted(byId('a_list').value.split('\n').map(x => x.trim()).filter(Boolean));
+      if (!list.length) return toast('أدخل مرضاً واحداً على الأقل');
+      const keepOrder = []; byId('a_list').value.split('\n').map(x => x.trim()).filter(Boolean).forEach(x => { if (!keepOrder.includes(x)) keepOrder.push(x); });
+      const phone = byId('a_phone').value.trim();
+      try {
+        await db.collection('settings').doc('listA').set({ diseases: keepOrder, directorPhone: phone, updatedBy: me.name, updatedAt: Date.now() });
+        S.A.diseases = keepOrder; S.A.directorPhone = phone;
+        toast('تم حفظ الإعدادات ✓');
+      } catch (e) { toast('لا تملك صلاحية حفظ الإعدادات'); }
+    }
+  };
+  ACT.uSave = async (b) => {
+    const uid = b.dataset.uid, card = b.closest('.epiCase'), u = S.users.find(x => x.uid === uid);
+    if (!u || !userEditable(u)) return toast('لا تملك صلاحية تعديل هذا الحساب');
+    const role = $q('.u_role', card).value, unit = $q('.u_unit', card).value.trim(), center = $q('.u_center', card).value.trim();
+    const viewAll = role === 'viewer' && $q('.u_all', card).value === 'yes';
+    if (roleOptions().indexOf(role) < 0) return toast('دور غير مسموح');
+    if (role === 'unit' && !unit) return toast('حدّد الوحدة الإدارية لهذا الدور');
+    if (role === 'center' && !center) return toast('حدّد المركز الصحي لهذا الدور');
+    if (role === 'viewer' && !viewAll && !unit && !center) return toast('حدّد نطاق مستخدم الاطلاع: وحدة أو مركز أو كل المحلية');
+    const mgrRole = role === 'sysadmin' || role === 'locality';
+    const upd = { role: role, unit: mgrRole ? '' : unit, center: mgrRole ? '' : center, viewAll: viewAll };
+    if (isSys()) upd.isManager = mgrRole;
+    try {
+      await db.collection('users').doc(uid).update(upd);
+      Object.assign(u, upd);
+      toast('تم حفظ صلاحيات ' + (u.name || '') + ' ✓');
+      renderUsers();
+    } catch (err) { toast('لا تملك صلاحية تعديل هذا الحساب'); }
+  };
+  document.addEventListener('click', e => {
+    const nav = e.target.closest('[data-epi-go]');
+    if (nav) { go(nav.dataset.epiGo); return; }
+    const dz = e.target.closest('[data-dzi]');
+    if (dz) { const d = diseaseKeys()[+dz.dataset.dzi]; if (d) openForm(d); return; }
+    const ex = e.target.closest('[data-ex]');
+    if (ex) {
+      const t = ex.dataset.t;
+      if (ex.dataset.ex === 'print') doPrint(t, false);
+      else if (ex.dataset.ex === 'pdf') doPrint(t, true);
+      else exportXls(t);
+      return;
+    }
+    const a = e.target.closest('[data-act]');
+    if (a && ACT[a.dataset.act]) ACT[a.dataset.act](a);
+  });
+  document.addEventListener('change', e => {
+    const id = e.target.id;
+    if (id === 'cf_disease') byId('cf_otherWrap').classList.toggle('hidden', e.target.value !== OTHER);
+    else if (id === 'd_date') { S.daily.date = e.target.value || todayStr(); renderDaily(); }
+    else if (id === 'q_year') { S.quarter.year = +e.target.value; renderQuarter(); }
+    else if (id === 'q_num') { S.quarter.q = +e.target.value; renderQuarter(); }
+    else if (id === 's_year') { S.semi.year = +e.target.value; renderSemi(); }
+    else if (id === 's_half') { S.semi.half = +e.target.value; renderSemi(); }
+    else if (id === 'n_year') { S.nine.year = +e.target.value; renderNine(); }
+    else if (id === 'a_year') { S.annual.year = +e.target.value; renderAnnual(); }
+    else if (/^f_/.test(id)) {
+      const m = { f_from: 'from', f_to: 'to', f_dz: 'disease', f_vil: 'village', f_unit: 'unit', f_sex: 'sex', f_out: 'outcome' };
+      if (m[id]) { S.filt[m[id]] = e.target.value; renderRecords(); }
+    }
+  });
+  document.addEventListener('input', e => {
+    if (e.target.id === 'u_q') { renderUsers(); return; }
+    const m = /^(quarter|semi|nine|annual)_notes$/.exec(e.target.id || '');
+    if (m) { const p = byId(m[1] + '_notesP'); if (p) p.textContent = e.target.value; }
+  });
+
+  async function _epiCaptureReport() {
+    if (typeof html2canvas === 'undefined') {
+      toast('مكتبة html2canvas غير محملة — تحقق من الإنترنت');
+      return null;
+    }
+    const body = byId('d_body');
+    if (!body) return null;
+    const touched = [];
+    const show = el => { touched.push([el, el.style.display]); el.style.setProperty('display', el.classList.contains('pfoot') ? 'flex' : 'block', 'important'); };
+    const hide = el => { touched.push([el, el.style.display]); el.style.setProperty('display', 'none', 'important'); };
+    body.querySelectorAll('.print-only').forEach(show);
+    body.querySelectorAll('.noprint').forEach(hide);
+    try {
+      return await html2canvas(body, { scale: 2, useCORS: true, backgroundColor: '#ffffff', logging: false });
+    } catch (e) {
+      toast('تعذر توليد الصورة — حاول مرة أخرى');
+      return null;
+    } finally {
+      touched.forEach(([el, orig]) => { el.style.display = orig; });
+    }
+  }
+
+  async function saveDailyImage() {
+    const canvas = await _epiCaptureReport();
+    if (!canvas) return;
+    const fname = 'التقرير-اليومي-' + (S.daily.date || todayStr()) + '.png';
+    canvas.toBlob(async blob => {
+      const file = new File([blob], fname, { type: 'image/png' });
+      if (navigator.canShare && navigator.canShare({ files: [file] })) {
+        try { await navigator.share({ files: [file], title: 'التقرير اليومي' }); toast('تم ✓'); return; }
+        catch (e) { if (e.name === 'AbortError') return; }
+      }
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob); a.download = fname; a.click();
+      setTimeout(() => URL.revokeObjectURL(a.href), 1500);
+      toast('تم تنزيل الصورة في مجلد التنزيلات ✓');
+    }, 'image/png');
+  }
+
+  async function saveDailyPDF() {
+    if (typeof window.jspdf === 'undefined') { toast('مكتبة jsPDF غير محملة'); return; }
+    const canvas = await _epiCaptureReport();
+    if (!canvas) return;
+    const { jsPDF } = window.jspdf;
+    const pdf = new jsPDF('p', 'mm', 'a4');
+    const m = 10, pageW = 210, pageH = 297;
+    const imgW = pageW - m * 2;
+    const imgH = (canvas.height * imgW) / canvas.width;
+    const pageContentH = pageH - m * 2;
+    if (imgH <= pageContentH) {
+      pdf.addImage(canvas.toDataURL('image/png'), 'PNG', m, m, imgW, imgH);
+    } else {
+      const numPages = Math.ceil(imgH / pageContentH);
+      const sliceH = Math.ceil(canvas.height / numPages);
+      for (let i = 0; i < numPages; i++) {
+        const c2 = document.createElement('canvas');
+        c2.width = canvas.width;
+        c2.height = Math.min(sliceH, canvas.height - i * sliceH);
+        c2.getContext('2d').drawImage(canvas, 0, i * sliceH, canvas.width, c2.height, 0, 0, canvas.width, c2.height);
+        if (i > 0) pdf.addPage();
+        const thisH = (c2.height * imgW) / canvas.width;
+        pdf.addImage(c2.toDataURL('image/png'), 'PNG', m, m, imgW, thisH);
+      }
+    }
+    pdf.save('التقرير-اليومي-' + (S.daily.date || todayStr()) + '.pdf');
+    toast('تم حفظ PDF في التنزيلات ✓');
+  }
+
+  async function sendDailyWhatsApp() {
+    const canvas = await _epiCaptureReport();
+    if (!canvas) return;
+    canvas.toBlob(async blob => {
+      const file = new File([blob], 'daily-report.png', { type: 'image/png' });
+      if (navigator.canShare && navigator.canShare({ files: [file] })) {
+        try {
+          await navigator.share({
+            files: [file],
+            title: 'التقرير اليومي',
+            text: 'تقرير أمراض القائمة (أ) — ' + (S.daily.date || todayStr())
+          });
+          return;
+        } catch (e) { if (e.name === 'AbortError') return; }
+      }
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'daily-report.png';
+      a.click();
+      setTimeout(() => { window.open(waUrl(directorPhone(), dailyText()), '_blank', 'noopener'); }, 800);
+      toast('حُمّلت الصورة — أرفقها يدوياً في واتساب');
+    }, 'image/png');
+  }
+
+  window.__epi = { S: S, caseText: caseText, waUrl: waUrl, dupKey: dupKey, ageGroup: ageGroup, roleOf: roleOf, scopeQuery: scopeQuery };
+})();
+</script>
+</body>
+</html>
