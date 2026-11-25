@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>المنصة القومية للتقارير الصحية</title>
+<style>
+:root{--bg:#eef3f8;--card:#fff;--text:#1d2630;--muted:#667085;--border:#d9e0e8;--pri:#1560c7;--pri-d:#0b3a7a;--line:#7fb8ff;--ghost:#eef3f8;--ghost-t:#0b3a7a}
+body.dark{--bg:#15191e;--card:#1f252c;--text:#e8edf2;--muted:#9aa5b1;--border:#333c46;--ghost:#2a3441;--ghost-t:#e8edf2}
+*{box-sizing:border-box}
+body{margin:0;font-family:Tahoma,Arial,sans-serif;background:var(--bg);color:var(--text);padding:10px;transition:background .2s}
+.hidden{display:none!important}
+main{max-width:520px;margin:auto}
+
+/* الترويسة */
+.hdr{display:grid;grid-template-columns:52px 1fr 52px;gap:8px;align-items:center;background:linear-gradient(#2a7fe0,var(--pri-d));color:#fff;border-radius:16px;padding:8px;border:3px solid var(--pri-d);box-shadow:0 0 0 2px var(--line) inset,0 4px 10px rgba(11,58,122,.25)}
+.corner{width:52px;height:52px;border-radius:10px;background:#fff;display:flex;align-items:center;justify-content:center;overflow:hidden;color:var(--pri-d);font-size:10px;font-weight:bold;text-align:center;padding:2px}
+.corner img{width:100%;height:100%;object-fit:contain;padding:3px}
+.corner-empty{background:rgba(255,255,255,.12);border:2px dashed rgba(255,255,255,.6)}
+.hdr-txt{text-align:center;line-height:1.5}
+.hdr .gov{font-size:11px;opacity:.9}
+.hdr .lvl{font-size:14px;font-weight:bold;color:#ffe066}
+.hdr h1{margin:2px 0;font-size:13px}
+.hdr small{display:block;font-size:11px;opacity:.9}
+
+/* سطر الأدوات */
+.tools{display:flex;gap:5px;margin:8px 0}
+.tool{flex:1;min-height:32px;padding:4px 2px;border:none;border-radius:9px;font-family:inherit;font-size:11px;font-weight:bold;color:#fff;background:linear-gradient(#2a6fd6,var(--pri-d));box-shadow:0 3px 0 #06234d;cursor:pointer;white-space:nowrap}
+.tool.fs{flex:0 0 auto;min-width:34px;font-size:13px}
+.tool.night{background:linear-gradient(#4a5568,#1a202c)}
+
+/* الأزرار */
+.btn{display:flex;align-items:center;justify-content:center;gap:8px;min-height:48px;width:100%;padding:12px;border:none;border-radius:14px;font-family:inherit;font-size:16px;font-weight:bold;color:#fff;cursor:pointer;text-decoration:none;box-shadow:0 5px 0 var(--pri-d);margin-top:10px;text-align:center}
+.btn:active{transform:translateY(4px)}
+.b-red{background:linear-gradient(#ff6a5e,#d82a1e);box-shadow:0 5px 0 #8e110a}
+.b-blue{background:linear-gradient(#3fa4ff,#1560c7)}
+.b-yellow{background:linear-gradient(#ffe066,#e8ad00);color:#2a2000;box-shadow:0 5px 0 #9a7400}
+.b-green{background:linear-gradient(#4cd47a,#1e9a4a);box-shadow:0 5px 0 #0f6a31}
+.b-gray{background:linear-gradient(#8a96a6,#56627a);box-shadow:0 5px 0 #333d4f}
+.b-teal{background:linear-gradient(#3fe0d0,#0f9d91);box-shadow:0 5px 0 #0a6e66}
+.b-ghost{background:var(--ghost);color:var(--ghost-t);box-shadow:0 3px 0 #c8d3e0}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.grid .full{grid-column:span 2}
+.grid .btn{margin-top:0}
+
+/* زر الرجوع ثلاثي الأبعاد */
+.back3d{display:inline-flex;align-items:center;gap:6px;padding:9px 16px;border:none;border-radius:12px;background:linear-gradient(#5aa9ff,#1560c7);color:#fff;font-weight:bold;font-family:inherit;font-size:14px;box-shadow:0 5px 0 #0b3a7a,0 8px 12px rgba(0,0,0,.25);text-shadow:0 1px 2px rgba(0,0,0,.3);cursor:pointer;margin-bottom:10px}
+.back3d:active{transform:translateY(4px);box-shadow:0 1px 0 #0b3a7a}
+
+/* البطاقات */
+.card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:14px;margin-top:12px}
+.card h3{margin:0 0 8px}
+.muted{color:var(--muted);font-size:13px;line-height:1.7}
+.crumb{font-size:13px;color:var(--pri);font-weight:bold;margin-bottom:8px}
+input,select,textarea{width:100%;padding:12px;border:1px solid var(--border);border-radius:10px;font-size:16px;margin-bottom:8px;font-family:inherit;background:var(--bg);color:var(--text)}
+label{display:block;margin:8px 0 4px;font-size:14px;color:var(--muted)}
+.rec{border:1px solid var(--border);border-radius:10px;padding:10px;margin-bottom:8px}
+.row{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border)}
+.empty{text-align:center;color:var(--muted);padding:20px}
+.screen{display:none;margin-top:12px}
+.screen.on{display:block}
+.demo{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.demo button{flex:1;min-width:30%;padding:9px;border:1px solid var(--border);border-radius:10px;background:var(--card);color:var(--text);font-family:inherit;font-size:13px;cursor:pointer}
+.demo button.on{background:var(--pri);color:#fff;border-color:var(--pri)}
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <div class="corner">
+    <img id="stLogo" alt="">
+    <span id="stFb" class="hidden"></span>
+  </div>
+  <div class="hdr-txt">
+    <div class="gov">جمهورية السودان · وزارة الصحة</div>
+    <div class="lvl" id="lvl">ولاية الجزيرة</div>
+    <h1>المنصة القومية للتقارير الصحية والترصد الوبائي</h1>
+    <small id="who">الدور: مدخل بيانات</small>
+  </div>
+  <div class="corner corner-empty"></div>
+</div>
+
+<div class="tools">
+  <button class="tool fs" id="fMinus">A-</button>
+  <button class="tool fs" id="fPlus">A+</button>
+  <button class="tool" id="visitBtn">👁 الزوار: <span id="visits">0</span></button>
+  <button class="tool" id="shareBtn">🔗 رابط التطبيق</button>
+  <button class="tool night" id="nightBtn">🌙 ليلي</button>
+</div>
+
+<!-- تسجيل الدخول -->
+<div id="auth">
+  <div class="card" id="loginBox">
+    <h3>تسجيل الدخول</h3>
+    <label for="lPhone">رقم التلفون</label>
+    <input id="lPhone" inputmode="tel" placeholder="رقم التلفون">
+    <label for="lPass">كلمة السر</label>
+    <input id="lPass" type="password" placeholder="كلمة السر">
+    <button class="btn b-blue" id="loginBtn">دخول</button>
+    <button class="back3d" id="showReg" style="width:100%;justify-content:center;margin-top:8px">إنشاء حساب جديد</button>
+  </div>
+  <div class="card hidden" id="regBox">
+    <h3>إنشاء حساب جديد</h3>
+    <label for="rName">الاسم</label>
+    <input id="rName" placeholder="الاسم الكامل">
+    <label for="rPhone">رقم التلفون</label>
+    <input id="rPhone" inputmode="tel" placeholder="رقم التلفون">
+    <label for="rPass">كلمة السر</label>
+    <input id="rPass" type="password" placeholder="6 أحرف أو أكثر">
+    <label for="rPass2">تأكيد كلمة السر</label>
+    <input id="rPass2" type="password" placeholder="أعد كتابة كلمة السر">
+    <button class="btn b-green" id="regBtn">إنشاء الحساب</button>
+    <button class="back3d" id="backLogin" style="width:100%;justify-content:center;margin-top:8px">لديّ حساب، تسجيل الدخول</button>
+  </div>
+</div>
+
+<!-- التطبيق بعد الدخول -->
+<div id="app" class="hidden">
+
+  <!-- الشاشة الرئيسية -->
+  <div class="screen on" id="s-home">
+    <div class="grid">
+      <button class="btn b-red full" data-go="new">🚨 بلاغ جديد</button>
+      <button class="btn b-blue" data-go="list">📋 السجل</button>
+      <button class="btn b-yellow" data-min="locality" data-go="struct">🗺️ الهيكل الإداري</button>
+      <button class="btn b-green" data-go="stats">📊 الإحصائيات</button>
+      <button class="btn b-gray" data-go="reports">📤 التقارير</button>
+      <button class="btn b-yellow full" data-go="contacts">📞 أرقام المديرين</button>
+      <button class="btn b-blue full" data-min="locality" data-go="users">👥 المستخدمون والصلاحيات</button>
+    </div>
+
+    <div class="card">
+      <div class="muted">جرّب كيف تتغير الواجهة حسب الدور:</div>
+      <div class="demo">
+        <button data-role-btn="ministry">الوزارة</button>
+        <button data-role-btn="state">الولاية</button>
+        <button data-role-btn="locality">المحلية</button>
+        <button data-role-btn="center">مدير مركز</button>
+        <button data-role-btn="lab">مدير معمل</button>
+        <button data-role-btn="entry">مدخل بيانات</button>
+      </div>
+    </div>
+
+    <div style="text-align:center;margin-top:14px">
+      <button class="back3d" id="logoutBtn">تسجيل خروج</button>
+    </div>
+  </div>
+
+  <!-- بلاغ جديد -->
+  <div class="screen" id="s-new">
+    <button class="back3d" data-go="home">← رجوع للقائمة</button>
+    <div class="card">
+      <h3>بلاغ جديد</h3>
+
+      <label for="state">الولاية</label>
+      <select id="state"></select>
+
+      <label for="locality">المحلية</label>
+      <select id="locality"></select>
+
+      <label for="unit">الوحدة الإدارية</label>
+      <select id="unit"></select>
+
+      <label for="fType">نوع المنشأة</label>
+      <select id="fType"></select>
+
+      <label for="facility">اسم المركز أو المعمل</label>
+      <input id="facility" list="facList" placeholder="اختر أو اكتب الاسم">
+      <datalist id="facList"></datalist>
+
+      <label for="director">اسم مدير المركز أو المساعد الطبي</label>
+      <input id="director" placeholder="الاسم الكامل">
+
+      <label for="labStaff">اسم كادر المعمل (إن وجد)</label>
+      <input id="labStaff" placeholder="الاسم الكامل">
+
+      <label for="labInfo">بيانات كادر المعمل (الهاتف أو الرقم الوظيفي)</label>
+      <input id="labInfo" placeholder="مثال: 0912345678">
+
+      <label for="empNo">الرقم الوظيفي للمبلّغ</label>
+      <input id="empNo" inputmode="numeric" placeholder="مثال: 1024">
+
+      <label for="empName">اسم المريض أو الموظف</label>
+      <input id="empName" placeholder="الاسم الكامل">
+
+      <label for="disease">المرض</label>
+      <select id="disease"></select>
+      <div id="otherWrap" class="hidden">
+        <label for="otherDisease">اسم المرض</label>
+        <input id="otherDisease">
+      </div>
+
+      <label for="date">تاريخ التشخيص</label>
+      <input id="date" type="date">
+
+      <label for="status">الحالة</label>
+      <select id="status"></select>
+
+      <label for="symptoms">الأعراض</label>
+      <textarea id="symptoms"></textarea>
+
+      <button class="btn b-red" id="saveBtn">حفظ البلاغ</button>
+    </div>
+  </div>
+
+  <!-- السجل -->
+  <div class="screen" id="s-list">
+    <button class="back3d" data-go="home">← رجوع للقائمة</button>
+    <div class="card">
+      <h3>السجل</h3>
+      <input id="search" placeholder="ابحث بالاسم أو الرقم الوظيفي أو اسم المركز">
+      <div id="recList"></div>
+    </div>
+  </div>
+
+  <!-- الإحصائيات -->
+  <div class="screen" id="s-stats">
+    <button class="back3d" data-go="home">← رجوع للقائمة</button>
+    <div class="card">
+      <h3>الإحصائيات</h3>
+      <div id="statsBox"></div>
+    </div>
+  </div>
+
+  <!-- الهيكل الإداري -->
+  <div class="screen" id="s-struct">
+    <button class="back3d" id="structBack">← رجوع</button>
+    <div class="card">
+      <div class="crumb" id="crumb"></div>
+      <div id="structBox"></div>
+    </div>
+  </div>
+
+  <!-- التقارير -->
+  <div class="screen" id="s-reports">
+    <button class="back3d" data-go="home">← رجوع للقائمة</button>
+    <div class="card">
+      <h3>التقارير</h3>
+      <p class="muted">اختر نوع التقرير لعرضه.</p>
+      <a class="btn b-red" href="report-daily.html">🚨 التقرير الفوري واليومي</a>
+      <a class="btn b-green" href="report-annual.html">🏆 التقرير السنوي</a>
+    </div>
+  </div>
+
+  <!-- أرقام المديرين -->
+  <div class="screen" id="s-contacts">
+    <button class="back3d" data-go="home">← رجوع للقائمة</button>
+    <div class="card">
+      <h3>أرقام المديرين للتواصل</h3>
+      <a class="btn b-blue" href="tel:0121346248">📞 مدير النظام: 0121346248</a>
+      <a class="btn b-green" data-min="locality" href="tel:0910211755">📞 مدير محلية أم القرى: 0910211755</a>
+    </div>
+  </div>
+
+  <!-- المستخدمون والصلاحيات -->
+  <div class="screen" id="s-users">
+    <button class="back3d" data-go="home">← رجوع للقائمة</button>
+    <div class="card">
+      <h3>المستخدمون والصلاحيات</h3>
+      <p class="muted">هذه الصفحة للإدارة فقط، وستُربط بقاعدة البيانات في المرحلة القادمة.</p>
+    </div>
+  </div>
+</div>
+
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+
+<script>
+/* ===== الإعدادات (لا تُغيَّر) ===== */
+const firebaseConfig = {
+  apiKey: "AIzaSyD4Iesxn_85M4cwfDkfrhezBkAFtx45xC0",
+  authDomain: "cq-center-f7775.firebaseapp.com",
+  projectId: "cq-center-f7775",
+  storageBucket: "cq-center-f7775.firebasestorage.app",
+  messagingSenderId: "779273740183",
+  appId: "1:779273740183:web:789956f5c7d0d2ca0aaed2"
+};
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+const db = firebase.firestore();
+
+/* ===== الأرقام المعتمدة للأدوار ===== */
+const ADMIN_PHONE = "0121346248";      // مدير النظام
+const LOC_MGR_PHONE = "0910211755";    // مدير محلية أم القرى
+
+const RANK = {entry:1, center:1, lab:1, locality:2, state:3, ministry:4, sysadmin:5};
+const ROLE_NAMES = {sysadmin:"مدير النظام", ministry:"وزارة الصحة الاتحادية", state:"مسؤول الولاية", locality:"إدارة المحلية", center:"مدير مركز صحي", lab:"مدير معمل", entry:"مدخل بيانات"};
+
+/* ===== الولايات وملفات شعاراتها ===== */
+const STATE_CODE = {
+  "ولاية الخرطوم":"khartoum", "ولاية الجزيرة":"gezira", "ولاية النيل الأبيض":"white-nile",
+  "ولاية النيل الأزرق":"blue-nile", "ولاية سنار":"sennar", "ولاية القضارف":"gedaref",
+  "ولاية كسلا":"kassala", "ولاية البحر الأحمر":"red-sea", "ولاية نهر النيل":"river-nile",
+  "الولاية الشمالية":"northern", "ولاية شمال كردفان":"n-kordofan", "ولاية جنوب كردفان":"s-kordofan",
+  "ولاية غرب كردفان":"w-kordofan", "ولاية شمال دارفور":"n-darfur", "ولاية جنوب دارفور":"s-darfur",
+  "ولاية شرق دارفور":"e-darfur", "ولاية غرب دارفور":"w-darfur", "ولاية وسط دارفور":"c-darfur"
+};
+
+/* ===== المحليات لكل ولاية ===== */
+const LOCS = {
+  "ولاية الخرطوم": ["الخرطوم","أم درمان","الخرطوم بحري","شرق النيل","جبل أولياء","أم بدة","كرري"],
+  "ولاية الجزيرة": ["مدني الكبرى","جنوب الجزيرة","الحصاحيصا","الكاملين","شرق الجزيرة","المناقل","أم القرى","24 القرشي"],
+  "ولاية النيل الأبيض": ["ربك","كوستي","الدويم","القطينة","الجبلين","تندلتي","السلام","أم رمتة","قولي"],
+  "ولاية النيل الأزرق": ["الدمازين","الروصيرص","الكرمك","قيسان","باو","التضامن"],
+  "ولاية سنار": ["سنجة","سنار","أبو حجار","السوكي","الدندر","شرق سنار","الدالي والمزموم"],
+  "ولاية القضارف": ["بلدية القضارف","وسط القضارف","الرهد","الفاو","الفشقة","البطانة","قلع النحل","المفازة","باسندة","القريشة","القلابات الشرقية","القلابات الغربية"],
+  "ولاية كسلا": ["كسلا","ريفي كسلا","ريفي غرب كسلا","حلفا الجديدة","نهر عطبرة","خشم القربة","ود الحليو","شمال الدلتا","همشكوريب","تلكوك","أروما"],
+  "ولاية البحر الأحمر": ["بورتسودان","سواكن","القنب والأوليب","سنكات","هيا","درديب","طوكر","جبيت المعادن","عقيق","حلايب"],
+  "ولاية نهر النيل": ["الدامر","عطبرة","شندي","المتمة","بربر","أبو حمد","البحيرة"],
+  "الولاية الشمالية": ["دنقلا","دلقو","حلفا","مروي","الدبة","البرقيق","القولد"],
+  "ولاية شمال كردفان": ["شيكان","جبرة الشيخ","سودري","بارا","غرب بارا","أم روابة","أم دم حاج أحمد","الرهد أبو دكنة"],
+  "ولاية جنوب كردفان": ["كادوقلي","الدلنج","رشاد","أبو جبيهة","العباسية","تلودي","أم دورين","البرام","القوز","هيبان","الريف الشرقي","هبيلا","أبو كرشولا","لامي","التضامن","الليري","قدير"],
+  "ولاية غرب كردفان": ["أبو زبد","غبيش","الخوي","الأضية","أبيي","لقاوة","ود بندة","السنوط","الميرم","كيلك","بابنوسة","الدبب","السلام","النهود"],
+  "ولاية شمال دارفور": ["الفاشر","الواحة","اللعيت جار النبي","دار السلام","كتم","كبكابية","المالحة","سرف عمرة","أم كدادة","أمبرو","مليط","كرنوي","الطينة","السريف","الكومة","كلمندو","طويلة"],
+  "ولاية جنوب دارفور": ["بلدية نيالا","نيالا شمال","السلام","كاس","عد الفرسان","بليل","رهيد البردي","تلس","قريضة","برام","نتيقة","مرشنج","شرق الجبل","السنطة","كتيلة","أم دافوق","الوحدة","الردوم","دمسو","شطاية","كيم"],
+  "ولاية شرق دارفور": ["الضعين","بحر العرب","ياسين","أبو كارنكا","عديلة","أبو جابرة","عسلاية","الفردوس","شعيرية"],
+  "ولاية غرب دارفور": ["الجنينة","فور برنقا","بيضة","كرينك","هبيلا","سربا","كلبس","جبل مون"],
+  "ولاية وسط دارفور": ["زالنجي","وادي صالح","نيرتتي","مكجر","أزوم","أم دخن","روكرو","بندسي"]
+};
+
+/* ===== الوحدات الإدارية (أضيفت حالياً لمحلية أم القرى فقط) ===== */
+const UNITS = {
+  "أم القرى": ["وحدة جنوب","وحدة وسط","وحدة شمال"]
+};
+
+/* ===== المراكز والمعامل لكل وحدة (أضيفت حالياً لأم القرى فقط) ===== */
+const FACILITIES = {
+  "أم القرى": { "وحدة جنوب": ["مركز أم القرى الصحي"] }
+};
+
+/* ===== الحالة ===== */
+const $ = id => document.getElementById(id);
+let me = null, role = "entry", reports = [], registering = false;
+let curState = "ولاية الجزيرة", path = [], pathBase = 0, pendingPre = null;
+
+const normPhone = s => String(s || "").replace(/\D/g, "");
+const emailOf = p => p + "@cq-center.app";
+const ymd = d => new Date(d - d.getTimezoneOffset() * 60000).toISOString().slice(0, 10);
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const opts = arr => arr.map(x => `<option value="${esc(x)}">${esc(x)}</option>`).join("");
+const myState = () => (me && me.state) || "ولاية الجزيرة";
+const myLoc = () => (me && me.locality) || "أم القرى";
+
+/* ===== الشعار والعنوان حسب الولاية ===== */
+function setStateLogo(name) {
+  curState = name;
+  const img = $("stLogo"), fb = $("stFb");
+  fb.classList.add("hidden");
+  img.style.display = "";
+  img.src = "state-" + (STATE_CODE[name] || "x") + ".jpg";
+  $("lvl").textContent = name;
+}
+
+/* ===== الأدوار ===== */
+function applyRole(r) {
+  role = r;
+  document.body.dataset.role = r;
+  $("who").textContent = "الدور: " + ROLE_NAMES[r];
+  document.querySelectorAll("[data-min]").forEach(el =>
+    el.classList.toggle("hidden", RANK[r] < RANK[el.dataset.min]));
+  document.querySelectorAll("[data-role-btn]").forEach(b =>
+    b.classList.toggle("on", b.dataset.roleBtn === r));
+  setStateLogo((r === "state" || r === "locality") ? myState() : curState);
+}
+document.querySelectorAll("[data-role-btn]").forEach(b =>
+  b.addEventListener("click", () => { applyRole(b.dataset.roleBtn); go("home"); }));
+
+/* ===== التنقل ===== */
+function go(v) {
+  document.querySelectorAll(".screen").forEach(s => s.classList.toggle("on", s.id === "s-" + v));
+  if (v === "new") { fillNew(pendingPre || {}); pendingPre = null; }
+  if (v === "list") renderList();
+  if (v === "stats") renderStats();
+  if (v === "struct") resetStruct();
+  window.scrollTo(0, 0);
+}
+document.querySelectorAll("[data-go]").forEach(b => b.addEventListener("click", () => go(b.dataset.go)));
+
+/* ===== الهيكل الإداري ===== */
+function resetStruct() {
+  path = [];
+  if (RANK[role] >= 4) pathBase = 0;
+  else if (role === "state") { path = [myState()]; pathBase = 1; }
+  else if (role === "locality") { path = [myState(), myLoc()]; pathBase = 2; }
+  else pathBase = 0;
+  renderStruct();
+}
+
+function renderStruct() {
+  const box = $("structBox");
+  if (RANK[role] < 2) { box.innerHTML = '<div class="empty">هذه الصفحة للإدارات فقط</div>'; $("crumb").textContent = ""; return; }
+  const d = path.length;
+  let title, items = [], cls, click;
+
+  if (d === 0) {
+    title = "الولايات"; items = Object.keys(STATE_CODE); cls = "b-yellow";
+    click = n => { path.push(n); renderStruct(); };
+  } else if (d === 1) {
+    title = path[0]; items = LOCS[path[0]] || []; cls = "b-blue";
+    click = n => { path.push(n); renderStruct(); };
+  } else if (d === 2) {
+    title = path[1]; items = UNITS[path[1]] || []; cls = "b-teal";
+    click = n => { path.push(n); renderStruct(); };
+  } else {
+    title = path[2]; items = (FACILITIES[path[1]] || {})[path[2]] || []; cls = "b-green";
+    click = n => openNew({ state: path[0], loc: path[1], unit: path[2], facility: n });
+  }
+
+  $("crumb").textContent = path.length ? "المسار: " + path.join(" ← ") : "كل الولايات";
+  let html = `<h3>${esc(title)}</h3>`;
+  if (!items.length) html += '<div class="empty">لا توجد عناصر مضافة بعد.</div>';
+  else html += '<div class="grid">' + items.map((n, i) => `<button class="btn ${cls}" data-i="${i}">${esc(n)}</button>`).join("") + "</div>";
+  box.innerHTML = html;
+  box.querySelectorAll("[data-i]").forEach(b => b.addEventListener("click", () => click(items[+b.dataset.i])));
+}
+
+$("structBack").addEventListener("click", () => {
+  if (path.length > pathBase) { path.pop(); renderStruct(); }
+  else go("home");
+});
+
+/* ===== نموذج بلاغ جديد ===== */
+function buildForm() {
+  $("state").innerHTML = opts(Object.keys(STATE_CODE));
+  $("disease").innerHTML = opts(["ملاريا", "حمى الضنك", "الكوليرا", "التيفويد", "أخرى"]);
+  $("status").innerHTML = opts(["مشتبه به", "مؤكد", "تحت العلاج", "متعافٍ"]);
+  $("fType").innerHTML = opts(["مركز صحي", "معمل"]);
+  $("state").addEventListener("change", onState);
+  $("locality").addEventListener("change", onLoc);
+  $("unit").addEventListener("change", onUnit);
+  $("disease").addEventListener("change", () => $("otherWrap").classList.toggle("hidden", $("disease").value !== "أخرى"));
+}
+function onState() { $("locality").innerHTML = opts(LOCS[$("state").value] || []); onLoc(); }
+function onLoc() {
+  const u = UNITS[$("locality").value] || [];
+  $("unit").innerHTML = u.length ? opts(u) : '<option value="">لا توجد وحدات بعد</option>';
+  onUnit();
+}
+function onUnit() {
+  const list = ((FACILITIES[$("locality").value] || {})[$("unit").value]) || [];
+  $("facList").innerHTML = list.map(f => `<option value="${esc(f)}">`).join("");
+}
+function fillNew(pre) {
+  $("state").value = pre.state || curState;
+  onState();
+  if (pre.loc) $("locality").value = pre.loc;
+  onLoc();
+  if (pre.unit) $("unit").value = pre.unit;
+  onUnit();
+  $("facility").value = pre.facility || "";
+  $("date").value = ymd(new Date());
+}
+function openNew(pre) { pendingPre = pre; go("new"); }
+
+$("saveBtn").addEventListener("click", async () => {
+  if (!me) return alert("سجّل الدخول أولاً");
+  const no = $("empNo").value.trim();
+  let dz = $("disease").value;
+  if (dz === "أخرى") dz = $("otherDisease").value.trim();
+  const fac = $("facility").value.trim();
+  if (!no) return alert("أدخل الرقم الوظيفي");
+  if (!dz) return alert("أدخل اسم المرض");
+  if (!fac) return alert("اكتب أو اختر اسم المركز أو المعمل");
+  $("saveBtn").disabled = true;
+  try {
+    await db.collection("reports").add({
+      owner: me.uid, by: me.name || "",
+      state: $("state").value, locality: $("locality").value, unit: $("unit").value || "",
+      fType: $("fType").value, facility: fac,
+      director: $("director").value.trim(), labStaff: $("labStaff").value.trim(), labInfo: $("labInfo").value.trim(),
+      no, name: $("empName").value.trim(), disease: dz,
+      date: $("date").value, status: $("status").value,
+      symptoms: $("symptoms").value.trim(), created: Date.now()
+    });
+    await loadReports();
+    alert("تم حفظ البلاغ ✓");
+    go("home");
+  } catch (e) { alert("تعذّر الحفظ، تأكد من الإنترنت"); }
+  $("saveBtn").disabled = false;
+});
+
+/* ===== السجل ===== */
+$("search").addEventListener("input", renderList);
+function recHtml(r) {
+  return `<div class="rec">
+    <div><strong>${esc(r.name || "بدون اسم")}</strong> <span class="muted">(${esc(r.no)})</span></div>
+    <div class="muted">الولاية: ${esc(r.state)} · المحلية: ${esc(r.locality)}</div>
+    <div class="muted">الوحدة: ${esc(r.unit || "—")} · ${esc(r.fType || "المنشأة")}: ${esc(r.facility || "—")}</div>
+    <div class="muted">مدير المركز أو المساعد الطبي: ${esc(r.director || "—")}</div>
+    ${r.labStaff ? `<div class="muted">كادر المعمل: ${esc(r.labStaff)} ${esc(r.labInfo || "")}</div>` : ""}
+    <div class="muted">المرض: ${esc(r.disease)} · الحالة: ${esc(r.status)} · التاريخ: ${esc(r.date)}</div>
+    ${r.symptoms ? `<div class="muted">الأعراض: ${esc(r.symptoms)}</div>` : ""}
+  </div>`;
+}
+function renderList() {
+  const q = $("search").value.trim();
+  const list = reports.filter(r => !q ||
+    String(r.no || "").includes(q) || String(r.name || "").includes(q) || String(r.facility || "").includes(q));
+  $("recList").innerHTML = list.length ? list.map(recHtml).join("") : '<div class="empty">لا توجد بلاغات</div>';
+}
+
+/* ===== الإحصائيات ===== */
+function renderStats() {
+  const countBy = k => { const o = {}; reports.forEach(r => { const v = r[k] || "غير محدد"; o[v] = (o[v] || 0) + 1; }); return o; };
+  const section = (title, obj) => `<h3 style="margin-top:14px">${title}</h3>` +
+    (Object.keys(obj).length ? Object.entries(obj).map(([k, v]) => `<div class="row"><span>${esc(k)}</span><strong>${v}</strong></div>`).join("") : '<div class="empty">لا توجد بيانات</div>');
+  $("statsBox").innerHTML =
+    `<div class="row"><span>إجمالي البلاغات</span><strong>${reports.length}</strong></div>` +
+    section("حسب المرض", countBy("disease")) +
+    section("حسب الولاية", countBy("state")) +
+    section("حسب المحلية", countBy("locality"));
+}
+
+/* ===== الدخول والتسجيل ===== */
+function showReg(on) { $("loginBox").classList.toggle("hidden", on); $("regBox").classList.toggle("hidden", !on); }
+$("showReg").addEventListener("click", () => showReg(true));
+$("backLogin").addEventListener("click", () => showReg(false));
+
+$("loginBtn").addEventListener("click", async () => {
+  const p = normPhone($("lPhone").value);
+  if (p.length < 9) return alert("رقم التلفون غير صحيح");
+  try { await auth.signInWithEmailAndPassword(emailOf(p), $("lPass").value); }
+  catch (e) { alert("الرقم أو كلمة السر غير صحيحة"); }
+});
+
+$("regBtn").addEventListener("click", async () => {
+  const name = $("rName").value.trim(), p = normPhone($("rPhone").value), pw = $("rPass").value;
+  if (!name) return alert("اكتب الاسم");
+  if (p.length < 9) return alert("رقم التلفون غير صحيح");
+  if (pw !== $("rPass2").value) return alert("كلمتا السر غير متطابقتين");
+  registering = true;
+  try {
+    const cred = await auth.createUserWithEmailAndPassword(emailOf(p), pw);
+    await db.collection("users").doc(cred.user.uid).set({
+      name, phone: p, role: "entry", state: "ولاية الجزيرة", locality: "أم القرى"
+    });
+    registering = false;
+    await enter(cred.user.uid);
+  } catch (e) {
+    registering = false;
+    alert("هذا الرقم مسجل مسبقاً أو حدث خطأ في الاتصال");
+  }
+});
+
+$("logoutBtn").addEventListener("click", () => auth.signOut());
+
+auth.onAuthStateChanged(async user => {
+  if (registering) return;
+  if (!user) {
+    me = null; reports = [];
+    $("app").classList.add("hidden");
+    $("auth").classList.remove("hidden");
+    return;
+  }
+  await enter(user.uid);
+});
+
+async function enter(uid) {
+  const snap = await db.collection("users").doc(uid).get();
+  if (!snap.exists) return;
+  const d = snap.data();
+  const phone = normPhone(d.phone);
+  let r = d.role || "entry";
+  if (phone === ADMIN_PHONE) r = "sysadmin";
+  else if (phone === LOC_MGR_PHONE) r = "locality";
+  me = { uid, ...d, role: r, state: d.state || "ولاية الجزيرة", locality: d.locality || "أم القرى" };
+  $("auth").classList.add("hidden");
+  $("app").classList.remove("hidden");
+  applyRole(r);
+  await loadReports();
+  go("home");
+}
+
+async function loadReports() {
+  try {
+    const q = RANK[role] >= 2 ? db.collection("reports") : db.collection("reports").where("owner", "==", me.uid);
+    const snap = await q.get();
+    reports = snap.docs.map(d => ({ id: d.id, ...d.data() })).sort((a, b) => (b.created || 0) - (a.created || 0));
+  } catch (e) { reports = []; }
+}
+
+/* ===== أدوات الواجهة ===== */
+const SCALES = [0.9, 1, 1.1, 1.2, 1.3];
+let scaleIdx = Math.min(SCALES.length - 1, Math.max(0, +(localStorage.getItem("fIdx") || 1)));
+function applyScale() { document.body.style.zoom = SCALES[scaleIdx]; localStorage.setItem("fIdx", scaleIdx); }
+$("fMinus").addEventListener("click", () => { if (scaleIdx > 0) { scaleIdx--; applyScale(); } });
+$("fPlus").addEventListener("click", () => { if (scaleIdx < SCALES.length - 1) { scaleIdx++; applyScale(); } });
+applyScale();
+
+if (localStorage.getItem("night") === "1") document.body.classList.add("dark");
+$("nightBtn").addEventListener("click", () => {
+  document.body.classList.toggle("dark");
+  localStorage.setItem("night", document.body.classList.contains("dark") ? "1" : "0");
+});
+
+$("shareBtn").addEventListener("click", async () => {
+  const url = location.href.split("?")[0];
+  try {
+    if (navigator.share) await navigator.share({ title: "المنصة القومية للتقارير الصحية", url });
+    else { await navigator.clipboard.writeText(url); alert("تم نسخ الرابط"); }
+  } catch (e) {}
+});
+
+let visits = +(localStorage.getItem("visits") || 0);
+if (!sessionStorage.getItem("counted")) {
+  sessionStorage.setItem("counted", "1");
+  visits++;
+  localStorage.setItem("visits", visits);
+}
+$("visits").textContent = visits;
+
+/* ===== التهيئة ===== */
+buildForm();
+$("stLogo").addEventListener("error", () => {
+  $("stLogo").style.display = "none";
+  $("stFb").textContent = curState;
+  $("stFb").classList.remove("hidden");
+});
+applyRole("entry");
+</script>
+</body>
+</html>
