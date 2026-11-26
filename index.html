@@ -1,1 +1,785 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>المنصة القومية للتقارير الصحية</title>
+<style>
+:root{--bg:#eef3f8;--card:#fff;--text:#1d2630;--muted:#667085;--border:#d9e0e8;--pri:#1560c7;--pri-d:#0b3a7a;--line:#7fb8ff;--ghost:#eef3f8;--ghost-t:#0b3a7a}
+body.dark{--bg:#15191e;--card:#1f252c;--text:#e8edf2;--muted:#9aa5b1;--border:#333c46;--ghost:#2a3441;--ghost-t:#e8edf2}
+*{box-sizing:border-box}
+body{margin:0;font-family:Tahoma,Arial,sans-serif;background:var(--bg);color:var(--text);padding:10px;transition:background .2s}
+.hidden{display:none!important}
+main{max-width:520px;margin:auto}
 
+/* الترويسة: الشعاران في الزاويتين السفليتين، والعنوان يأخذ العرض كاملاً */
+.hdr{position:relative;background:linear-gradient(#2a7fe0,var(--pri-d));color:#fff;border-radius:16px;padding:10px 12px 52px;border:3px solid var(--pri-d);box-shadow:0 0 0 2px var(--line) inset,0 4px 10px rgba(11,58,122,.25);text-align:center;line-height:1.5}
+.corner{position:absolute;bottom:8px;width:44px;height:44px;border-radius:10px;background:#fff;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.corner.r{right:8px}.corner.l{left:8px}
+.corner img{width:100%;height:100%;object-fit:contain;padding:2px}
+.hdr .l1{font-size:11px;opacity:.9}
+.hdr .l2{font-size:14px;font-weight:bold;color:#ffe066}
+.hdr .sub{font-size:12px;font-weight:bold;color:#cfe3ff;margin-top:2px}
+.hdr .sub:empty{display:none}
+.hdr h1{margin:2px 0;font-size:16px}
+.hdr small{display:block;font-size:11px;opacity:.9}
+
+/* سطر الأدوات */
+.tools{display:flex;gap:5px;margin:8px 0}
+.tool{flex:1;min-height:32px;padding:4px 2px;border:none;border-radius:9px;font-family:inherit;font-size:11px;font-weight:bold;color:#fff;background:linear-gradient(#2a6fd6,var(--pri-d));box-shadow:0 3px 0 #06234d;cursor:pointer;white-space:nowrap}
+.tool.fs{flex:0 0 auto;min-width:34px;font-size:13px}
+.tool.night{background:linear-gradient(#4a5568,#1a202c)}
+
+/* أزرار ثلاثية الأبعاد */
+.btn{display:flex;align-items:center;justify-content:center;gap:8px;min-height:48px;width:100%;padding:12px;border:none;border-radius:14px;font-family:inherit;font-size:16px;font-weight:bold;color:#fff;cursor:pointer;text-decoration:none;box-shadow:0 5px 0 var(--pri-d);margin-top:10px;text-align:center;transition:transform .08s,box-shadow .08s}
+.btn:active{transform:translateY(4px);box-shadow:0 1px 0 var(--pri-d)}
+.btn:disabled{opacity:.55;pointer-events:none}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.grid .full{grid-column:span 2}
+.grid .btn{margin-top:0}
+.b-red{background:linear-gradient(#ff6a5e,#d82a1e);box-shadow:0 5px 0 #8e110a}
+.b-blue{background:linear-gradient(#3fa4ff,#1560c7)}
+.b-yellow{background:linear-gradient(#ffe066,#e8ad00);color:#2a2000;box-shadow:0 5px 0 #9a7400}
+.b-green{background:linear-gradient(#4cd47a,#1e9a4a);box-shadow:0 5px 0 #0f6a31}
+.b-gray{background:linear-gradient(#8a96a6,#56627a);box-shadow:0 5px 0 #333d4f}
+.b-teal{background:linear-gradient(#3fe0d0,#0f9d91);box-shadow:0 5px 0 #0a6e66}
+.b-orange{background:linear-gradient(#ffb36b,#e8701a);box-shadow:0 5px 0 #a04a0c}
+.b-purple{background:linear-gradient(#a58bff,#6b5bd6);box-shadow:0 5px 0 #433a94}
+.b-ghost{background:var(--ghost);color:var(--ghost-t);box-shadow:0 3px 0 #c8d3e0}
+.tier.on{outline:3px solid #fff;outline-offset:-3px}
+
+/* زر الرجوع ثلاثي الأبعاد */
+.back3d{display:inline-flex;align-items:center;gap:6px;padding:9px 16px;border:none;border-radius:12px;background:linear-gradient(#5aa9ff,#1560c7);color:#fff;font-weight:bold;font-family:inherit;font-size:14px;box-shadow:0 5px 0 #0b3a7a,0 8px 12px rgba(0,0,0,.25);text-shadow:0 1px 2px rgba(0,0,0,.3);cursor:pointer;margin-bottom:10px}
+.back3d:active{transform:translateY(4px);box-shadow:0 1px 0 #0b3a7a}
+
+/* البطاقات والنماذج والجداول */
+.card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:14px;margin-top:12px}
+.card h3{margin:0 0 8px}
+.muted{color:var(--muted);font-size:13px;line-height:1.7}
+.crumb{font-size:13px;color:var(--pri);font-weight:bold;margin:8px 0}
+input,select,textarea{width:100%;padding:12px;border:1px solid var(--border);border-radius:10px;font-size:16px;margin-bottom:8px;font-family:inherit;background:var(--bg);color:var(--text)}
+label{display:block;margin:8px 0 4px;font-size:14px;color:var(--muted)}
+.rec{border:1px solid var(--border);border-radius:10px;padding:10px;margin-bottom:8px}
+.row{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border)}
+.empty{text-align:center;color:var(--muted);padding:20px}
+.screen{display:none;margin-top:12px}
+.screen.on{display:block}
+.demo{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.demo button{flex:1;min-width:30%;padding:9px;border:1px solid var(--border);border-radius:10px;background:var(--card);color:var(--text);font-family:inherit;font-size:13px;cursor:pointer}
+.demo button.on{background:var(--pri);color:#fff;border-color:var(--pri)}
+.tbl{overflow-x:auto;margin-top:10px}
+table{width:100%;border-collapse:collapse;font-size:12px;min-width:320px}
+th,td{border:1px solid var(--border);padding:6px 4px;text-align:center}
+th{background:#eaf2fd;color:var(--pri-d)}
+tr.total td{font-weight:bold;background:#f3f6fa}
+.user-line{font-size:13px;line-height:1.8}
+
+/* الطباعة: تُخفى الأدوات والأزرار، ويظهر التقرير فقط */
+@media print{
+  .no-print,.hdr-app,.tools{display:none!important}
+  .screen{display:none!important}
+  .screen.on{display:block!important}
+  body{background:#fff;color:#000;padding:0}
+  .card{border:none;box-shadow:none;margin:0}
+  .hdr{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+}
+</style>
+</head>
+<body>
+
+<!-- الترويسة الرئيسية -->
+<div class="hdr hdr-app">
+  <div class="corner r"><img src="1795640448397.jpg" alt="جمهورية السودان" onerror="this.style.display='none'"></div>
+  <div class="l1">جمهورية السودان</div>
+  <div class="l2">وزارة الصحة الاتحادية</div>
+  <div class="sub" id="hSub"></div>
+  <h1>المنصة القومية للتقارير الصحية والترصد الوبائي</h1>
+  <small id="who">الدور: مدخل بيانات</small>
+  <div class="corner l"><img src="1795553127384.jpg" alt="وزارة الصحة الاتحادية" onerror="this.style.display='none'"></div>
+</div>
+
+<div class="tools hdr-app">
+  <button class="tool fs" id="fMinus">A-</button>
+  <button class="tool fs" id="fPlus">A+</button>
+  <button class="tool" id="visitBtn">👁 الزوار: <span id="visits">0</span></button>
+  <button class="tool" id="shareBtn">🔗 رابط التطبيق</button>
+  <button class="tool night" id="nightBtn">🌙 ليلي</button>
+</div>
+
+<!-- تسجيل الدخول والتسجيل -->
+<div id="auth">
+  <div class="card" id="loginBox">
+    <h3>تسجيل الدخول</h3>
+    <label for="lPhone">رقم التلفون</label>
+    <input id="lPhone" inputmode="tel" placeholder="رقم التلفون">
+    <label for="lPass">كلمة السر</label>
+    <input id="lPass" type="password" placeholder="كلمة السر">
+    <button class="btn b-blue" id="loginBtn">دخول</button>
+    <button class="back3d" id="showReg" style="width:100%;justify-content:center;margin-top:8px">إنشاء حساب جديد</button>
+  </div>
+  <div class="card hidden" id="regBox">
+    <h3>إنشاء حساب جديد</h3>
+    <label for="rName">الاسم</label>
+    <input id="rName" placeholder="الاسم الكامل">
+    <label for="rPhone">رقم التلفون</label>
+    <input id="rPhone" inputmode="tel" placeholder="رقم التلفون">
+    <label for="rEmpNo">الرقم الوظيفي</label>
+    <input id="rEmpNo" inputmode="numeric" placeholder="مثال: 1024">
+    <label for="rState">الولاية</label>
+    <select id="rState"></select>
+    <label for="rLoc">المحلية</label>
+    <select id="rLoc"></select>
+    <label for="rUnit">الوحدة الإدارية</label>
+    <select id="rUnit"></select>
+    <label for="rFac">المركز الصحي أو المعمل</label>
+    <input id="rFac" list="rFacList" placeholder="اختر أو اكتب الاسم">
+    <datalist id="rFacList"></datalist>
+    <label for="rPass">كلمة السر</label>
+    <input id="rPass" type="password" placeholder="6 أحرف أو أكثر">
+    <label for="rPass2">تأكيد كلمة السر</label>
+    <input id="rPass2" type="password" placeholder="أعد كتابة كلمة السر">
+    <button class="btn b-green" id="regBtn">إنشاء الحساب</button>
+    <button class="back3d" id="backLogin" style="width:100%;justify-content:center;margin-top:8px">لديّ حساب، تسجيل الدخول</button>
+  </div>
+</div>
+
+<!-- التطبيق بعد الدخول -->
+<div id="app" class="hidden">
+
+  <!-- الشاشة الرئيسية -->
+  <div class="screen on" id="s-home">
+    <div class="grid">
+      <button class="btn b-red full" data-go="new">🚨 بلاغ جديد</button>
+      <button class="btn b-blue" data-go="list">📋 السجل</button>
+      <button class="btn b-yellow" data-min="locality" data-go="struct">🗺️ الهيكل الإداري</button>
+      <button class="btn b-green" data-go="stats">📊 الإحصائيات</button>
+      <button class="btn b-gray" data-go="reports">📤 التقارير</button>
+      <button class="btn b-yellow full" data-go="contacts">📞 أرقام المديرين</button>
+      <button class="btn b-blue full" data-min="locality" data-go="users">👥 المستخدمون والصلاحيات</button>
+    </div>
+
+    <div class="card">
+      <div class="muted">جرّب كيف تتغير الواجهة حسب الدور:</div>
+      <div class="demo">
+        <button data-role-btn="ministry">الوزارة</button>
+        <button data-role-btn="state">الولاية</button>
+        <button data-role-btn="locality">المحلية</button>
+        <button data-role-btn="unit">وحدات إدارية</button>
+        <button data-role-btn="center">مركز صحي</button>
+        <button data-role-btn="entry">مدخل بيانات</button>
+      </div>
+    </div>
+
+    <div style="text-align:center;margin-top:14px">
+      <button class="back3d" id="logoutBtn">تسجيل خروج</button>
+    </div>
+  </div>
+
+  <!-- بلاغ جديد -->
+  <div class="screen" id="s-new">
+    <button class="back3d" data-go="home">← رجوع للقائمة</button>
+    <div class="card">
+      <h3>بلاغ جديد</h3>
+      <label for="state">الولاية</label>
+      <select id="state"></select>
+      <label for="locality">المحلية</label>
+      <select id="locality"></select>
+      <label for="unit">الوحدة الإدارية</label>
+      <select id="unit"></select>
+      <label for="fType">نوع المنشأة</label>
+      <select id="fType"><option>مركز صحي</option><option>معمل</option></select>
+      <label for="facility">اسم المركز أو المعمل</label>
+      <input id="facility" list="facList" placeholder="اختر أو اكتب الاسم">
+      <datalist id="facList"></datalist>
+      <label for="director">اسم مدير المركز أو المساعد الطبي</label>
+      <input id="director" placeholder="الاسم الكامل">
+      <label for="labStaff">اسم كادر المعمل (إن وجد)</label>
+      <input id="labStaff" placeholder="الاسم الكامل">
+      <label for="labInfo">بيانات كادر المعمل (الهاتف أو الرقم الوظيفي)</label>
+      <input id="labInfo" placeholder="مثال: 0912345678">
+      <label for="empNo">الرقم الوظيفي للمبلّغ</label>
+      <input id="empNo" inputmode="numeric" placeholder="مثال: 1024">
+      <label for="empName">اسم المريض أو الموظف</label>
+      <input id="empName" placeholder="الاسم الكامل">
+      <label for="disease">المرض</label>
+      <select id="disease"><option>ملاريا</option><option>حمى الضنك</option><option>الكوليرا</option><option>التيفويد</option><option>أخرى</option></select>
+      <div id="otherWrap" class="hidden">
+        <label for="otherDisease">اسم المرض</label>
+        <input id="otherDisease">
+      </div>
+      <label for="date">تاريخ التشخيص</label>
+      <input id="date" type="date">
+      <label for="status">الحالة</label>
+      <select id="status"><option>مشتبه به</option><option>مؤكد</option><option>تحت العلاج</option><option>متعافٍ</option></select>
+      <label for="symptoms">الأعراض</label>
+      <textarea id="symptoms"></textarea>
+      <button class="btn b-red" id="saveBtn">حفظ البلاغ</button>
+    </div>
+  </div>
+
+  <!-- السجل -->
+  <div class="screen" id="s-list">
+    <button class="back3d" data-go="home">← رجوع للقائمة</button>
+    <div class="card">
+      <h3>السجل</h3>
+      <input id="search" placeholder="ابحث بالاسم أو الرقم الوظيفي أو اسم المركز">
+      <div id="recList"></div>
+    </div>
+  </div>
+
+  <!-- الإحصائيات -->
+  <div class="screen" id="s-stats">
+    <button class="back3d" data-go="home">← رجوع للقائمة</button>
+    <div class="card">
+      <h3>الإحصائيات</h3>
+      <div id="statsBox"></div>
+    </div>
+  </div>
+
+  <!-- الهيكل الإداري -->
+  <div class="screen" id="s-struct">
+    <button class="back3d" data-go="home">← رجوع للقائمة</button>
+    <div class="card">
+      <div class="grid">
+        <button class="btn b-orange tier" data-tier="ministry">🏛️ الوزارة</button>
+        <button class="btn b-yellow tier" data-tier="states">🗺️ الولايات</button>
+        <button class="btn b-blue tier" data-tier="locs">🏘️ المحليات</button>
+        <button class="btn b-teal tier" data-tier="units">🏥 الوحدات</button>
+        <button class="btn b-green tier full" data-tier="centers">🩺 المراكز الصحية والمعامل</button>
+      </div>
+      <div class="crumb" id="crumb"></div>
+      <div id="structBox"></div>
+    </div>
+  </div>
+
+  <!-- التقارير -->
+  <div class="screen" id="s-reports">
+    <button class="back3d" data-go="home">← رجوع للقائمة</button>
+    <div class="card">
+      <h3>التقارير</h3>
+      <p class="muted">التقارير تُفتح داخل التطبيق، ومن زر الطباعة تختار «حفظ كـ PDF».</p>
+      <button class="btn b-red" data-go="daily">🚨 فورية ويومية (القائمة أ)</button>
+      <button class="btn b-blue" disabled>📅 أسبوعية (القائمة ب) · قريباً</button>
+      <button class="btn b-orange" disabled>🗓️ ربع سنوية · قريباً</button>
+      <button class="btn b-teal" disabled>📘 نصف سنوية · قريباً</button>
+      <button class="btn b-purple" disabled>📗 ثلاثة أرباع السنة · قريباً</button>
+      <button class="btn b-green" data-go="annual">🏆 سنوية</button>
+    </div>
+  </div>
+
+  <!-- التقرير الفوري واليومي -->
+  <div class="screen" id="s-daily">
+    <div class="no-print">
+      <button class="back3d" data-go="reports">← رجوع للتقارير</button>
+      <div class="card">
+        <label for="dDate">تاريخ التقرير</label>
+        <input id="dDate" type="date">
+        <button class="btn b-blue" onclick="window.print()">🖨 طباعة / حفظ PDF</button>
+      </div>
+    </div>
+    <div class="card" id="dBody"></div>
+  </div>
+
+  <!-- التقرير السنوي -->
+  <div class="screen" id="s-annual">
+    <div class="no-print">
+      <button class="back3d" data-go="reports">← رجوع للتقارير</button>
+      <div class="card">
+        <label for="aYear">السنة</label>
+        <select id="aYear"></select>
+        <button class="btn b-blue" onclick="window.print()">🖨 طباعة / حفظ PDF</button>
+      </div>
+    </div>
+    <div class="card" id="aBody"></div>
+  </div>
+
+  <!-- أرقام المديرين -->
+  <div class="screen" id="s-contacts">
+    <button class="back3d" data-go="home">← رجوع للقائمة</button>
+    <div class="card" id="contactsCard"></div>
+  </div>
+
+  <!-- المستخدمون والصلاحيات -->
+  <div class="screen" id="s-users">
+    <button class="back3d" data-go="home">← رجوع للقائمة</button>
+    <div class="card">
+      <h3>المستخدمون والصلاحيات</h3>
+      <div id="usersBox"></div>
+    </div>
+  </div>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+
+<script>
+/* ===== الإعدادات (لا تُغيَّر) ===== */
+const firebaseConfig = {
+  apiKey: "AIzaSyD4Iesxn_85M4cwfDkfrhezBkAFtx45xC0",
+  authDomain: "cq-center-f7775.firebaseapp.com",
+  projectId: "cq-center-f7775",
+  storageBucket: "cq-center-f7775.firebasestorage.app",
+  messagingSenderId: "779273740183",
+  appId: "1:779273740183:web:789956f5c7d0d2ca0aaed2"
+};
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+const db = firebase.firestore();
+
+/* ===== الأرقام: قابلة للتعديل والإضافة ===== */
+const ADMIN_PHONES = ["0121346248"];
+const LOC_MGR_PHONE = "0910211755";
+const STATE_PHONES = {
+  // "ولاية الجزيرة": ["", ""]
+};
+
+/* ===== الأدوار ===== */
+const RANK = {entry:1, center:1, unit:1, locality:2, state:3, ministry:4, sysadmin:5};
+const RNAME = {sysadmin:"مدير النظام", ministry:"وزارة الصحة الاتحادية", state:"مسؤول الولاية", locality:"إدارة المحلية", unit:"وحدة إدارية", center:"مركز صحي", entry:"مدخل بيانات"};
+const DEPTH = {sysadmin:0, ministry:0, state:1, locality:2, unit:3, center:4, entry:4};
+
+/* ===== البيانات الإدارية (تُكمَل لاحقاً) ===== */
+const LOCS = {
+  "ولاية الخرطوم": ["الخرطوم","أم درمان","الخرطوم بحري","شرق النيل","جبل أولياء","أم بدة","كرري"],
+  "ولاية الجزيرة": ["مدني الكبرى","جنوب الجزيرة","الحصاحيصا","الكاملين","شرق الجزيرة","المناقل","أم القرى","24 القرشي"],
+  "ولاية النيل الأبيض": ["ربك","كوستي","الدويم","القطينة","الجبلين","تندلتي","السلام","أم رمتة","قولي"],
+  "ولاية النيل الأزرق": ["الدمازين","الروصيرص","الكرمك","قيسان","باو","التضامن"],
+  "ولاية سنار": ["سنجة","سنار","أبو حجار","السوكي","الدندر","شرق سنار","الدالي والمزموم"],
+  "ولاية القضارف": ["بلدية القضارف","وسط القضارف","الرهد","الفاو","الفشقة","البطانة","قلع النحل","المفازة","باسندة","القريشة","القلابات الشرقية","القلابات الغربية"],
+  "ولاية كسلا": ["كسلا","ريفي كسلا","ريفي غرب كسلا","حلفا الجديدة","نهر عطبرة","خشم القربة","ود الحليو","شمال الدلتا","همشكوريب","تلكوك","أروما"],
+  "ولاية البحر الأحمر": ["بورتسودان","سواكن","القنب والأوليب","سنكات","هيا","درديب","طوكر","جبيت المعادن","عقيق","حلايب"],
+  "ولاية نهر النيل": ["الدامر","عطبرة","شندي","المتمة","بربر","أبو حمد","البحيرة"],
+  "الولاية الشمالية": ["دنقلا","دلقو","حلفا","مروي","الدبة","البرقيق","القولد"],
+  "ولاية شمال كردفان": ["شيكان","جبرة الشيخ","سودري","بارا","غرب بارا","أم روابة","أم دم حاج أحمد","الرهد أبو دكنة"],
+  "ولاية جنوب كردفان": ["كادوقلي","الدلنج","رشاد","أبو جبيهة","العباسية","تلودي","أم دورين","البرام","القوز","هيبان","الريف الشرقي","هبيلا","أبو كرشولا","لامي","التضامن","الليري","قدير"],
+  "ولاية غرب كردفان": ["أبو زبد","غبيش","الخوي","الأضية","أبيي","لقاوة","ود بندة","السنوط","الميرم","كيلك","بابنوسة","الدبب","السلام","النهود"],
+  "ولاية شمال دارفور": ["الفاشر","الواحة","اللعيت جار النبي","دار السلام","كتم","كبكابية","المالحة","سرف عمرة","أم كدادة","أمبرو","مليط","كرنوي","الطينة","السريف","الكومة","كلمندو","طويلة"],
+  "ولاية جنوب دارفور": ["بلدية نيالا","نيالا شمال","السلام","كاس","عد الفرسان","بليل","رهيد البردي","تلس","قريضة","برام","نتيقة","مرشنج","شرق الجبل","السنطة","كتيلة","أم دافوق","الوحدة","الردوم","دمسو","شطاية","كيم"],
+  "ولاية شرق دارفور": ["الضعين","بحر العرب","ياسين","أبو كارنكا","عديلة","أبو جابرة","عسلاية","الفردوس","شعيرية"],
+  "ولاية غرب دارفور": ["الجنينة","فور برنقا","بيضة","كرينك","هبيلا","سربا","كلبس","جبل مون"],
+  "ولاية وسط دارفور": ["زالنجي","وادي صالح","نيرتتي","مكجر","أزوم","أم دخن","روكرو","بندسي"]
+};
+const UNITS = { "أم القرى": ["وحدة جنوب","وحدة وسط","وحدة شمال"] };
+const FACS = { "أم القرى": { "وحدة جنوب": ["مركز أم القرى الصحي"] } };
+const DEF = { state:"ولاية الجزيرة", loc:"أم القرى", unit:"وحدة جنوب", fac:"مركز أم القرى الصحي" };
+const DISEASES = ["ملاريا","حمى الضنك","الكوليرا","التيفويد","أخرى"];
+const MONTHS = ["يناير","فبراير","مارس","أبريل","مايو","يونيو","يوليو","أغسطس","سبتمبر","أكتوبر","نوفمبر","ديسمبر"];
+
+/* ===== الحالة ===== */
+const $ = id => document.getElementById(id);
+let me = null, role = "entry", reports = [], registering = false, pendingPre = null;
+let tier = "ministry", sel = {};
+
+const normPhone = s => String(s || "").replace(/\D/g, "");
+const emailOf = p => p + "@cq-center.app";
+const ymd = d => new Date(d - d.getTimezoneOffset() * 60000).toISOString().slice(0, 10);
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const opts = arr => arr.map(x => `<option value="${esc(x)}">${esc(x)}</option>`).join("");
+
+/* ===== أجزاء الترويسة حسب المستخدم ===== */
+function headParts() {
+  if (!me) return [];
+  const d = DEPTH[role] ?? 0, p = [];
+  if (d >= 1) p.push(me.state || DEF.state);
+  if (d >= 2) p.push("محلية " + (me.locality || DEF.loc));
+  if (d >= 3 && me.unit) p.push(me.unit);
+  if (d >= 4 && me.facility) p.push(me.facility);
+  return p;
+}
+function renderHeader() { $("hSub").textContent = headParts().join(" – "); }
+
+/* ===== الأدوار ===== */
+function applyRole(r) {
+  role = r;
+  document.body.dataset.role = r;
+  $("who").textContent = "الدور: " + RNAME[r];
+  document.querySelectorAll("[data-min]").forEach(el => el.classList.toggle("hidden", RANK[r] < RANK[el.dataset.min]));
+  document.querySelectorAll("[data-role-btn]").forEach(b => b.classList.toggle("on", b.dataset.roleBtn === r));
+  renderHeader();
+}
+document.querySelectorAll("[data-role-btn]").forEach(b => b.addEventListener("click", () => {
+  applyRole(b.dataset.roleBtn); go("home");
+}));
+
+/* ===== التنقل ===== */
+function go(v) {
+  document.querySelectorAll(".screen").forEach(s => s.classList.toggle("on", s.id === "s-" + v));
+  if (v === "new") { fillNew(pendingPre || {}); pendingPre = null; }
+  if (v === "list") renderList();
+  if (v === "stats") renderStats();
+  if (v === "struct") { tier = "ministry"; sel = {}; renderStruct(); }
+  if (v === "daily") { if (!$("dDate").value) $("dDate").value = ymd(new Date()); renderDaily(); }
+  if (v === "annual") { fillYears(); renderAnnual(); }
+  if (v === "contacts") renderContacts();
+  if (v === "users") renderUsers();
+  window.scrollTo(0, 0);
+}
+document.querySelectorAll("[data-go]").forEach(b => b.addEventListener("click", () => go(b.dataset.go)));
+
+/* ===== الهيكل الإداري ===== */
+function scopeStates() {
+  const b = me || DEF;
+  return RANK[role] >= 4 ? Object.keys(LOCS) : [b.state || DEF.state];
+}
+function scopeLocs() {
+  const b = me || DEF, out = [];
+  (sel.state ? [sel.state] : scopeStates()).forEach(s => (LOCS[s] || []).forEach(l => {
+    if (role === "locality" && l !== b.locality) return;
+    out.push({ s, l });
+  }));
+  return out;
+}
+function scopedUnits() {
+  return scopeLocs().filter(x => !sel.loc || x.l === sel.loc)
+    .flatMap(x => (UNITS[x.l] || []).map(u => ({ s: x.s, loc: x.l, u })));
+}
+function renderStruct() {
+  const box = $("structBox");
+  if (RANK[role] < 2) { box.innerHTML = '<div class="empty">هذه الصفحة للإدارات فقط</div>'; $("crumb").textContent = ""; return; }
+  document.querySelectorAll(".tier").forEach(b => b.classList.toggle("on", b.dataset.tier === tier));
+  $("crumb").textContent = [sel.state, sel.loc, sel.unit].filter(Boolean).join(" ← ");
+  const pending = '<div class="empty">بانتظار اعتماد الوزارة</div>';
+
+  if (tier === "ministry") {
+    box.innerHTML = `<h3>وزارة الصحة الاتحادية</h3>` +
+      ADMIN_PHONES.map(p => `<a class="btn b-blue" href="tel:${p}">📞 ${p}</a>`).join("");
+    return;
+  }
+
+  let h = "", items = [];
+  if (tier === "states") {
+    h = "<h3>الولايات</h3>";
+    items = scopeStates().map(s => ({ l: s, c: "b-yellow", a: () => { sel = { state: s }; tier = "locs"; renderStruct(); } }));
+  } else if (tier === "locs") {
+    h = "<h3>المحليات</h3>";
+    items = scopeLocs().map(x => ({ l: x.l, c: "b-blue", a: () => { sel = { state: x.s, loc: x.l }; tier = "units"; renderStruct(); } }));
+  } else if (tier === "units") {
+    h = "<h3>الوحدات الإدارية</h3>";
+    items = scopedUnits().map(x => ({ l: x.u, c: "b-teal", a: () => { sel = { state: x.s, loc: x.loc, unit: x.u }; tier = "centers"; renderStruct(); } }));
+  } else {
+    h = "<h3>المراكز الصحية والمعامل</h3>";
+    items = scopedUnits().filter(x => !sel.unit || x.u === sel.unit)
+      .flatMap(x => (FACS[x.loc] && FACS[x.loc][x.u] || []).map(f => ({ l: f, c: "b-green", a: () => openNew({ state: x.s, loc: x.loc, unit: x.u, facility: f }) })));
+  }
+
+  box.innerHTML = h + (items.length
+    ? `<div class="grid">${items.map((it, i) => `<button class="btn ${it.c}" data-i="${i}">${esc(it.l)}</button>`).join("")}</div>`
+    : pending);
+  box.querySelectorAll("[data-i]").forEach(b => b.addEventListener("click", () => items[+b.dataset.i].a()));
+}
+document.querySelectorAll(".tier").forEach(b => b.addEventListener("click", () => {
+  tier = b.dataset.tier; sel = {}; renderStruct();
+}));
+
+/* ===== ربط القوائم المتسلسلة ===== */
+function wire(sid, lid, uid, dlid) {
+  const s = $(sid), l = $(lid), u = $(uid), dl = $(dlid);
+  const onU = () => {
+    const fs = (FACS[l.value] || {})[u.value] || [];
+    dl.innerHTML = fs.map(f => `<option value="${esc(f)}">`).join("");
+  };
+  const onL = () => {
+    const us = UNITS[l.value] || [];
+    u.innerHTML = us.length ? opts(us) : '<option value="">لا توجد وحدات بعد</option>';
+    onU();
+  };
+  const onS = () => { l.innerHTML = opts(LOCS[s.value] || []); onL(); };
+  s.addEventListener("change", onS);
+  l.addEventListener("change", onL);
+  u.addEventListener("change", onU);
+  s.innerHTML = opts(Object.keys(LOCS));
+  onS();
+  return { set(st, lc, un) {
+    if (st) { s.value = st; onS(); }
+    if (lc) { l.value = lc; onL(); }
+    if (un) { u.value = un; onU(); }
+  }};
+}
+const NEW = wire("state", "locality", "unit", "facList");
+const REG = wire("rState", "rLoc", "rUnit", "rFacList");
+
+function fillNew(pre) {
+  NEW.set(pre.state || (me && me.state) || DEF.state, pre.loc || (me && me.locality) || DEF.loc, pre.unit || (me && me.unit));
+  $("facility").value = pre.facility || (me && me.facility) || "";
+  $("empNo").value = (me && me.empNo) || "";
+  $("date").value = ymd(new Date());
+}
+function openNew(pre) { pendingPre = pre; go("new"); }
+$("disease").addEventListener("change", () => $("otherWrap").classList.toggle("hidden", $("disease").value !== "أخرى"));
+
+/* ===== حفظ البلاغ ===== */
+$("saveBtn").addEventListener("click", async () => {
+  if (!me) return alert("سجّل الدخول أولاً");
+  const no = $("empNo").value.trim();
+  let dz = $("disease").value;
+  if (dz === "أخرى") dz = $("otherDisease").value.trim();
+  const fac = $("facility").value.trim();
+  if (!no) return alert("أدخل الرقم الوظيفي");
+  if (!dz) return alert("أدخل اسم المرض");
+  if (!fac) return alert("اكتب أو اختر اسم المركز أو المعمل");
+  $("saveBtn").disabled = true;
+  try {
+    await db.collection("reports").add({
+      owner: me.uid, by: me.name || "",
+      state: $("state").value, locality: $("locality").value, unit: $("unit").value || "",
+      fType: $("fType").value, facility: fac,
+      director: $("director").value.trim(), labStaff: $("labStaff").value.trim(), labInfo: $("labInfo").value.trim(),
+      no, name: $("empName").value.trim(), disease: dz, date: $("date").value,
+      status: $("status").value, symptoms: $("symptoms").value.trim(), created: Date.now()
+    });
+    await loadReports();
+    alert("تم حفظ البلاغ ✓");
+    go("home");
+  } catch (e) { alert("تعذّر الحفظ، تأكد من الإنترنت"); }
+  $("saveBtn").disabled = false;
+});
+
+/* ===== السجل ===== */
+$("search").addEventListener("input", renderList);
+function recHtml(r) {
+  return `<div class="rec">
+    <div><strong>${esc(r.name || "بدون اسم")}</strong> <span class="muted">(${esc(r.no)})</span></div>
+    <div class="muted">الولاية: ${esc(r.state)} · المحلية: ${esc(r.locality)}</div>
+    <div class="muted">الوحدة: ${esc(r.unit || "—")} · ${esc(r.fType || "المنشأة")}: ${esc(r.facility || "—")}</div>
+    <div class="muted">مدير المركز أو المساعد الطبي: ${esc(r.director || "—")}</div>
+    ${r.labStaff ? `<div class="muted">كادر المعمل: ${esc(r.labStaff)} ${esc(r.labInfo || "")}</div>` : ""}
+    <div class="muted">المرض: ${esc(r.disease)} · الحالة: ${esc(r.status)} · التاريخ: ${esc(r.date)}</div>
+    ${r.symptoms ? `<div class="muted">الأعراض: ${esc(r.symptoms)}</div>` : ""}
+  </div>`;
+}
+function renderList() {
+  const q = $("search").value.trim();
+  const list = reports.filter(r => !q || String(r.no || "").includes(q) ||
+    String(r.name || "").includes(q) || String(r.facility || "").includes(q));
+  $("recList").innerHTML = list.length ? list.map(recHtml).join("") : '<div class="empty">لا توجد بلاغات</div>';
+}
+
+/* ===== الإحصائيات ===== */
+function renderStats() {
+  const countBy = k => { const o = {}; reports.forEach(r => { const v = r[k] || "غير محدد"; o[v] = (o[v] || 0) + 1; }); return o; };
+  const section = (title, obj) => `<h3 style="margin-top:14px">${title}</h3>` +
+    (Object.keys(obj).length ? Object.entries(obj).map(([k, v]) => `<div class="row"><span>${esc(k)}</span><strong>${v}</strong></div>`).join("") : '<div class="empty">لا توجد بيانات</div>');
+  $("statsBox").innerHTML =
+    `<div class="row"><span>إجمالي البلاغات</span><strong>${reports.length}</strong></div>` +
+    section("حسب المرض", countBy("disease")) +
+    section("حسب الولاية", countBy("state")) +
+    section("حسب المحلية", countBy("locality"));
+}
+
+/* ===== ترويسة التقارير: نفس ترويسة التطبيق ===== */
+function reportHead(title) {
+  const p = headParts();
+  return `<div class="hdr">
+    <div class="corner r"><img src="1795640448397.jpg" alt="" onerror="this.style.display='none'"></div>
+    <div class="l1">جمهورية السودان</div>
+    <div class="l2">وزارة الصحة الاتحادية</div>
+    ${p.length ? `<div class="sub">${esc(p.join(" – "))}</div>` : ""}
+    <h1>المنصة القومية للتقارير الصحية والترصد الوبائي</h1>
+    <small>${esc(title)}</small>
+    <div class="corner l"><img src="1795553127384.jpg" alt="" onerror="this.style.display='none'"></div>
+  </div>`;
+}
+function table(heads, rows, totalRow) {
+  return `<div class="tbl"><table>
+    <tr>${heads.map(h => `<th>${esc(h)}</th>`).join("")}</tr>
+    ${rows.map(r => `<tr>${r.map(c => `<td>${esc(c)}</td>`).join("")}</tr>`).join("")}
+    ${totalRow ? `<tr class="total">${totalRow.map(c => `<td>${esc(c)}</td>`).join("")}</tr>` : ""}
+  </table></div>`;
+}
+const diseaseKeys = list => [...new Set([...DISEASES, ...list.map(r => r.disease)])];
+
+/* ===== التقرير الفوري واليومي ===== */
+$("dDate").addEventListener("change", renderDaily);
+function renderDaily() {
+  const d = $("dDate").value || ymd(new Date());
+  const list = reports.filter(r => r.date === d);
+  const cnt = (g, st) => g.filter(r => r.status === st).length;
+  const rows = diseaseKeys(list).map(k => {
+    const g = list.filter(r => r.disease === k);
+    return [k, g.length, cnt(g, "مشتبه به"), cnt(g, "مؤكد"), cnt(g, "تحت العلاج"), cnt(g, "متعافٍ")];
+  }).filter(r => r[1] > 0 || DISEASES.includes(r[0]));
+  const tot = ["الإجمالي", list.length, cnt(list, "مشتبه به"), cnt(list, "مؤكد"), cnt(list, "تحت العلاج"), cnt(list, "متعافٍ")];
+  $("dBody").innerHTML = reportHead("التقرير الفوري واليومي") +
+    `<h3 style="margin-top:12px">التاريخ: ${esc(d)}</h3>` +
+    (list.length ? "" : '<div class="muted">لا توجد حالات مسجلة في هذا التاريخ (صفر حالات).</div>') +
+    table(["المرض", "العدد", "مشتبه به", "مؤكد", "تحت العلاج", "متعافٍ"], rows, tot);
+}
+
+/* ===== التقرير السنوي ===== */
+$("aYear").addEventListener("change", renderAnnual);
+function fillYears() {
+  const y = new Date().getFullYear();
+  $("aYear").innerHTML = [0, 1, 2, 3].map(i => `<option value="${y - i}">${y - i}</option>`).join("");
+}
+function renderAnnual() {
+  const y = $("aYear").value || new Date().getFullYear();
+  const list = reports.filter(r => r.date && r.date.startsWith(y + "-"));
+  const rows = diseaseKeys(list).map(k => {
+    const row = [k]; let t = 0;
+    for (let m = 1; m <= 12; m++) {
+      const c = list.filter(r => r.disease === k && +r.date.slice(5, 7) === m).length;
+      row.push(c); t += c;
+    }
+    row.push(t);
+    return row;
+  }).filter(r => r[13] > 0 || DISEASES.includes(r[0]));
+  const tot = ["الإجمالي"];
+  for (let m = 1; m <= 12; m++) tot.push(list.filter(r => +r.date.slice(5, 7) === m).length);
+  tot.push(list.length);
+  $("aBody").innerHTML = reportHead("التقرير السنوي") +
+    `<h3 style="margin-top:12px">عام ${esc(y)}</h3>` +
+    (list.length ? "" : '<div class="muted">لا توجد بيانات لهذا العام.</div>') +
+    table(["المرض", ...MONTHS, "الإجمالي"], rows, tot);
+}
+
+/* ===== أرقام المديرين ===== */
+function renderContacts() {
+  const states = (RANK[role] >= 4 ? Object.keys(LOCS) : scopeStates()).map(s => {
+    const p = STATE_PHONES[s] || [];
+    return `<div class="rec"><strong>${esc(s)}</strong>` + [0, 1].map(i => p[i]
+      ? `<a class="btn b-blue" href="tel:${esc(p[i])}">📞 ${esc(p[i])}</a>`
+      : `<button class="btn b-ghost" disabled>📞 رقم الولاية · بانتظار الاعتماد</button>`).join("") + `</div>`;
+  }).join("");
+  $("contactsCard").innerHTML = `
+    <h3>أرقام المديرين للتواصل</h3>
+    <div class="rec"><strong>وزارة الصحة الاتحادية</strong>
+      ${ADMIN_PHONES.map(p => `<a class="btn b-blue" href="tel:${esc(p)}">📞 ${esc(p)}</a>`).join("")}
+    </div>
+    ${states}
+    <div class="rec"><button class="btn b-ghost" disabled>📞 رقم مدير المحلية · بانتظار اعتماد الجهة المسؤولة</button></div>`;
+}
+
+/* ===== المستخدمون والصلاحيات ===== */
+async function renderUsers() {
+  const box = $("usersBox");
+  box.innerHTML = '<div class="muted">جارٍ التحميل...</div>';
+  try {
+    const snap = await db.collection("users").get();
+    let list = snap.docs.map(d => ({ uid: d.id, ...d.data() }));
+    if (role === "locality") list = list.filter(u => u.locality === me.locality);
+    if (role === "state") list = list.filter(u => u.state === me.state);
+    box.innerHTML = list.length ? list.map(u => `
+      <div class="rec">
+        <div><strong>${esc(u.name || "—")}</strong> <span class="muted">${esc(u.phone || "")}</span> · ${esc(RNAME[u.role] || u.role || "—")}</div>
+        <div class="user-line">${esc(u.state || "—")} – محلية ${esc(u.locality || "—")} – ${esc(u.unit || "—")} – ${esc(u.facility || "—")}</div>
+      </div>`).join("") : '<div class="empty">لا يوجد مستخدمون</div>';
+  } catch (e) {
+    box.innerHTML = '<div class="empty">تعذّر تحميل المستخدمين، تحقق من الصلاحيات</div>';
+  }
+}
+
+/* ===== الدخول والتسجيل ===== */
+function showReg(on) { $("loginBox").classList.toggle("hidden", on); $("regBox").classList.toggle("hidden", !on); }
+$("showReg").addEventListener("click", () => showReg(true));
+$("backLogin").addEventListener("click", () => showReg(false));
+
+$("loginBtn").addEventListener("click", async () => {
+  const p = normPhone($("lPhone").value);
+  if (p.length < 9) return alert("رقم التلفون غير صحيح");
+  try { await auth.signInWithEmailAndPassword(emailOf(p), $("lPass").value); }
+  catch (e) { alert("الرقم أو كلمة السر غير صحيحة"); }
+});
+
+$("regBtn").addEventListener("click", async () => {
+  const name = $("rName").value.trim(), p = normPhone($("rPhone").value), pw = $("rPass").value;
+  const empNo = $("rEmpNo").value.trim();
+  if (!name) return alert("اكتب الاسم");
+  if (p.length < 9) return alert("رقم التلفون غير صحيح");
+  if (!/^\d+$/.test(empNo)) return alert("أدخل الرقم الوظيفي (أرقام فقط)");
+  if (!$("rFac").value.trim()) return alert("اختر أو اكتب المركز أو المعمل");
+  if (pw !== $("rPass2").value) return alert("كلمتا السر غير متطابقتين");
+  registering = true;
+  try {
+    const cred = await auth.createUserWithEmailAndPassword(emailOf(p), pw);
+    await db.collection("users").doc(cred.user.uid).set({
+      name, phone: p, role: "entry", empNo,
+      state: $("rState").value, locality: $("rLoc").value,
+      unit: $("rUnit").value || "", facility: $("rFac").value.trim()
+    });
+    registering = false;
+    await enter(cred.user.uid);
+  } catch (e) {
+    registering = false;
+    alert("هذا الرقم مسجل مسبقاً أو حدث خطأ في الاتصال");
+  }
+});
+
+$("logoutBtn").addEventListener("click", () => auth.signOut());
+
+auth.onAuthStateChanged(async user => {
+  if (registering) return;
+  if (!user) {
+    me = null; reports = [];
+    $("app").classList.add("hidden");
+    $("auth").classList.remove("hidden");
+    applyRole("entry");
+    return;
+  }
+  await enter(user.uid);
+});
+
+async function enter(uid) {
+  const snap = await db.collection("users").doc(uid).get();
+  if (!snap.exists) return;
+  const d = snap.data();
+  const phone = normPhone(d.phone);
+  let r = d.role || "entry";
+  if (ADMIN_PHONES.includes(phone)) r = "sysadmin";
+  else if (phone === LOC_MGR_PHONE) r = "locality";
+  me = { uid, ...d, role: r,
+    state: d.state || DEF.state, locality: d.locality || DEF.loc,
+    unit: d.unit || "", facility: d.facility || "", empNo: d.empNo || "" };
+  $("auth").classList.add("hidden");
+  $("app").classList.remove("hidden");
+  applyRole(r);
+  await loadReports();
+  go("home");
+}
+
+async function loadReports() {
+  try {
+    const q = RANK[role] >= 2 ? db.collection("reports") : db.collection("reports").where("owner", "==", me.uid);
+    const snap = await q.get();
+    reports = snap.docs.map(d => ({ id: d.id, ...d.data() })).sort((a, b) => (b.created || 0) - (a.created || 0));
+  } catch (e) { reports = []; }
+}
+
+/* ===== أدوات الواجهة ===== */
+const SCALES = [0.9, 1, 1.1, 1.2, 1.3];
+let scaleIdx = Math.min(SCALES.length - 1, Math.max(0, +(localStorage.getItem("fIdx") || 1)));
+function applyScale() { document.body.style.zoom = SCALES[scaleIdx]; localStorage.setItem("fIdx", scaleIdx); }
+$("fMinus").addEventListener("click", () => { if (scaleIdx > 0) { scaleIdx--; applyScale(); } });
+$("fPlus").addEventListener("click", () => { if (scaleIdx < SCALES.length - 1) { scaleIdx++; applyScale(); } });
+applyScale();
+
+if (localStorage.getItem("night") === "1") document.body.classList.add("dark");
+$("nightBtn").addEventListener("click", () => {
+  document.body.classList.toggle("dark");
+  localStorage.setItem("night", document.body.classList.contains("dark") ? "1" : "0");
+});
+
+$("shareBtn").addEventListener("click", async () => {
+  const url = location.href.split("?")[0];
+  try {
+    if (navigator.share) await navigator.share({ title: "المنصة القومية للتقارير الصحية", url });
+    else { await navigator.clipboard.writeText(url); alert("تم نسخ الرابط"); }
+  } catch (e) {}
+});
+
+let visits = +(localStorage.getItem("visits") || 0);
+if (!sessionStorage.getItem("counted")) {
+  sessionStorage.setItem("counted", "1");
+  visits++;
+  localStorage.setItem("visits", visits);
+}
+$("visits").textContent = visits;
+
+/* ===== التهيئة ===== */
+NEW.set(DEF.state, DEF.loc, DEF.unit);
+REG.set(DEF.state, DEF.loc, DEF.unit);
+$("dDate").value = ymd(new Date());
+applyRole("entry");
+</script>
+</body>
+</html>
